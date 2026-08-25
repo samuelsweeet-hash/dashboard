@@ -111,12 +111,15 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   .sc-card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:22px 20px;position:relative;overflow:hidden;}
   .sc-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
   .sc-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#fff;}
-  .sc-card-label{font-size:11.5px;color:var(--gray);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:8px;}
+  .sc-card-label{font-size:11.5px;color:var(--gray);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:0;line-height:1.25;min-height:2.5em;}
   .sc-card-value{font-size:30px;font-weight:800;color:var(--ink);margin-top:4px;font-family:'Georgia',serif;line-height:1.15;}
   .sc-card-goal{font-size:11px;color:var(--gray);margin-top:3px;}
   .sc-card-bottom{display:flex;align-items:center;gap:14px;margin-top:16px;}
-  .sc-ring-wrap{width:62px;height:62px;flex-shrink:0;position:relative;}
-  .sc-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--ink);}
+  .sc-card-main{display:flex;align-items:center;gap:12px;margin-top:8px;}
+  .sc-card-text{flex:1 1 auto;min-width:0;}
+  .sc-card-change{margin-top:8px;}
+  .sc-ring-wrap{width:84px;height:84px;flex-shrink:0;position:relative;}
+  .sc-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:var(--ink);}
   .sc-delta{font-size:12.5px;font-weight:700;}
   .sc-delta.good{color:var(--good);}
   .sc-delta.bad{color:var(--bad);}
@@ -2948,6 +2951,7 @@ function ringChart(canvasId, percent, color){
       responsive:true, maintainAspectRatio:false,
       cutout:'72%',
       rotation:-90, circumference:360,
+      ironwoodLabels:false,
       plugins:{ legend:{display:false}, tooltip:{enabled:false} },
       animation:{ duration:400 }
     }
@@ -2977,12 +2981,14 @@ function scCardHTML(opts){
     <div class="sc-card-top">
       <div class="sc-icon" style="background:${opts.iconBg};">${opts.icon}</div>
     </div>
-    <div class="sc-card-label">${opts.label}</div>
-    <div class="sc-card-value">${opts.value}</div>
-    <div class="sc-card-goal">${opts.goalText||''}</div>
-    <div class="sc-card-bottom">
+    <div class="sc-card-main">
+      <div class="sc-card-text">
+        <div class="sc-card-label">${opts.label}</div>
+        <div class="sc-card-value">${opts.value}</div>
+        <div class="sc-card-goal">${opts.goalText||''}</div>
+        <div class="sc-card-change">${changeHTML}</div>
+      </div>
       ${ringHTML}
-      <div>${changeHTML}</div>
     </div>
   </div>`;
 }
