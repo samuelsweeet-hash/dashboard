@@ -3201,11 +3201,11 @@ function renderScorecard(){
     { icon:'👥', iconBg:'#5B8C6E', label:'New Customers', value: fmt(m.customers), goalText:'this period', pct: Math.min(100, m.customers*5), deltaGood:true, ringId:'scRing3', change: m.prior ? chg(m.customers, m.prior.customers) : null },
     { icon:'🎯', iconBg:'#C9962C', label:'Quotes', value: folioOnlyNote || fmt(m.quotes), goalText: folioOnlyNote ? 'switch to Folio period' : 'sold + open w/ premium', pct: folioOnlyNote ? null : 50, deltaGood:true, ringId: folioOnlyNote ? null : 'scRing4', unavailable: !!folioOnlyNote, change: null },
     { icon:'📈', iconBg:'#2E5B44', label:'Quote → Sale %', value: folioOnlyNote || (m.quoteToSale!==null ? m.quoteToSale.toFixed(1)+'%' : '—'), goalText: folioOnlyNote ? 'switch to Folio period' : 'directional — see note', pct: folioOnlyNote ? null : m.quoteToSale, deltaGood: (m.quoteToSale||0)>=25, ringId: folioOnlyNote ? null : 'scRing5', unavailable: !!folioOnlyNote, change: null },
+    { icon:'🎯', iconBg:'#999', label:'Close Rate %', unavailable:true },
+    { icon:'📦', iconBg:'#5B8C6E', label:'Policies per Customer', value: m.policiesPerCustomer.toFixed(2), goalText:'cross-sell effectiveness', pct: Math.min(100, m.policiesPerCustomer*50), deltaGood: m.policiesPerCustomer>=1.3, ringId:'scRing6', change: m.prior ? chg(m.policiesPerCustomer, m.prior.policiesPerCustomer) : null },
     { icon:'📅', iconBg:'#999', label:'Appointments Set', unavailable:true },
     { icon:'✅', iconBg:'#999', label:'Appointments Held', unavailable:true },
     { icon:'👤', iconBg:'#999', label:'Show Rate %', unavailable:true },
-    { icon:'🎯', iconBg:'#999', label:'Close Rate %', unavailable:true },
-    { icon:'📦', iconBg:'#5B8C6E', label:'Policies per Customer', value: m.policiesPerCustomer.toFixed(2), goalText:'cross-sell effectiveness', pct: Math.min(100, m.policiesPerCustomer*50), deltaGood: m.policiesPerCustomer>=1.3, ringId:'scRing6', change: m.prior ? chg(m.policiesPerCustomer, m.prior.policiesPerCustomer) : null },
   ];
 
   document.getElementById('scKpiGrid').innerHTML = cards.map(scCardHTML).join('');
