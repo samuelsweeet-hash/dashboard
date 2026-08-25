@@ -34,69 +34,75 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
 </script>
 <style>
   :root{
-    --ink:#1A1A1A;
-    --dark-green:#1F3D2E;
-    --mid-green:#2E5B44;
-    --pale-green:#F2F4F0;
-    --paper:#F6F7F4;
+    --ink:#131A21;
+    --dark-green:#1B2C42;
+    --mid-green:#35597F;
+    --pale-green:#EEF2F6;
+    --paper:#F4F6F9;
     --card:#FFFFFF;
-    --line:#DCE3DA;
-    --gold:#C9962C;
-    --gold-soft:#F1E4C4;
-    --cream:#FBF1DD;
-    --blue:#1155CC;
-    --red:#A6432F;
-    --red-soft:#F3E2DD;
-    --gray:#6B7268;
+    --line:#D9E0E8;
+    --gold:#B08D57;
+    --gold-soft:#EFE0C6;
+    --cream:#F7F2E8;
+    --blue:#2A62BC;
+    --red:#A34437;
+    --red-soft:#F4E4E0;
+    --gray:#646D77;
+    --good:#1F7A5C;
+    --bad:#C0413C;
+    --steel:#4E7FB0;
   }
   *{box-sizing:border-box;}
   body{margin:0;background:var(--paper);font-family:Arial,Helvetica,sans-serif;color:var(--ink);}
   .wrap{max-width:1180px;margin:0 auto;padding:0 28px 80px;}
   .sans{font-family:Arial,Helvetica,sans-serif;}
 
-  header{background:var(--dark-green);margin:0 -28px 8px;padding:26px 28px 20px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;}
-  .brand-eyebrow{letter-spacing:.16em;text-transform:uppercase;font-size:11px;color:var(--gold);font-weight:700;margin:0 0 6px;}
-  h1{font-size:26px;margin:0;font-weight:700;letter-spacing:.01em;color:#fff;text-transform:uppercase;}
+  header{background:linear-gradient(135deg,#1E2E3E 0%,#0C141C 100%);margin:0 -28px 8px;padding:18px 28px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;box-shadow:inset 0 -1px 0 rgba(201,150,44,.30);}
+  .brand-eyebrow{letter-spacing:.07em;text-transform:uppercase;font-size:22px;color:#CFAE78;font-weight:700;margin:0 0 4px;font-family:'Georgia',serif;line-height:1.1;
+    background:linear-gradient(176deg,#F0DCAE 0%,#CFAE78 38%,#A8834A 70%,#E2CB9B 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  h1{font-size:14px;margin:0;font-weight:600;letter-spacing:.11em;color:#A6B6C6;text-transform:uppercase;}
 
-  .view-control{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+  .view-control{display:flex;flex-direction:column;align-items:flex-end;gap:7px;}
   .toggle{display:flex;border:1px solid var(--gold);border-radius:3px;overflow:hidden;}
   .toggle button{
-    font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
-    padding:8px 18px;border:none;background:var(--mid-green);color:#fff;cursor:pointer;
+    font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
+    padding:7px 10px;border:none;background:var(--card);color:var(--dark-green);cursor:pointer;
   }
-  .toggle button.active{background:var(--gold);color:var(--dark-green);}
+  .toggle button.active{background:var(--gold);color:#0C141C;}
   .toggle button:not(:last-child){border-right:1px solid var(--gold);}
+  header .toggle button{background:rgba(255,255,255,.07);color:#E4EBE5;}
+  header .toggle button.active{background:var(--gold);color:#0C141C;}
   select#periodSelect{
     font-size:12.5px;color:var(--ink);
-    padding:7px 10px;border:1px solid var(--line);background:#fff;min-width:200px;border-radius:3px;
+    padding:6px 10px;border:1px solid var(--line);background:#fff;min-width:200px;border-radius:3px;
   }
 
   .analytics-btn{
-    font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
-    padding:9px 18px;border:1px solid var(--gold);border-radius:3px;background:var(--gold);color:var(--dark-green);cursor:pointer;
+    font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
+    padding:8px 14px;border:1px solid var(--gold);border-radius:3px;background:var(--gold);color:#0C141C;cursor:pointer;
     display:flex;align-items:center;gap:8px;
   }
-  .analytics-btn:hover{background:#dba838;}
+  .analytics-btn:hover{background:#C6A26E;}
   .analytics-btn .chev{transition:transform .2s ease;font-size:10px;}
   .analytics-btn.open .chev{transform:rotate(180deg);}
 
-  .coverage-note{font-size:11.5px;color:#3E4A42;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:18px 0 32px;line-height:1.55;}
+  .coverage-note{font-size:11.5px;color:#3A4550;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:18px 0 32px;line-height:1.55;}
 
   .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
   .kpi{background:var(--dark-green);border:1px solid var(--dark-green);border-top:4px solid var(--gold);padding:18px 16px;}
 
   /* ===== Executive Scorecard ===== */
-  .sc-header{background:linear-gradient(135deg,var(--dark-green) 0%,#12291d 100%);border-radius:6px;padding:18px 24px;display:flex;align-items:center;flex-wrap:wrap;gap:18px;margin-bottom:22px;}
+  .sc-header{background:linear-gradient(135deg,#223446 0%,#101B25 100%);border-radius:6px;padding:18px 24px;display:flex;align-items:center;flex-wrap:wrap;gap:18px;margin-bottom:22px;}
   .sc-header-left{display:flex;align-items:center;gap:12px;margin-right:auto;}
   .sc-header-icon{width:36px;height:36px;border:2px solid var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:16px;flex-shrink:0;}
   .sc-header-title{color:#fff;font-weight:800;letter-spacing:.08em;font-size:15px;font-family:'Georgia',serif;}
-  .sc-header-sub{color:#B8C9BE;font-size:11.5px;margin-top:2px;}
+  .sc-header-sub{color:#AEBECE;font-size:11.5px;margin-top:2px;}
   .sc-header-filters{display:flex;gap:14px;flex-wrap:wrap;}
   .sc-filter{display:flex;flex-direction:column;gap:3px;}
-  .sc-filter label{color:#8FA894;font-size:9px;letter-spacing:.08em;font-weight:700;}
+  .sc-filter label{color:#93A2B2;font-size:9px;letter-spacing:.08em;font-weight:700;}
   .sc-filter select{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:12px;padding:5px 8px;border-radius:4px;min-width:100px;}
   .sc-filter select option{color:#111;}
-  .sc-header-right{color:#B8C9BE;font-size:10.5px;text-align:right;white-space:nowrap;}
+  .sc-header-right{color:#AEBECE;font-size:10.5px;text-align:right;white-space:nowrap;}
 
   .sc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:22px;}
   @media (max-width:1250px){ .sc-grid{grid-template-columns:repeat(3,1fr);} }
@@ -104,7 +110,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   @media (max-width:520px){ .sc-grid{grid-template-columns:1fr;} }
   .sc-card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:22px 20px;position:relative;overflow:hidden;}
   .sc-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
-  .sc-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .sc-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#fff;}
   .sc-card-label{font-size:11.5px;color:var(--gray);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:8px;}
   .sc-card-value{font-size:30px;font-weight:800;color:var(--ink);margin-top:4px;font-family:'Georgia',serif;line-height:1.15;}
   .sc-card-goal{font-size:11px;color:var(--gray);margin-top:3px;}
@@ -112,8 +118,8 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   .sc-ring-wrap{width:62px;height:62px;flex-shrink:0;position:relative;}
   .sc-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--ink);}
   .sc-delta{font-size:12.5px;font-weight:700;}
-  .sc-delta.good{color:var(--mid-green);}
-  .sc-delta.bad{color:var(--red);}
+  .sc-delta.good{color:var(--good);}
+  .sc-delta.bad{color:var(--bad);}
   .sc-delta-label{font-size:10.5px;color:var(--gray);font-weight:500;}
   .sc-card.unavailable{background:var(--cream);}
   .sc-card.unavailable .sc-card-value{color:var(--gray);font-size:20px;}
@@ -152,17 +158,17 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   table{width:100%;border-collapse:collapse;font-size:12.5px;}
   th{text-align:left;text-transform:uppercase;letter-spacing:.04em;font-size:10px;color:var(--mid-green);font-weight:700;padding:0 10px 8px;border-bottom:2px solid var(--dark-green);}
   th.num, td.num{text-align:right;}
-  td{padding:9px 10px;border-bottom:1px solid #EFEEE7;}
+  td{padding:9px 10px;border-bottom:1px solid #EFF1F5;}
   tr:nth-child(even) td{background:var(--pale-green);}
   tr:last-child td{border-bottom:none;}
   .rank{color:var(--gray);width:22px;}
   .bar-cell{width:120px;}
-  .mini-bar{height:6px;background:#E4E9E1;position:relative;}
+  .mini-bar{height:6px;background:#E3E8EE;position:relative;}
   .mini-bar i{position:absolute;left:0;top:0;bottom:0;background:var(--dark-green);}
   .mini-bar i.gold{background:var(--gold);}
   .pill{font-size:10.5px;padding:2px 8px;border-radius:2px;font-weight:600;}
   .pill.good{background:var(--pale-green);color:var(--dark-green);border:1px solid var(--mid-green);}
-  .pill.flat{background:#EFEEE7;color:var(--gray);}
+  .pill.flat{background:#EFF1F5;color:var(--gray);}
   .empty-row{padding:24px;text-align:center;color:var(--gray);font-size:12.5px;}
 
   .analytics-panel{display:none;margin-bottom:40px;}
@@ -185,14 +191,14 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   .producer-body{display:none;padding:0 18px 20px;}
   .producer-body.open{display:block;}
 
-  .producer-toggle-btn{
-    font-size:12px;font-weight:700;letter-spacing:.03em;
+  .toggle .producer-toggle-btn{
+    font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:none;
     padding:8px 16px;border:none;background:var(--card);color:var(--dark-green);cursor:pointer;
     border-right:1px solid var(--dark-green);
   }
-  .producer-toggle-btn:last-child{border-right:none;}
-  .producer-toggle-btn.active{background:var(--dark-green);color:#fff;}
-  .producer-toggle-btn:hover:not(.active){background:var(--pale-green);}
+  .toggle .producer-toggle-btn:last-child{border-right:none;}
+  .toggle .producer-toggle-btn.active{background:var(--dark-green);color:#fff;}
+  .toggle .producer-toggle-btn:hover:not(.active){background:var(--pale-green);}
 
   .sdr-scope-btn{
     font-size:12px;font-weight:700;letter-spacing:.03em;
@@ -205,14 +211,14 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
 
   .comm-producer-link{cursor:pointer;font-weight:600;color:var(--dark-green);}
   .comm-producer-link:hover{text-decoration:underline;}
-  .comm-chev{font-size:10px;color:var(--gold);}
+  .comm-chev{font-size:10px;color:#7E6132;}
   .comm-detail-row td{background:var(--pale-green);padding:14px 18px;}
   .comm-detail-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
   .comm-detail-block{background:#fff;border:1px solid var(--line);padding:12px 14px;}
   .comm-detail-block h4{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--mid-green);margin:0 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px;}
   .comm-detail-count{color:var(--gray);font-weight:400;text-transform:none;letter-spacing:0;}
   .comm-detail-list{list-style:none;margin:0;padding:0;font-size:11.5px;}
-  .comm-detail-list li{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:1px dashed #EFEEE7;}
+  .comm-detail-list li{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:1px dashed #EFF1F5;}
   .comm-detail-list li:last-child{border-bottom:none;}
   .comm-detail-amt{font-weight:600;white-space:nowrap;}
   .comm-detail-subtotal{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-weight:700;font-size:11.5px;text-align:right;}
@@ -236,7 +242,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
     <div>
       <p class="brand-eyebrow">Ironwood Insurance Agency</p>
       <h1 id="pageTitle">Premium Sold — Folio View</h1>
-      <p style="font-size:10.5px;color:var(--gray);margin:2px 0 0;">Last updated: August 18, 2026</p>
+      <p style="font-size:10.5px;color:#7C8B9B;margin:5px 0 0;letter-spacing:.03em;">Last updated: August 18, 2026</p>
     </div>
     <div class="view-control">
       <div class="toggle">
@@ -249,8 +255,8 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
         <button id="btnToDoList" class="sans">To Do List</button>
       </div>
       <select id="periodSelect" class="sans"></select>
-      <select id="producerModeSelect" class="sans" style="visibility:hidden;font-size:12.5px;color:var(--ink);padding:7px 10px;border:1px solid var(--line);background:#fff;min-width:200px;border-radius:3px;"></select>
-      <button id="analyticsToggle" class="analytics-btn sans">Data Analytics <span class="chev">▼</span></button>
+      <select id="producerModeSelect" class="sans" style="display:none;font-size:12.5px;color:var(--ink);padding:7px 10px;border:1px solid var(--line);background:#fff;min-width:200px;border-radius:3px;"></select>
+      <button id="analyticsToggle" class="analytics-btn sans" style="display:none;">Data Analytics <span class="chev">▼</span></button>
     </div>
   </header>
 
@@ -404,7 +410,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   <section id="investmentPrioritySection" style="display:none;">
     <div class="section-title">Investment Priority <span class="hint">who to coach vs who's a good ROI — this folio</span></div>
     <div class="card notitle">
-      <p style="font-size:11.5px;color:#3E4A42;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0 0 16px;line-height:1.55;">
+      <p style="font-size:11.5px;color:#3A4550;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0 0 16px;line-height:1.55;">
         ROI = Premium Written ÷ (Est. Monthly Fixed Cost [$4,510 base + HRA, per the 2026 Comp Plan] + Commission Owed this folio). Below 1.0x means the producer's written premium hasn't yet covered their own fixed cost for the period.
       </p>
       <table>
@@ -555,7 +561,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   <!-- PRODUCER MODE: activity analytics (days-to-close, quoting pace) -->
   <section id="producerModeSection" style="display:none;">
     <div class="card" style="border-bottom:none;">
-      <p style="font-size:11.5px;color:#3E4A42;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0;line-height:1.55;">
+      <p style="font-size:11.5px;color:#3A4550;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0;line-height:1.55;">
         Sourced from the <strong>Leads</strong> sheet in your AgencyZoom tracker, scoped to each producer's actual tenure — not blanket all-time history. A 1-month hire is measured against their own month, not a 3-year veteran's 6-year data trail. Only a fraction of leads have a recorded <code>soldDate</code>/<code>quoteDate</code>, so treat rates as directional. Rows flagged in red show a sold date recorded before the create date — a data entry issue in the source, not a calculation error here.
       </p>
     </div>
@@ -672,7 +678,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
 
   <section id="commissionsModeSection" style="display:none;">
     <div class="card" style="border-bottom:none;">
-      <p style="font-size:11.5px;color:#3E4A42;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0 0 16px;line-height:1.55;">
+      <p style="font-size:11.5px;color:#3A4550;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0 0 16px;line-height:1.55;">
         Computed per the <strong>Ironwood Insurance 2026 California Producer Compensation Plan</strong> (effective Jan 1, 2026), applied to real confirmed sales for the selected folio. Qualify with $20,000+ premium AND 2+ Life term policies (or 1 IUL policy), OR $50,000+ total premium (any mix). Tier is set by total premium per the plan's table: 6% at $20K, 7% at $40K, 8% at $60K, 9% at $80K, 10% at $100K+. Full tier rate applies to Farmers/Foremost premium, half tier rate to Brokered premium, flat 50% to Broker Fee premium (all gated on qualifying), plus a +2% accelerator once total premium exceeds $120K. Only carrier-confirmed premium counts toward qualification — unconfirmed premium is excluded until confirmed. No IUL sales are on record, so that qualification path isn't currently in play.
       </p>
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
@@ -703,7 +709,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
 
     <div class="card" style="border-bottom:none;margin-top:24px;">
       <div class="section-title" style="margin:-20px -22px 18px;">SDR Performance Bonuses <span class="hint" id="sdrPayPeriodHint">monthly pay period — August 2026</span></div>
-      <p id="sdrCompCaption" style="font-size:11.5px;color:#3E4A42;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0 0 16px;line-height:1.55;"></p>
+      <p id="sdrCompCaption" style="font-size:11.5px;color:#3A4550;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0 0 16px;line-height:1.55;"></p>
       <table>
         <thead>
           <tr><th>SDR</th><th class="num">Transfers Logged</th><th class="num">Qualified Transfers</th><th class="num">Qualified Bonus</th><th class="num">Bound Policies</th><th class="num">Bound Bonus</th><th class="num">Conversion Rate</th><th class="num">Total Bonus</th></tr>
@@ -717,7 +723,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   <!-- SDR TRANSFERS MODE -->
   <section id="sdrTransfersModeSection" style="display:none;">
     <div class="card" style="border-bottom:none;">
-      <p style="font-size:11.5px;color:#3E4A42;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0 0 16px;line-height:1.55;">
+      <p style="font-size:11.5px;color:#3A4550;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0 0 16px;line-height:1.55;">
         From the <strong>Daily Report for Huddle</strong> tracker's SDR Transfers log. 2 placeholder/test rows were removed from the source; everything below is real transfer activity.
       </p>
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
@@ -793,7 +799,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   <!-- TO DO LIST MODE -->
   <section id="toDoListModeSection" style="display:none;">
     <div class="card" style="border-bottom:none;">
-      <p style="font-size:11.5px;color:#3E4A42;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0;line-height:1.55;">
+      <p style="font-size:11.5px;color:#3A4550;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0;line-height:1.55;">
         From the <strong>Daily Report for Huddle</strong> tracker's To Do List — a recurring daily checklist plus a running list of open one-off issues.
       </p>
     </div>
@@ -959,7 +965,8 @@ const ironwoodDataLabels = {
 Chart.register(ironwoodDataLabels);
 
 // Green-palette chart color sets
-const GREEN_PALETTE = ['#1F3D2E','#2E5B44','#C9962C','#6B9080','#A7C4A0','#DBC28E','#4C6B57','#E4D3A6','#8FA98F','#3E5C4A'];
+// Categorical identity only (donut slices). Single-measure bar rankings use one hue.
+const SERIES_PALETTE = ['#1F63B8','#C4870F','#0C8C74','#C0413C','#6A4BC4','#3E9AD8','#C75B96','#5F7F1F','#8A94A0','#C3CBD4'];
 
 let mode = 'scorecard'; // 'scorecard' | 'daily' | 'folio'
 let scRingCharts = [];
@@ -1002,8 +1009,8 @@ function render(){
   const isIsolatedMode = isCommissionsMode || isSdrMode || isTodoMode || isScorecardMode; // tabs that show ONLY their own content
 
   document.getElementById('scorecardModeSection').style.display = isScorecardMode ? '' : 'none';
-  document.getElementById('periodSelect').style.visibility = isDailyFolio ? 'visible' : 'hidden';
-  document.getElementById('producerModeSelect').style.visibility = isProducerMode ? 'visible' : 'hidden';
+  document.getElementById('periodSelect').style.display = isDailyFolio ? '' : 'none';
+  document.getElementById('producerModeSelect').style.display = isProducerMode ? '' : 'none';
   // Old detailed KPI row, producer/trend charts, and raw sales table are retired —
   // replaced by the scoped Snapshot section below.
   document.getElementById('kpiRow').style.display = 'none';
@@ -1023,7 +1030,7 @@ function render(){
   document.getElementById('producerBreakdownSection').style.display = (isFolioMode) ? '' : 'none';
   document.getElementById('salesFunnelSection').style.display = (isFolioMode) ? '' : 'none';
   document.getElementById('producerPerfSection').style.display = (isFolioMode) ? '' : 'none';
-  document.getElementById('analyticsToggle').style.visibility = isFolioMode ? 'visible' : 'hidden';
+  document.getElementById('analyticsToggle').style.display = isFolioMode ? '' : 'none';
   document.getElementById('leadPipelineWrap').style.display = (isFolioMode) ? '' : 'none';
 
   document.getElementById('coverageNote').style.display = isIsolatedMode ? 'none' : '';
@@ -1142,13 +1149,13 @@ function renderPeriod(){
       type:'bar',
       data:{
         labels: prodEntries.map(x=>x[0]),
-        datasets:[{ data: prodEntries.map(x=>x[1]), backgroundColor:'#1F3D2E' }]
+        datasets:[{ data: prodEntries.map(x=>x[1]), backgroundColor:'#25507F' }]
       },
       options:{
         indexAxis:'y', responsive:true, maintainAspectRatio:false,
         plugins:{legend:{display:false}, tooltip:{callbacks:{label: c=>fmtMoney(c.raw)}}},
         scales:{
-          x:{grid:{color:'#EAEEE7'}, ticks:{font:{family:'Arial',size:11}, callback:v=>'$'+v.toLocaleString()}},
+          x:{grid:{color:'#E6EBF1'}, ticks:{font:{family:'Arial',size:11}, callback:v=>'$'+v.toLocaleString()}},
           y:{grid:{display:false}, ticks:{font:{family:'Arial',size:11}}}
         }
       }
@@ -1250,14 +1257,14 @@ function renderSnapshot(key, snapshotMode, rec, label){
 
   if(snapshotSellingChart) snapshotSellingChart.destroy();
   if(prodEntries.length){
-    snapshotSellingChart = barChart('chartSellingMost', prodEntries.map(x=>x[0]), prodEntries.map(x=>x[1]), {money:true, colors: GREEN_PALETTE});
+    snapshotSellingChart = barChart('chartSellingMost', prodEntries.map(x=>x[0]), prodEntries.map(x=>x[1]), {money:true});
   } else {
     (function(){const el=document.getElementById('chartSellingMost'); if(el){const c2d=el.getContext('2d'); if(c2d) c2d.clearRect(0,0,9999,9999);}})();
   }
 
   if(snapshotQuotingChart) snapshotQuotingChart.destroy();
   if(quoteEntries.length){
-    snapshotQuotingChart = barChart('chartQuotingMost', quoteEntries.map(x=>x[0]), quoteEntries.map(x=>x[1]), {colors:'#C9962C'});
+    snapshotQuotingChart = barChart('chartQuotingMost', quoteEntries.map(x=>x[0]), quoteEntries.map(x=>x[1]), {colors:'#C4870F'});
   } else {
     (function(){const el=document.getElementById('chartQuotingMost'); if(el){const c2d=el.getContext('2d'); if(c2d) c2d.clearRect(0,0,9999,9999);}})();
   }
@@ -1306,7 +1313,7 @@ function renderInvestmentPriority(){
     type:'bar',
     data:{
       labels: rows.map(r=>r.producer),
-      datasets:[{ data: rows.map(r=>Math.round(r.roi*100)/100), backgroundColor: rows.map(r=>r.roi>=3?'#1F3D2E':(r.roi>=1?'#C9962C':'#A6432F')) }]
+      datasets:[{ data: rows.map(r=>Math.round(r.roi*100)/100), backgroundColor: rows.map(r=>r.roi>=3?'#1F7A5C':(r.roi>=1?'#C4870F':'#C0413C')) }]
     },
     options:{
       responsive:true, maintainAspectRatio:false,
@@ -1314,7 +1321,7 @@ function renderInvestmentPriority(){
       plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>c.raw.toFixed(2)+'x ROI'}} },
       scales:{
         x:{grid:{display:false}, ticks:{font:{family:'Arial',size:11}}},
-        y:{grid:{color:'#EAEEE7'}, ticks:{font:{family:'Arial',size:10}, callback:v=>v.toFixed(1)+'x'}}
+        y:{grid:{color:'#E6EBF1'}, ticks:{font:{family:'Arial',size:10}, callback:v=>v.toFixed(1)+'x'}}
       }
     }
   });
@@ -1329,7 +1336,7 @@ function renderTrend(){
       datasets:[{
         label:'Office P&C Premium (official)',
         data: folioKeys.map(k => SALES.folio[k].official.pcPremium || 0),
-        backgroundColor:'#1F3D2E'
+        backgroundColor:'#25507F'
       }]
     },
     options:{
@@ -1338,7 +1345,7 @@ function renderTrend(){
         tooltip:{callbacks:{label:c=>fmtMoney(c.raw)}} },
       scales:{
         x:{grid:{display:false}, ticks:{font:{family:'Arial',size:10}, maxRotation:35, minRotation:35}},
-        y:{grid:{color:'#EAEEE7'}, ticks:{font:{family:'Arial',size:11}, callback:v=>'$'+v.toLocaleString()}}
+        y:{grid:{color:'#E6EBF1'}, ticks:{font:{family:'Arial',size:11}, callback:v=>'$'+v.toLocaleString()}}
       }
     }
   });
@@ -1417,7 +1424,7 @@ function renderProducerGoal(producer, folioKeyOverride){
   const pct = goalForPeriod ? Math.min(100, (current_premium / goalForPeriod) * 100) : 0;
   const pctDisplay = goalForPeriod ? (current_premium / goalForPeriod * 100) : 0;
   const overGoal = current_premium >= goalForPeriod;
-  const barColor = overGoal ? '#2E5B44' : (pctDisplay >= 60 ? '#C9962C' : '#A6432F');
+  const barColor = overGoal ? '#1F7A5C' : (pctDisplay >= 60 ? '#C4870F' : '#C0413C');
 
   hintEl.textContent = (folioKey===current ? 'current folio · ' : 'last folio · ') + (FOLIO_LABELS[folioKey]||folioKey);
 
@@ -1444,7 +1451,7 @@ function renderProducerGoal(producer, folioKeyOverride){
         <div class="kpi-sub">${overGoal ? 'goal met' : fmtMoney(goalForPeriod-current_premium)+' remaining'}</div>
       </div>
     </div>
-    <div style="background:#EAEEE7;height:14px;border-radius:7px;overflow:hidden;">
+    <div style="background:#E6EBF1;height:14px;border-radius:7px;overflow:hidden;">
       <div style="width:${pct}%;height:100%;background:${barColor};transition:width .3s ease;"></div>
     </div>
   `;
@@ -1526,7 +1533,7 @@ function renderProducerMode(producer){
     type:'pie',
     data:{
       labels:['Sold','Not sold / open / lost'],
-      datasets:[{ data:[stats.soldCount, notSold], backgroundColor:['#C9962C','#1F3D2E'], borderColor:'#fff', borderWidth:2 }]
+      datasets:[{ data:[stats.soldCount, notSold], backgroundColor:['#C4870F','#1F63B8'], borderColor:'#fff', borderWidth:2 }]
     },
     options:{
       responsive:true, maintainAspectRatio:false,
@@ -1559,7 +1566,7 @@ function renderProducerPerformanceDetail(producer){
   if(producerDowChart) producerDowChart.destroy();
   const dowEl = document.getElementById('producerDowChart');
   if(hasAnyData){
-    producerDowChart = barChart('producerDowChart', dowNames, totals, {money:true, colors: GREEN_PALETTE});
+    producerDowChart = barChart('producerDowChart', dowNames, totals, {money:true});
   } else {
     if(dowEl){const c2d=dowEl.getContext('2d'); if(c2d) c2d.clearRect(0,0,9999,9999);}
     producerDowChart = null;
@@ -1776,13 +1783,13 @@ function renderCommissions(folioKey){
     type:'bar',
     data:{
       labels: entries.map(([p])=>p),
-      datasets:[{ data: entries.map(([,v])=>v.totalCommission), backgroundColor: entries.map(([,v])=>v.qualifies?'#1F3D2E':'#C9C9C9') }]
+      datasets:[{ data: entries.map(([,v])=>v.totalCommission), backgroundColor: entries.map(([,v])=>v.qualifies?'#25507F':'#C3CBD4') }]
     },
     options:{
       responsive:true, maintainAspectRatio:false,
       ironwoodLabelMoney:true,
       plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>fmtMoney(c.raw)}} },
-      scales:{ x:{grid:{display:false}, ticks:{font:{family:'Arial',size:11}}}, y:{grid:{color:'#EAEEE7'}, ticks:{font:{family:'Arial',size:10}, callback:v=>'$'+v.toLocaleString()}} }
+      scales:{ x:{grid:{display:false}, ticks:{font:{family:'Arial',size:11}}}, y:{grid:{color:'#E6EBF1'}, ticks:{font:{family:'Arial',size:10}, callback:v=>'$'+v.toLocaleString()}} }
     }
   });
 
@@ -1889,7 +1896,7 @@ function buildSdrDetailHTML(sdrName){
     const qualBadge = t.azQualifies ? `<span class="pill good">Qualifies</span>` : `<span class="pill flat">No</span>`;
     const soldBadge = t.azStatus===2 ? `<span class="pill good">WON — ${t.producer||'—'}</span>`
       : t.boundViaLedger ? `<span class="pill good">Bound (sales ledger) — ${(t.ledgerMatch&&t.ledgerMatch.producer)||t.producer||'—'}${t.ledgerMatch && t.producer && !t.ledgerMatch.producer.startsWith(t.producer) ? ' <span style="font-weight:400;opacity:.8;">(tracker said '+t.producer+')</span>' : ''}</span>`
-      : t.outcome==='Sold' ? `<span class="pill flat" style="background:var(--amber-soft,#F5E9D2);color:var(--gold);">Tracker says Sold, AZ says otherwise</span>`
+      : t.outcome==='Sold' ? `<span class="pill flat" style="background:var(--amber-soft,#F3EADB);color:var(--gold);">Tracker says Sold, AZ says otherwise</span>`
       : '—';
     return `<tr>
       <td>${escapeHtml(t.dateTime)||'—'}</td>
@@ -2046,7 +2053,7 @@ function renderSdrTransfers(){
   const closingEntries = Object.entries(receivedByProducer).sort((a,b)=>b[1]-a[1]);
 
   if(producerClosingChart) producerClosingChart.destroy();
-  if(closingEntries.length) producerClosingChart = barChart('producerClosingChart', closingEntries.map(x=>x[0]), closingEntries.map(x=>wonByProducer[x[0]]||0), {colors:'#C9962C'});
+  if(closingEntries.length) producerClosingChart = barChart('producerClosingChart', closingEntries.map(x=>x[0]), closingEntries.map(x=>wonByProducer[x[0]]||0), {colors:'#C4870F'});
   else (function(){const el=document.getElementById('producerClosingChart'); if(el){const c2d=el.getContext('2d'); if(c2d) c2d.clearRect(0,0,9999,9999);}})();
 
   document.getElementById('producerClosingTable').innerHTML = closingEntries.length ? closingEntries.map(([p,received])=>{
@@ -2067,7 +2074,7 @@ function renderSdrTransfers(){
     .sort((a,b)=>b[3]-a[3]);
 
   if(sdrConversionChart) sdrConversionChart.destroy();
-  if(sdrConvEntries.length) sdrConversionChart = barChart('sdrConversionChart', sdrConvEntries.map(x=>x[0]), sdrConvEntries.map(x=>Math.round(x[3]*10)/10), {colors:'#2E5B44', percent:true});
+  if(sdrConvEntries.length) sdrConversionChart = barChart('sdrConversionChart', sdrConvEntries.map(x=>x[0]), sdrConvEntries.map(x=>Math.round(x[3]*10)/10), {colors:'#25507F', percent:true});
   else (function(){const el=document.getElementById('sdrConversionChart'); if(el){const c2d=el.getContext('2d'); if(c2d) c2d.clearRect(0,0,9999,9999);}})();
 
   document.getElementById('sdrConversionTable').innerHTML = sdrConvEntries.length ? sdrConvEntries.map(([name,q,b,rate])=>{
@@ -2295,7 +2302,7 @@ function renderToDoList(){
   });
   document.getElementById('todoOpenTable').innerHTML = sortedOpen.length ? sortedOpen.map((t,i)=>{
     const prioBadge = t.priority==='Critical' ? `<span class="pill flat" style="background:var(--red-soft);color:var(--red);">Critical</span>`
-      : t.priority==='High' ? `<span class="pill" style="background:var(--gold-soft);color:var(--gold);">High</span>`
+      : t.priority==='High' ? `<span class="pill" style="background:var(--gold-soft);color:#6E5427;">High</span>`
       : `<span class="pill flat">${escapeHtml(t.priority)||'—'}</span>`;
     const statusOptions = ['Not started','In Process','Completed'];
     const currentStatus = t.status || 'Not started';
@@ -2579,13 +2586,13 @@ function renderSalesFunnel(){
       labels:['Leads','Contacts','Quotes','Appts Set','Appts Held','Sales','Policies'],
       datasets:[{
         data:[totalLeads, totalContacts, totalQuotes, null, null, totalSales, totalPolicies],
-        backgroundColor:['#1F3D2E','#2E5B44','#4C6B57','#D8DDD5','#D8DDD5','#C9962C','#A7772A'],
+        backgroundColor:['#1F63B8','#3E9AD8','#0C8C74','#D3DAE2','#D3DAE2','#C4870F','#8A6A3F'],
       }]
     },
     options:{
       indexAxis:'y', responsive:true, maintainAspectRatio:false,
       plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=> c.raw===null ? 'No data source' : fmt(c.raw)}} },
-      scales:{ x:{grid:{color:'#EAEEE7'}}, y:{grid:{display:false}} }
+      scales:{ x:{grid:{color:'#E6EBF1'}}, y:{grid:{display:false}} }
     }
   });
 
@@ -2797,7 +2804,7 @@ function renderProducerPanel(producer){
     type:'doughnut',
     data:{
       labels:['Farmers/Foremost','Brokered','Unclassified/Unconfirmed'],
-      datasets:[{ data:[d.farmersForemost, d.brokered, d.unclassified], backgroundColor:['#1F3D2E','#2E5B44','#C9962C'], borderColor:'#fff', borderWidth:2 }]
+      datasets:[{ data:[d.farmersForemost, d.brokered, d.unclassified], backgroundColor:['#1F63B8','#3E9AD8','#C4870F'], borderColor:'#fff', borderWidth:2 }]
     },
     options:{
       responsive:true, maintainAspectRatio:false, cutout:'58%',
@@ -2832,7 +2839,7 @@ function renderProducerPanel(producer){
       type:'pie',
       data:{
         labels: ptEntries.map(x=>x[0]),
-        datasets:[{ data: ptEntries.map(x=>x[1]), backgroundColor: GREEN_PALETTE, borderColor:'#fff', borderWidth:2 }]
+        datasets:[{ data: ptEntries.map(x=>x[1]), backgroundColor: SERIES_PALETTE, borderColor:'#fff', borderWidth:2 }]
       },
       options:{
         responsive:true, maintainAspectRatio:false,
@@ -2868,7 +2875,7 @@ function pieChart(canvasId, labels, data, opts){
     type: (opts && opts.doughnut) ? 'doughnut' : 'pie',
     data:{
       labels: labels,
-      datasets:[{ data: data, backgroundColor: GREEN_PALETTE, borderColor:'#fff', borderWidth:2 }]
+      datasets:[{ data: data, backgroundColor: SERIES_PALETTE, borderColor:'#fff', borderWidth:2 }]
     },
     options:{
       responsive:true, maintainAspectRatio:false, cutout: (opts && opts.doughnut) ? '55%' : 0,
@@ -2891,11 +2898,13 @@ function barChart(canvasId, labels, data, opts){
     type:'bar',
     data:{
       labels: labels,
-      datasets:[{ data: data, backgroundColor: opts.colors || '#1F3D2E' }]
+      datasets:[{ data: data, backgroundColor: opts.colors || '#25507F' }]
     },
     options:{
       indexAxis: opts.horizontal ? 'y' : 'x',
       responsive:true, maintainAspectRatio:false,
+      // horizontal bars draw their value label outside the bar end - reserve room or it clips
+      layout:{padding:{right: opts.horizontal ? 46 : 0, top: opts.horizontal ? 0 : 14}},
       ironwoodLabelMoney: !!opts.money,
       ironwoodLabelPercentValue: !!opts.percent,
       plugins:{
@@ -2907,10 +2916,16 @@ function barChart(canvasId, labels, data, opts){
           return fmt(v);
         }}}
       },
-      scales:{
-        x:{grid:{color:'#EAEEE7'}, ticks:{font:{family:'Arial',size:10}, maxRotation: opts.horizontal?0:35, minRotation: opts.horizontal?0:35, callback: opts.horizontal ? (opts.money ? (v=>'$'+v.toLocaleString()) : undefined) : undefined}},
-        y:{grid:{color:'#EAEEE7'}, ticks:{font:{family:'Arial',size:10}, callback: (!opts.horizontal && opts.money) ? (v=>'$'+v.toLocaleString()) : undefined}}
-      }
+      scales:(function(){
+        // NOTE: an explicit `callback: undefined` still overrides Chart.js's default tick
+        // callback, which made horizontal bars print row indices instead of category names.
+        // Only attach a callback when one is actually wanted.
+        const xTicks={font:{family:'Arial',size:10}, maxRotation: opts.horizontal?0:35, minRotation: opts.horizontal?0:35};
+        if(opts.horizontal && opts.money) xTicks.callback = v=>'$'+v.toLocaleString();
+        const yTicks={font:{family:'Arial',size:10}};
+        if(!opts.horizontal && opts.money) yTicks.callback = v=>'$'+v.toLocaleString();
+        return { x:{grid:{color:'#E6EBF1'}, ticks:xTicks}, y:{grid:{color:'#E6EBF1'}, ticks:yTicks} };
+      })()
     }
   });
 }
@@ -2925,7 +2940,7 @@ function ringChart(canvasId, percent, color){
     data:{
       datasets:[{
         data:[clamped, 100-clamped],
-        backgroundColor:[color, '#E8ECE6'],
+        backgroundColor:[color, '#E4E9EF'],
         borderWidth:0,
       }]
     },
@@ -3182,7 +3197,7 @@ function renderScorecard(){
 
   const m = computeScorecardMetrics(periodType, customFrom, customTo, producerFilter, productFilter, folioSel.value);
 
-  const ytdWarning = m.range.incomplete ? ' <span style="color:#D9A441;font-weight:700;">⚠ incomplete data — tracking starts May 29, 2026, missing Jan–May</span>' : '';
+  const ytdWarning = m.range.incomplete ? ' <span style="color:#C4870F;font-weight:700;">⚠ incomplete data — tracking starts May 29, 2026, missing Jan–May</span>' : '';
   document.getElementById('scPeriodSub').innerHTML = m.range.label + ytdWarning + (producerFilter!=='all' ? ' · ' + producerFilter : '') + (productFilter!=='all' ? ' · ' + productFilter : '');
   document.getElementById('scUpdatedStamp').textContent = 'Updated ' + new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 
@@ -3195,17 +3210,17 @@ function renderScorecard(){
   const folioOnlyNote = !m.range.isFolio ? 'Folio-only metric' : null;
 
   const cards = [
-    { icon:'$', iconBg:'#2E5B44', label:'Written Premium', value: fmtMoney(m.writtenPremium), goalText: m.goalSum ? `Goal: ${fmtMoney(m.goalSum)}` : 'No goal set', pct: m.premiumVsGoal, deltaGood: m.premiumVsGoal>=80, ringId:'scRing0', change: m.prior ? chg(m.writtenPremium, m.prior.writtenPremium) : null },
-    { icon:'💰', iconBg:'#C9962C', label:'Revenue / Commission', value: folioOnlyNote || fmtMoney(m.commission), goalText: folioOnlyNote ? 'switch to Folio period' : 'this period', pct: folioOnlyNote ? null : 50, deltaGood:true, ringId: folioOnlyNote ? null : 'scRing1', unavailable: !!folioOnlyNote, change: null },
-    { icon:'📄', iconBg:'#2E5B44', label:'Policies Sold', value: fmt(m.policiesSold), goalText:'this period', pct: Math.min(100, m.policiesSold*5), deltaGood:true, ringId:'scRing2', change: m.prior ? chg(m.policiesSold, m.prior.policiesSold) : null },
-    { icon:'👥', iconBg:'#5B8C6E', label:'New Customers', value: fmt(m.customers), goalText:'this period', pct: Math.min(100, m.customers*5), deltaGood:true, ringId:'scRing3', change: m.prior ? chg(m.customers, m.prior.customers) : null },
-    { icon:'🎯', iconBg:'#C9962C', label:'Quotes', value: folioOnlyNote || fmt(m.quotes), goalText: folioOnlyNote ? 'switch to Folio period' : 'sold + open w/ premium', pct: folioOnlyNote ? null : 50, deltaGood:true, ringId: folioOnlyNote ? null : 'scRing4', unavailable: !!folioOnlyNote, change: null },
-    { icon:'📈', iconBg:'#2E5B44', label:'Quote → Sale %', value: folioOnlyNote || (m.quoteToSale!==null ? m.quoteToSale.toFixed(1)+'%' : '—'), goalText: folioOnlyNote ? 'switch to Folio period' : 'directional — see note', pct: folioOnlyNote ? null : m.quoteToSale, deltaGood: (m.quoteToSale||0)>=25, ringId: folioOnlyNote ? null : 'scRing5', unavailable: !!folioOnlyNote, change: null },
-    { icon:'🎯', iconBg:'#999', label:'Close Rate %', unavailable:true },
-    { icon:'📦', iconBg:'#5B8C6E', label:'Policies per Customer', value: m.policiesPerCustomer.toFixed(2), goalText:'cross-sell effectiveness', pct: Math.min(100, m.policiesPerCustomer*50), deltaGood: m.policiesPerCustomer>=1.3, ringId:'scRing6', change: m.prior ? chg(m.policiesPerCustomer, m.prior.policiesPerCustomer) : null },
-    { icon:'📅', iconBg:'#999', label:'Appointments Set', unavailable:true },
-    { icon:'✅', iconBg:'#999', label:'Appointments Held', unavailable:true },
-    { icon:'👤', iconBg:'#999', label:'Show Rate %', unavailable:true },
+    { icon:'$', iconBg:'#1B2C42', label:'Written Premium', value: fmtMoney(m.writtenPremium), goalText: m.goalSum ? `Goal: ${fmtMoney(m.goalSum)}` : 'No goal set', pct: m.premiumVsGoal, deltaGood: m.premiumVsGoal>=80, ringId:'scRing0', change: m.prior ? chg(m.writtenPremium, m.prior.writtenPremium) : null },
+    { icon:'💰', iconBg:'#B08D57', label:'Revenue / Commission', value: folioOnlyNote || fmtMoney(m.commission), goalText: folioOnlyNote ? 'switch to Folio period' : 'this period', pct: folioOnlyNote ? null : 50, deltaGood:true, ringId: folioOnlyNote ? null : 'scRing1', unavailable: !!folioOnlyNote, change: null },
+    { icon:'📄', iconBg:'#1B2C42', label:'Policies Sold', value: fmt(m.policiesSold), goalText:'this period', pct: Math.min(100, m.policiesSold*5), deltaGood:true, ringId:'scRing2', change: m.prior ? chg(m.policiesSold, m.prior.policiesSold) : null },
+    { icon:'👥', iconBg:'#4E7FB0', label:'New Customers', value: fmt(m.customers), goalText:'this period', pct: Math.min(100, m.customers*5), deltaGood:true, ringId:'scRing3', change: m.prior ? chg(m.customers, m.prior.customers) : null },
+    { icon:'🎯', iconBg:'#B08D57', label:'Quotes', value: folioOnlyNote || fmt(m.quotes), goalText: folioOnlyNote ? 'switch to Folio period' : 'sold + open w/ premium', pct: folioOnlyNote ? null : 50, deltaGood:true, ringId: folioOnlyNote ? null : 'scRing4', unavailable: !!folioOnlyNote, change: null },
+    { icon:'📈', iconBg:'#1B2C42', label:'Quote → Sale %', value: folioOnlyNote || (m.quoteToSale!==null ? m.quoteToSale.toFixed(1)+'%' : '—'), goalText: folioOnlyNote ? 'switch to Folio period' : 'directional — see note', pct: folioOnlyNote ? null : m.quoteToSale, deltaGood: (m.quoteToSale||0)>=25, ringId: folioOnlyNote ? null : 'scRing5', unavailable: !!folioOnlyNote, change: null },
+    { icon:'🎯', iconBg:'#98A2AE', label:'Close Rate %', unavailable:true },
+    { icon:'📦', iconBg:'#4E7FB0', label:'Policies per Customer', value: m.policiesPerCustomer.toFixed(2), goalText:'cross-sell effectiveness', pct: Math.min(100, m.policiesPerCustomer*50), deltaGood: m.policiesPerCustomer>=1.3, ringId:'scRing6', change: m.prior ? chg(m.policiesPerCustomer, m.prior.policiesPerCustomer) : null },
+    { icon:'📅', iconBg:'#98A2AE', label:'Appointments Set', unavailable:true },
+    { icon:'✅', iconBg:'#98A2AE', label:'Appointments Held', unavailable:true },
+    { icon:'👤', iconBg:'#98A2AE', label:'Show Rate %', unavailable:true },
   ];
 
   document.getElementById('scKpiGrid').innerHTML = cards.map(scCardHTML).join('');
@@ -3215,7 +3230,7 @@ function renderScorecard(){
   scRingCharts = [];
   cards.forEach(c=>{
     if(c.unavailable || !c.ringId || c.pct===null) return;
-    const color = c.deltaGood ? '#2E5B44' : '#B5453C';
+    const color = c.deltaGood ? '#25507F' : '#C0413C';
     scRingCharts.push(ringChart(c.ringId, c.pct, color));
   });
 
@@ -3228,7 +3243,7 @@ function renderScorecard(){
     return [p, g.goal ? (actual/g.goal*100) : 0];
   });
   if(window._scPremGoalChart) window._scPremGoalChart.destroy();
-  window._scPremGoalChart = barChart('scPremiumGoalChart', premByProducer.map(x=>x[0]), premByProducer.map(x=>Math.round(x[1]*10)/10), {colors:'#2E5B44', percent:true, horizontal:true});
+  window._scPremGoalChart = barChart('scPremiumGoalChart', premByProducer.map(x=>x[0]), premByProducer.map(x=>Math.round(x[1]*10)/10), {colors:'#25507F', percent:true, horizontal:true});
 }
 
 function lineChart(canvasId, labels, datasets, opts){
@@ -3241,7 +3256,7 @@ function lineChart(canvasId, labels, datasets, opts){
       plugins:{ legend:{display: datasets.length>1, position:'bottom', labels:{font:{family:'Arial',size:10}, boxWidth:10}} },
       scales:{
         x:{grid:{display:false}, ticks:{font:{family:'Arial',size:10}}},
-        y:{grid:{color:'#EAEEE7'}, ticks:{font:{family:'Arial',size:10}}}
+        y:{grid:{color:'#E6EBF1'}, ticks:{font:{family:'Arial',size:10}}}
       }
     }
   });
@@ -3306,7 +3321,7 @@ function buildAnalytics(){
 
   // 9. Avg Premium / Policy by Producer (bar)
   const avgByProducer = prodEntries.map(([p,total])=>[p, countByProducer[p] ? total/countByProducer[p] : 0]).sort((a,b)=>b[1]-a[1]);
-  barChart('chartAvgPremium', avgByProducer.map(x=>x[0]), avgByProducer.map(x=>x[1]), {money:true, horizontal:true, colors: GREEN_PALETTE});
+  barChart('chartAvgPremium', avgByProducer.map(x=>x[0]), avgByProducer.map(x=>x[1]), {money:true, horizontal:true});
 
   // 10. In-House vs Brokered by Producer (stacked-style grouped bar via two datasets)
   const producersList = prodEntries.map(x=>x[0]);
@@ -3323,14 +3338,14 @@ function buildAnalytics(){
     data:{
       labels: producersList,
       datasets:[
-        {label:'In-House (Farmers/Foremost)', data: ihByProd, backgroundColor:'#1F3D2E', stack:'s'},
-        {label:'Brokered', data: brByProd, backgroundColor:'#C9962C', stack:'s'}
+        {label:'In-House (Farmers/Foremost)', data: ihByProd, backgroundColor:'#1F63B8', stack:'s'},
+        {label:'Brokered', data: brByProd, backgroundColor:'#C4870F', stack:'s'}
       ]
     },
     options:{
       responsive:true, maintainAspectRatio:false,
       plugins:{ legend:{position:'bottom', labels:{font:{family:'Arial',size:10}, boxWidth:10}}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtMoney(c.raw)}} },
-      scales:{ x:{stacked:true, grid:{display:false}, ticks:{font:{family:'Arial',size:9}}}, y:{stacked:true, grid:{color:'#EAEEE7'}, ticks:{font:{family:'Arial',size:10}, callback:v=>'$'+v.toLocaleString()}} }
+      scales:{ x:{stacked:true, grid:{display:false}, ticks:{font:{family:'Arial',size:9}}}, y:{stacked:true, grid:{color:'#E6EBF1'}, ticks:{font:{family:'Arial',size:10}, callback:v=>'$'+v.toLocaleString()}} }
     }
   });
 
@@ -3357,7 +3372,7 @@ function buildAnalytics(){
     const w=c.Won||0, l=c.Lost||0;
     return [name, (w+l) ? (w/(w+l)*100) : 0];
   }).sort((a,b)=>b[1]-a[1]);
-  barChart('chartAgentWinRate', agentWinRates.map(x=>x[0]), agentWinRates.map(x=>x[1]), {percent:true, horizontal:true, colors:'#2E5B44'});
+  barChart('chartAgentWinRate', agentWinRates.map(x=>x[0]), agentWinRates.map(x=>x[1]), {percent:true, horizontal:true, colors:'#25507F'});
 
   // 16. Win Rate by Lead Source (top 8 by volume)
   const srcForWinRate = Object.entries(LEADS.sources).sort((a,b)=>b[1].total-a[1].total).slice(0,8);
@@ -3365,24 +3380,24 @@ function buildAnalytics(){
     const w=c.Won||0, l=c.Lost||0;
     return [name, (w+l) ? (w/(w+l)*100) : 0];
   }).sort((a,b)=>b[1]-a[1]);
-  barChart('chartSourceWinRate', srcWinRates.map(x=>x[0]), srcWinRates.map(x=>x[1]), {percent:true, horizontal:true, colors:'#C9962C'});
+  barChart('chartSourceWinRate', srcWinRates.map(x=>x[0]), srcWinRates.map(x=>x[1]), {percent:true, horizontal:true, colors:'#C4870F'});
 
   // 17. Monthly Lead Volume Trend (line, by status)
   const months = Object.keys(LEADS.monthly).sort();
   const monthLabelsA = months.map(m=>{ const [y,mo]=m.split('-'); return new Date(y,mo-1,1).toLocaleString('en-US',{month:'short',year:'2-digit'}); });
   lineChart('chartMonthlyTrend', monthLabelsA, [
-    {label:'New', data: months.map(m=>LEADS.monthly[m].New||0), borderColor:'#2E5B44', backgroundColor:'#2E5B4433', tension:.3},
-    {label:'Won', data: months.map(m=>LEADS.monthly[m].Won||0), borderColor:'#C9962C', backgroundColor:'#C9962C33', tension:.3},
-    {label:'Lost', data: months.map(m=>LEADS.monthly[m].Lost||0), borderColor:'#A6432F', backgroundColor:'#A6432F33', tension:.3},
-    {label:'Expired', data: months.map(m=>LEADS.monthly[m].Expired||0), borderColor:'#8FA98F', backgroundColor:'#8FA98F33', tension:.3},
+    {label:'New', data: months.map(m=>LEADS.monthly[m].New||0), borderColor:'#1F63B8', backgroundColor:'#1F63B833', tension:.3},
+    {label:'Won', data: months.map(m=>LEADS.monthly[m].Won||0), borderColor:'#C4870F', backgroundColor:'#C4870F33', tension:.3},
+    {label:'Lost', data: months.map(m=>LEADS.monthly[m].Lost||0), borderColor:'#C0413C', backgroundColor:'#C0413C33', tension:.3},
+    {label:'Expired', data: months.map(m=>LEADS.monthly[m].Expired||0), borderColor:'#8A94A0', backgroundColor:'#8A94A033', tension:.3},
   ]);
 
   // 18. New vs Closed (Won+Lost) Leads by Month
   const newByMonth = months.map(m=>LEADS.monthly[m].New||0);
   const closedByMonth = months.map(m=>(LEADS.monthly[m].Won||0)+(LEADS.monthly[m].Lost||0));
   lineChart('chartCloseRateTrend', monthLabelsA, [
-    {label:'New', data:newByMonth, borderColor:'#1F3D2E', backgroundColor:'#1F3D2E33', tension:.3},
-    {label:'Closed (Won+Lost)', data:closedByMonth, borderColor:'#C9962C', backgroundColor:'#C9962C33', tension:.3},
+    {label:'New', data:newByMonth, borderColor:'#1F63B8', backgroundColor:'#1F63B833', tension:.3},
+    {label:'Closed (Won+Lost)', data:closedByMonth, borderColor:'#C4870F', backgroundColor:'#C4870F33', tension:.3},
   ]);
 }
 
@@ -3409,19 +3424,19 @@ document.getElementById('leadKpiRow').innerHTML = [
 const months = Object.keys(LEADS.monthly).sort();
 const monthLabels = months.map(m=>{ const [y,mo]=m.split('-'); return new Date(y,mo-1,1).toLocaleString('en-US',{month:'short',year:'2-digit'}); });
 const statusKeys = ['New','Won','Lost','Expired'];
-const statusColors = {New:'#2E5B44', Won:'#C9962C', Lost:'#A6432F', Expired:'#8FA98F'};
+const statusColors = {New:'#1F63B8', Won:'#C4870F', Lost:'#C0413C', Expired:'#8A94A0'};
 
 new Chart(document.getElementById('monthlyChart'), {
   type:'bar',
   data:{ labels: monthLabels, datasets: statusKeys.map(k=>({ label:k, data: months.map(m=>LEADS.monthly[m][k]||0), backgroundColor: statusColors[k], stack:'s' })) },
   options:{ responsive:true, maintainAspectRatio:false,
     plugins:{ legend:{position:'bottom', labels:{font:{family:'Arial',size:11}, boxWidth:12}}},
-    scales:{ x:{stacked:true, grid:{display:false}, ticks:{font:{family:'Arial',size:11}}}, y:{stacked:true, grid:{color:'#EAEEE7'}, ticks:{font:{family:'Arial',size:11}}} } }
+    scales:{ x:{stacked:true, grid:{display:false}, ticks:{font:{family:'Arial',size:11}}}, y:{stacked:true, grid:{color:'#E6EBF1'}, ticks:{font:{family:'Arial',size:11}}} } }
 });
 
 new Chart(document.getElementById('statusChart'), {
   type:'doughnut',
-  data:{ labels:['New','Expired','Lost','Won'], datasets:[{ data:[neu, expired, lost, won], backgroundColor:['#2E5B44','#8FA98F','#A6432F','#C9962C'], borderColor:'#fff', borderWidth:2 }] },
+  data:{ labels:['New','Expired','Lost','Won'], datasets:[{ data:[neu, expired, lost, won], backgroundColor:['#1F63B8','#8A94A0','#C0413C','#C4870F'], borderColor:'#fff', borderWidth:2 }] },
   options:{ responsive:true, maintainAspectRatio:false, cutout:'62%', plugins:{ legend:{position:'bottom', labels:{font:{family:'Arial',size:11}, boxWidth:12}}} }
 });
 
@@ -3444,9 +3459,9 @@ pieChart('agentLeaderboardChart', agents.map(x=>x[0]), agents.map(x=>x[1].total)
 const stages = Object.entries(LEADS.stages).sort((a,b)=>b[1]-a[1]);
 new Chart(document.getElementById('stageChart'), {
   type:'bar',
-  data:{ labels: stages.map(x=>x[0]), datasets:[{ data: stages.map(x=>x[1]), backgroundColor:'#1F3D2E' }] },
+  data:{ labels: stages.map(x=>x[0]), datasets:[{ data: stages.map(x=>x[1]), backgroundColor:'#25507F' }] },
   options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
-    scales:{ x:{grid:{color:'#EAEEE7'}, ticks:{font:{family:'Arial',size:11}}}, y:{grid:{display:false}, ticks:{font:{family:'Arial',size:11}}} } }
+    scales:{ x:{grid:{color:'#E6EBF1'}, ticks:{font:{family:'Arial',size:11}}}, y:{grid:{display:false}, ticks:{font:{family:'Arial',size:11}}} } }
 });
 </script>
 </body>
