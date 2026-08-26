@@ -128,54 +128,48 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   .sc-card.unavailable .sc-card-value{color:var(--gray);font-size:20px;}
   .sc-unavail-badge{font-size:10px;color:var(--gray);background:var(--pale-green);border:1px solid var(--line);border-radius:3px;padding:2px 6px;font-weight:700;letter-spacing:.03em;}
 
-  /* --- Row 1: brushed metallic green, darkest at left, lightening to the right --- */
-  .sc-card.sc-metal{border:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 2px 6px rgba(11,38,24,.20);}
+  /* --- Scorecard rows 1 & 2: brushed metallic tiles, darkest at left, lightening to the right --- */
+  .sc-card.sc-metal{border:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 2px 6px rgba(11,38,24,.20);
+    --tile-ink:#fff;--tile-ink-soft:rgba(255,255,255,.80);--tile-ink-mute:rgba(255,255,255,.68);
+    --tile-good:#A8E9C1;--tile-bad:#FFB0A8;
+    --tile-chip:rgba(255,255,255,.16);--tile-chip-bd:rgba(255,255,255,.30);
+    --tile-val-shadow:0 1px 1px rgba(6,24,15,.35);}
   .sc-card.sc-metal::after{content:'';position:absolute;inset:0;pointer-events:none;
     background:linear-gradient(118deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.16) 46%,rgba(255,255,255,.02) 55%,rgba(255,255,255,0) 72%);}
   .sc-card.sc-metal > *{position:relative;z-index:1;}
-  .sc-card.sc-metal .sc-icon{background:rgba(255,255,255,.16)!important;border:1px solid rgba(255,255,255,.30);color:#fff;}
-  .sc-card.sc-metal .sc-card-label{color:rgba(255,255,255,.80);}
-  .sc-card.sc-metal .sc-card-value{color:#fff;text-shadow:0 1px 1px rgba(6,24,15,.35);}
+  .sc-card.sc-metal .sc-icon{background:var(--tile-chip)!important;border:1px solid var(--tile-chip-bd);color:var(--tile-ink);}
+  .sc-card.sc-metal .sc-card-label{color:var(--tile-ink-soft);}
+  .sc-card.sc-metal .sc-card-value{color:var(--tile-ink);text-shadow:var(--tile-val-shadow);}
   .sc-card.sc-metal .sc-card-goal,
-  .sc-card.sc-metal .sc-delta-label{color:rgba(255,255,255,.68);}
-  .sc-card.sc-metal .sc-ring-pct{color:#fff;}
-  .sc-card.sc-metal .sc-delta.good{color:#A8E9C1;}
-  .sc-card.sc-metal .sc-delta.bad{color:#FFB0A8;}
-  .sc-card.sc-metal .sc-unavail-badge{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.30);color:rgba(255,255,255,.88);}
+  .sc-card.sc-metal .sc-delta-label{color:var(--tile-ink-mute);}
+  .sc-card.sc-metal .sc-ring-pct{color:var(--tile-ink);}
+  .sc-card.sc-metal .sc-delta.good{color:var(--tile-good);}
+  .sc-card.sc-metal .sc-delta.bad{color:var(--tile-bad);}
+  .sc-card.sc-metal .sc-unavail-badge{background:var(--tile-chip);border-color:var(--tile-chip-bd);color:var(--tile-ink-soft);}
 
+  /* Row 1 — metallic green */
   .sc-card.sc-metal-1{background:linear-gradient(135deg,#2E7B4E 0%,#3F9764 42%,#4AA671 58%,#358759 100%);}
   .sc-card.sc-metal-2{background:linear-gradient(135deg,#4C9E71 0%,#64B587 42%,#71C295 58%,#55A87B 100%);}
   .sc-card.sc-metal-3{background:linear-gradient(135deg,#76BE97 0%,#93D4B0 42%,#A0DEBB 58%,#80C8A1 100%);}
   .sc-card.sc-metal-4{background:linear-gradient(135deg,#A5DFC0 0%,#C1EDD3 42%,#D0F4DF 58%,#AFE5C8 100%);}
 
-  /* the three lighter tiles carry dark type for contrast */
-  .sc-card.sc-metal-2 .sc-icon,
-  .sc-card.sc-metal-3 .sc-icon,
-  .sc-card.sc-metal-4 .sc-icon{background:rgba(12,42,25,.16)!important;border-color:rgba(12,42,25,.24);color:#0C2A19;}
-  .sc-card.sc-metal-2 .sc-card-label,
-  .sc-card.sc-metal-3 .sc-card-label,
-  .sc-card.sc-metal-4 .sc-card-label{color:rgba(12,42,25,.80);}
-  .sc-card.sc-metal-2 .sc-card-value,
-  .sc-card.sc-metal-3 .sc-card-value,
-  .sc-card.sc-metal-4 .sc-card-value{color:#0C2A19;text-shadow:none;}
-  .sc-card.sc-metal-2 .sc-card-goal,
-  .sc-card.sc-metal-2 .sc-delta-label,
-  .sc-card.sc-metal-3 .sc-card-goal,
-  .sc-card.sc-metal-3 .sc-delta-label,
-  .sc-card.sc-metal-4 .sc-card-goal,
-  .sc-card.sc-metal-4 .sc-delta-label{color:rgba(12,42,25,.68);}
-  .sc-card.sc-metal-2 .sc-ring-pct,
-  .sc-card.sc-metal-3 .sc-ring-pct,
-  .sc-card.sc-metal-4 .sc-ring-pct{color:#0C2A19;}
-  .sc-card.sc-metal-2 .sc-delta.good,
-  .sc-card.sc-metal-3 .sc-delta.good,
-  .sc-card.sc-metal-4 .sc-delta.good{color:#0E4B2A;}
-  .sc-card.sc-metal-2 .sc-delta.bad,
-  .sc-card.sc-metal-3 .sc-delta.bad,
-  .sc-card.sc-metal-4 .sc-delta.bad{color:#8A2B24;}
-  .sc-card.sc-metal-2 .sc-unavail-badge,
-  .sc-card.sc-metal-3 .sc-unavail-badge,
-  .sc-card.sc-metal-4 .sc-unavail-badge{background:rgba(12,42,25,.12);border-color:rgba(12,42,25,.22);color:#0C2A19;}
+  /* Row 2 — metallic amethyst */
+  .sc-card.sc-metal-5{background:linear-gradient(135deg,#6D6098 0%,#7F72A8 42%,#8C7FB5 58%,#74679F 100%);}
+  .sc-card.sc-metal-6{background:linear-gradient(135deg,#8B7EB4 0%,#9E92C4 42%,#AB9FCF 58%,#9286BB 100%);}
+  .sc-card.sc-metal-7{background:linear-gradient(135deg,#A99DCD 0%,#BBB1DA 42%,#C6BDE2 58%,#B0A5D3 100%);}
+  .sc-card.sc-metal-8{background:linear-gradient(135deg,#C6BEE3 0%,#D8D2EF 42%,#E1DCF5 58%,#CDC6E8 100%);}
+
+  /* lighter tiles in each row carry dark type for contrast */
+  .sc-card.sc-metal-2,
+  .sc-card.sc-metal-3,
+  .sc-card.sc-metal-4{--tile-ink:#0C2A19;--tile-ink-soft:rgba(12,42,25,.80);--tile-ink-mute:rgba(12,42,25,.68);
+    --tile-good:#0E4B2A;--tile-bad:#8A2B24;
+    --tile-chip:rgba(12,42,25,.16);--tile-chip-bd:rgba(12,42,25,.24);--tile-val-shadow:none;}
+  .sc-card.sc-metal-6,
+  .sc-card.sc-metal-7,
+  .sc-card.sc-metal-8{--tile-ink:#241C3A;--tile-ink-soft:rgba(36,28,58,.80);--tile-ink-mute:rgba(36,28,58,.68);
+    --tile-good:#1F4E36;--tile-bad:#8A2B24;
+    --tile-chip:rgba(36,28,58,.16);--tile-chip-bd:rgba(36,28,58,.24);--tile-val-shadow:none;}
 
   .sc-bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   @media (max-width:900px){ .sc-bottom-row{grid-template-columns:1fr;} }
@@ -3270,10 +3264,10 @@ function renderScorecard(){
     { metal:2, icon:'💰', iconBg:'#B08D57', label:'Revenue / Commission', value: folioOnlyNote || fmtMoney(m.commission), goalText: folioOnlyNote ? 'switch to Folio period' : 'this period', pct: folioOnlyNote ? null : 50, deltaGood:true, ringId: folioOnlyNote ? null : 'scRing1', unavailable: !!folioOnlyNote, change: null },
     { metal:3, icon:'📄', iconBg:'#1B2C42', label:'Policies Sold', value: fmt(m.policiesSold), goalText:'this period', pct: Math.min(100, m.policiesSold*5), deltaGood:true, ringId:'scRing2', change: m.prior ? chg(m.policiesSold, m.prior.policiesSold) : null },
     { metal:4, icon:'👥', iconBg:'#4E7FB0', label:'New Customers', value: fmt(m.customers), goalText:'this period', pct: Math.min(100, m.customers*5), deltaGood:true, ringId:'scRing3', change: m.prior ? chg(m.customers, m.prior.customers) : null },
-    { icon:'🎯', iconBg:'#B08D57', label:'Quotes', value: folioOnlyNote || fmt(m.quotes), goalText: folioOnlyNote ? 'switch to Folio period' : 'sold + open w/ premium', pct: folioOnlyNote ? null : 50, deltaGood:true, ringId: folioOnlyNote ? null : 'scRing4', unavailable: !!folioOnlyNote, change: null },
-    { icon:'📈', iconBg:'#1B2C42', label:'Quote → Sale %', value: folioOnlyNote || (m.quoteToSale!==null ? m.quoteToSale.toFixed(1)+'%' : '—'), goalText: folioOnlyNote ? 'switch to Folio period' : 'directional — see note', pct: folioOnlyNote ? null : m.quoteToSale, deltaGood: (m.quoteToSale||0)>=25, ringId: folioOnlyNote ? null : 'scRing5', unavailable: !!folioOnlyNote, change: null },
-    { icon:'🎯', iconBg:'#98A2AE', label:'Close Rate %', unavailable:true },
-    { icon:'📦', iconBg:'#4E7FB0', label:'Policies per Customer', value: m.policiesPerCustomer.toFixed(2), goalText:'cross-sell effectiveness', pct: Math.min(100, m.policiesPerCustomer*50), deltaGood: m.policiesPerCustomer>=1.3, ringId:'scRing6', change: m.prior ? chg(m.policiesPerCustomer, m.prior.policiesPerCustomer) : null },
+    { metal:5, icon:'🎯', iconBg:'#B08D57', label:'Quotes', value: folioOnlyNote || fmt(m.quotes), goalText: folioOnlyNote ? 'switch to Folio period' : 'sold + open w/ premium', pct: folioOnlyNote ? null : 50, deltaGood:true, ringId: folioOnlyNote ? null : 'scRing4', unavailable: !!folioOnlyNote, change: null },
+    { metal:6, icon:'📈', iconBg:'#1B2C42', label:'Quote → Sale %', value: folioOnlyNote || (m.quoteToSale!==null ? m.quoteToSale.toFixed(1)+'%' : '—'), goalText: folioOnlyNote ? 'switch to Folio period' : 'directional — see note', pct: folioOnlyNote ? null : m.quoteToSale, deltaGood: (m.quoteToSale||0)>=25, ringId: folioOnlyNote ? null : 'scRing5', unavailable: !!folioOnlyNote, change: null },
+    { metal:7, icon:'🎯', iconBg:'#98A2AE', label:'Close Rate %', unavailable:true },
+    { metal:8, icon:'📦', iconBg:'#4E7FB0', label:'Policies per Customer', value: m.policiesPerCustomer.toFixed(2), goalText:'cross-sell effectiveness', pct: Math.min(100, m.policiesPerCustomer*50), deltaGood: m.policiesPerCustomer>=1.3, ringId:'scRing6', change: m.prior ? chg(m.policiesPerCustomer, m.prior.policiesPerCustomer) : null },
     { icon:'📅', iconBg:'#98A2AE', label:'Appointments Set', unavailable:true },
     { icon:'✅', iconBg:'#98A2AE', label:'Appointments Held', unavailable:true },
     { icon:'👤', iconBg:'#98A2AE', label:'Show Rate %', unavailable:true },
@@ -3289,10 +3283,16 @@ function renderScorecard(){
     let color = c.deltaGood ? '#25507F' : '#C0413C';
     let track;
     if(c.metal){
-      // rings sit on the metallic green tiles — light on the dark ones, deep green on the lightest
-      const onLight = c.metal >= 2;
-      color = onLight ? (c.deltaGood ? '#134F2D' : '#8A2B24') : (c.deltaGood ? '#DFF3E6' : '#FFB0A8');
-      track = onLight ? 'rgba(12,42,25,.16)' : 'rgba(255,255,255,.20)';
+      // rings sit on the metallic tiles — light ink on the darkest tile of each row, deep ink on the lighter ones
+      const isPlum = c.metal >= 5;                       // row 2 = amethyst, row 1 = green
+      const onLight = c.metal !== 1 && c.metal !== 5;    // only the leftmost tile of each row is dark
+      if(onLight){
+        color = c.deltaGood ? (isPlum ? '#3B2F63' : '#134F2D') : '#8A2B24';
+        track = isPlum ? 'rgba(36,28,58,.16)' : 'rgba(12,42,25,.16)';
+      } else {
+        color = c.deltaGood ? (isPlum ? '#EFEBFA' : '#DFF3E6') : '#FFB0A8';
+        track = 'rgba(255,255,255,.20)';
+      }
     }
     scRingCharts.push(ringChart(c.ringId, c.pct, color, track));
   });
