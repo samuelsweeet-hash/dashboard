@@ -3183,7 +3183,7 @@ function computeScorecardMetrics(periodType, customFrom, customTo, producerFilte
   const premiumVsGoal = proratedGoal ? (cur.writtenPremium/proratedGoal*100) : 0;
 
   // Folio-only metrics: Commission and Quotes are only well-defined at the folio level
-  let commission = null, quotes = null, quoteToSale = null;
+  let commission = null, quotes = null, quoteToSale = null, brokerFees = null;
   if(range.isFolio){
     const commByFolio = DATA.commissionsByFolio[range.folioKey] || {};
     commission = 0;
@@ -3198,6 +3198,11 @@ function computeScorecardMetrics(periodType, customFrom, customTo, producerFilte
     });
     quotes = cur.policiesSold + openWithPremium;
     quoteToSale = quotes ? (cur.policiesSold/quotes*100) : 0;
+    // Broker fees are logged per folio, separate from premium — sum the fee items for this folio
+    const feeFolio = SALES.folio[range.folioKey];
+    brokerFees = (((feeFolio||{}).brokerFees||{}).items||[])
+      .filter(f=> !producerFilter || producerFilter==='all' || f.producer===producerFilter)
+      .reduce((a,f)=> a + (f.amount||0), 0);
   }
 
   const priorMetrics = prior ? {
@@ -3207,7 +3212,7 @@ function computeScorecardMetrics(periodType, customFrom, customTo, producerFilte
 
   return {
     range, writtenPremium: cur.writtenPremium, policiesSold: cur.policiesSold, customers: cur.customers,
-    commission, quotes, quoteToSale, policiesPerCustomer, goalSum: proratedGoal, premiumVsGoal, prior: priorMetrics,
+    commission, brokerFees, quotes, quoteToSale, policiesPerCustomer, goalSum: proratedGoal, premiumVsGoal, prior: priorMetrics,
   };
 }
 
@@ -3271,6 +3276,9 @@ function renderScorecard(){
 
   const folioOnlyNote = !m.range.isFolio ? 'Folio-only metric' : null;
 
+  const BROKER_FEE_GOAL = 4000;
+  const brokerFeePct = m.brokerFees===null ? null : (m.brokerFees/BROKER_FEE_GOAL*100);
+
   // Anticipated commissions = 7% of written premium, measured against 7% of the premium goal
   const antCommission = m.writtenPremium * 0.07;
   const antCommissionGoal = m.goalSum ? m.goalSum * 0.07 : 0;
@@ -3278,7 +3286,7 @@ function renderScorecard(){
 
   const cards = [
     { metal:1, icon:'$', iconBg:'#1B2C42', label:'Written Premium', value: fmtMoney(m.writtenPremium), goalText: m.goalSum ? `Goal: ${fmtMoney(m.goalSum)}` : 'No goal set', pct: m.premiumVsGoal, deltaGood: m.premiumVsGoal>=80, ringId:'scRing0', change: m.prior ? chg(m.writtenPremium, m.prior.writtenPremium) : null },
-    { metal:2, icon:'💰', iconBg:'#B08D57', label:'Revenue / Commission', value: folioOnlyNote || fmtMoney(m.commission), goalText: folioOnlyNote ? 'switch to Folio period' : (antCommissionGoal ? `Goal: ${fmtMoney(antCommissionGoal)}` : 'No goal set'), pct: (folioOnlyNote || !antCommissionGoal) ? null : (m.commission/antCommissionGoal*100), deltaGood: !folioOnlyNote && antCommissionGoal ? (m.commission/antCommissionGoal*100)>=80 : true, ringId: (folioOnlyNote || !antCommissionGoal) ? null : 'scRing1', unavailable: !!folioOnlyNote, change: null },
+    { metal:2, icon:'💰', iconBg:'#B08D57', label:'Broker Fees', value: folioOnlyNote || fmtMoney(m.brokerFees), goalText: folioOnlyNote ? 'switch to Folio period' : `Goal: ${fmtMoney(BROKER_FEE_GOAL)}`, pct: folioOnlyNote ? null : brokerFeePct, deltaGood: (brokerFeePct||0)>=80, ringId: folioOnlyNote ? null : 'scRing1', unavailable: !!folioOnlyNote, change: null },
     { metal:3, icon:'%', iconBg:'#1B2C42', label:'Anticipated Commissions', value: fmtMoney(antCommission), goalText: antCommissionGoal ? `Goal: ${fmtMoney(antCommissionGoal)}` : 'No goal set', pct: antCommissionPct, deltaGood: (antCommissionPct||0)>=80, ringId: antCommissionPct===null ? null : 'scRing7', change: m.prior ? chg(m.writtenPremium*0.07, m.prior.writtenPremium*0.07) : null },
     { metal:4, icon:'👥', iconBg:'#4E7FB0', label:'New Customers', value: fmt(m.customers), goalText:'this period', pct: Math.min(100, m.customers*5), deltaGood:true, ringId:'scRing3', change: m.prior ? chg(m.customers, m.prior.customers) : null },
     { metal:5, icon:'🎯', iconBg:'#B08D57', label:'Quotes', value: folioOnlyNote || fmt(m.quotes), goalText: folioOnlyNote ? 'switch to Folio period' : 'sold + open w/ premium', pct: null, deltaGood:true, ringId: null, unavailable: !!folioOnlyNote, change: null },
