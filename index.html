@@ -128,6 +128,55 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   .sc-card.unavailable .sc-card-value{color:var(--gray);font-size:20px;}
   .sc-unavail-badge{font-size:10px;color:var(--gray);background:var(--pale-green);border:1px solid var(--line);border-radius:3px;padding:2px 6px;font-weight:700;letter-spacing:.03em;}
 
+  /* --- Row 1: brushed metallic green, darkest at left, lightening to the right --- */
+  .sc-card.sc-metal{border:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 2px 6px rgba(11,38,24,.20);}
+  .sc-card.sc-metal::after{content:'';position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(118deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.16) 46%,rgba(255,255,255,.02) 55%,rgba(255,255,255,0) 72%);}
+  .sc-card.sc-metal > *{position:relative;z-index:1;}
+  .sc-card.sc-metal .sc-icon{background:rgba(255,255,255,.16)!important;border:1px solid rgba(255,255,255,.30);color:#fff;}
+  .sc-card.sc-metal .sc-card-label{color:rgba(255,255,255,.80);}
+  .sc-card.sc-metal .sc-card-value{color:#fff;text-shadow:0 1px 1px rgba(6,24,15,.35);}
+  .sc-card.sc-metal .sc-card-goal,
+  .sc-card.sc-metal .sc-delta-label{color:rgba(255,255,255,.68);}
+  .sc-card.sc-metal .sc-ring-pct{color:#fff;}
+  .sc-card.sc-metal .sc-delta.good{color:#A8E9C1;}
+  .sc-card.sc-metal .sc-delta.bad{color:#FFB0A8;}
+  .sc-card.sc-metal .sc-unavail-badge{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.30);color:rgba(255,255,255,.88);}
+
+  .sc-card.sc-metal-1{background:linear-gradient(135deg,#2E7B4E 0%,#3F9764 42%,#4AA671 58%,#358759 100%);}
+  .sc-card.sc-metal-2{background:linear-gradient(135deg,#4C9E71 0%,#64B587 42%,#71C295 58%,#55A87B 100%);}
+  .sc-card.sc-metal-3{background:linear-gradient(135deg,#76BE97 0%,#93D4B0 42%,#A0DEBB 58%,#80C8A1 100%);}
+  .sc-card.sc-metal-4{background:linear-gradient(135deg,#A5DFC0 0%,#C1EDD3 42%,#D0F4DF 58%,#AFE5C8 100%);}
+
+  /* the three lighter tiles carry dark type for contrast */
+  .sc-card.sc-metal-2 .sc-icon,
+  .sc-card.sc-metal-3 .sc-icon,
+  .sc-card.sc-metal-4 .sc-icon{background:rgba(12,42,25,.16)!important;border-color:rgba(12,42,25,.24);color:#0C2A19;}
+  .sc-card.sc-metal-2 .sc-card-label,
+  .sc-card.sc-metal-3 .sc-card-label,
+  .sc-card.sc-metal-4 .sc-card-label{color:rgba(12,42,25,.80);}
+  .sc-card.sc-metal-2 .sc-card-value,
+  .sc-card.sc-metal-3 .sc-card-value,
+  .sc-card.sc-metal-4 .sc-card-value{color:#0C2A19;text-shadow:none;}
+  .sc-card.sc-metal-2 .sc-card-goal,
+  .sc-card.sc-metal-2 .sc-delta-label,
+  .sc-card.sc-metal-3 .sc-card-goal,
+  .sc-card.sc-metal-3 .sc-delta-label,
+  .sc-card.sc-metal-4 .sc-card-goal,
+  .sc-card.sc-metal-4 .sc-delta-label{color:rgba(12,42,25,.68);}
+  .sc-card.sc-metal-2 .sc-ring-pct,
+  .sc-card.sc-metal-3 .sc-ring-pct,
+  .sc-card.sc-metal-4 .sc-ring-pct{color:#0C2A19;}
+  .sc-card.sc-metal-2 .sc-delta.good,
+  .sc-card.sc-metal-3 .sc-delta.good,
+  .sc-card.sc-metal-4 .sc-delta.good{color:#0E4B2A;}
+  .sc-card.sc-metal-2 .sc-delta.bad,
+  .sc-card.sc-metal-3 .sc-delta.bad,
+  .sc-card.sc-metal-4 .sc-delta.bad{color:#8A2B24;}
+  .sc-card.sc-metal-2 .sc-unavail-badge,
+  .sc-card.sc-metal-3 .sc-unavail-badge,
+  .sc-card.sc-metal-4 .sc-unavail-badge{background:rgba(12,42,25,.12);border-color:rgba(12,42,25,.22);color:#0C2A19;}
+
   .sc-bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   @media (max-width:900px){ .sc-bottom-row{grid-template-columns:1fr;} }
   .sc-bottom-card{margin-top:0;}
@@ -2934,7 +2983,7 @@ function barChart(canvasId, labels, data, opts){
 }
 
 // ===== Executive Scorecard =====
-function ringChart(canvasId, percent, color){
+function ringChart(canvasId, percent, color, trackColor){
   const el = document.getElementById(canvasId);
   if(!el) return null;
   const clamped = Math.max(0, Math.min(100, percent));
@@ -2943,7 +2992,7 @@ function ringChart(canvasId, percent, color){
     data:{
       datasets:[{
         data:[clamped, 100-clamped],
-        backgroundColor:[color, '#E4E9EF'],
+        backgroundColor:[color, trackColor || '#E4E9EF'],
         borderWidth:0,
       }]
     },
@@ -2960,8 +3009,9 @@ function ringChart(canvasId, percent, color){
 
 function scCardHTML(opts){
   // opts: {icon, iconBg, label, value, goalText, pct, deltaGood, unavailable, ringId, change}
+  const metalCls = opts.metal ? ` sc-metal sc-metal-${opts.metal}` : '';
   if(opts.unavailable){
-    return `<div class="sc-card unavailable">
+    return `<div class="sc-card unavailable${metalCls}">
       <div class="sc-card-top">
         <div class="sc-icon" style="background:${opts.iconBg};">${opts.icon}</div>
         <div class="sc-unavail-badge">${opts.goalText && opts.goalText.includes('switch') ? 'FOLIO ONLY' : 'NO DATA'}</div>
@@ -2977,7 +3027,7 @@ function scCardHTML(opts){
   const changeHTML = opts.change
     ? `<div class="sc-delta ${opts.change.good?'good':'bad'}">${opts.change.text}</div><div class="sc-delta-label">${opts.change.isNote?'':'change vs prior period'}</div>`
     : `<div class="sc-delta-label">—</div>`;
-  return `<div class="sc-card">
+  return `<div class="sc-card${metalCls}">
     <div class="sc-card-top">
       <div class="sc-icon" style="background:${opts.iconBg};">${opts.icon}</div>
     </div>
@@ -3216,10 +3266,10 @@ function renderScorecard(){
   const folioOnlyNote = !m.range.isFolio ? 'Folio-only metric' : null;
 
   const cards = [
-    { icon:'$', iconBg:'#1B2C42', label:'Written Premium', value: fmtMoney(m.writtenPremium), goalText: m.goalSum ? `Goal: ${fmtMoney(m.goalSum)}` : 'No goal set', pct: m.premiumVsGoal, deltaGood: m.premiumVsGoal>=80, ringId:'scRing0', change: m.prior ? chg(m.writtenPremium, m.prior.writtenPremium) : null },
-    { icon:'💰', iconBg:'#B08D57', label:'Revenue / Commission', value: folioOnlyNote || fmtMoney(m.commission), goalText: folioOnlyNote ? 'switch to Folio period' : 'this period', pct: folioOnlyNote ? null : 50, deltaGood:true, ringId: folioOnlyNote ? null : 'scRing1', unavailable: !!folioOnlyNote, change: null },
-    { icon:'📄', iconBg:'#1B2C42', label:'Policies Sold', value: fmt(m.policiesSold), goalText:'this period', pct: Math.min(100, m.policiesSold*5), deltaGood:true, ringId:'scRing2', change: m.prior ? chg(m.policiesSold, m.prior.policiesSold) : null },
-    { icon:'👥', iconBg:'#4E7FB0', label:'New Customers', value: fmt(m.customers), goalText:'this period', pct: Math.min(100, m.customers*5), deltaGood:true, ringId:'scRing3', change: m.prior ? chg(m.customers, m.prior.customers) : null },
+    { metal:1, icon:'$', iconBg:'#1B2C42', label:'Written Premium', value: fmtMoney(m.writtenPremium), goalText: m.goalSum ? `Goal: ${fmtMoney(m.goalSum)}` : 'No goal set', pct: m.premiumVsGoal, deltaGood: m.premiumVsGoal>=80, ringId:'scRing0', change: m.prior ? chg(m.writtenPremium, m.prior.writtenPremium) : null },
+    { metal:2, icon:'💰', iconBg:'#B08D57', label:'Revenue / Commission', value: folioOnlyNote || fmtMoney(m.commission), goalText: folioOnlyNote ? 'switch to Folio period' : 'this period', pct: folioOnlyNote ? null : 50, deltaGood:true, ringId: folioOnlyNote ? null : 'scRing1', unavailable: !!folioOnlyNote, change: null },
+    { metal:3, icon:'📄', iconBg:'#1B2C42', label:'Policies Sold', value: fmt(m.policiesSold), goalText:'this period', pct: Math.min(100, m.policiesSold*5), deltaGood:true, ringId:'scRing2', change: m.prior ? chg(m.policiesSold, m.prior.policiesSold) : null },
+    { metal:4, icon:'👥', iconBg:'#4E7FB0', label:'New Customers', value: fmt(m.customers), goalText:'this period', pct: Math.min(100, m.customers*5), deltaGood:true, ringId:'scRing3', change: m.prior ? chg(m.customers, m.prior.customers) : null },
     { icon:'🎯', iconBg:'#B08D57', label:'Quotes', value: folioOnlyNote || fmt(m.quotes), goalText: folioOnlyNote ? 'switch to Folio period' : 'sold + open w/ premium', pct: folioOnlyNote ? null : 50, deltaGood:true, ringId: folioOnlyNote ? null : 'scRing4', unavailable: !!folioOnlyNote, change: null },
     { icon:'📈', iconBg:'#1B2C42', label:'Quote → Sale %', value: folioOnlyNote || (m.quoteToSale!==null ? m.quoteToSale.toFixed(1)+'%' : '—'), goalText: folioOnlyNote ? 'switch to Folio period' : 'directional — see note', pct: folioOnlyNote ? null : m.quoteToSale, deltaGood: (m.quoteToSale||0)>=25, ringId: folioOnlyNote ? null : 'scRing5', unavailable: !!folioOnlyNote, change: null },
     { icon:'🎯', iconBg:'#98A2AE', label:'Close Rate %', unavailable:true },
@@ -3236,8 +3286,15 @@ function renderScorecard(){
   scRingCharts = [];
   cards.forEach(c=>{
     if(c.unavailable || !c.ringId || c.pct===null) return;
-    const color = c.deltaGood ? '#25507F' : '#C0413C';
-    scRingCharts.push(ringChart(c.ringId, c.pct, color));
+    let color = c.deltaGood ? '#25507F' : '#C0413C';
+    let track;
+    if(c.metal){
+      // rings sit on the metallic green tiles — light on the dark ones, deep green on the lightest
+      const onLight = c.metal >= 2;
+      color = onLight ? (c.deltaGood ? '#134F2D' : '#8A2B24') : (c.deltaGood ? '#DFF3E6' : '#FFB0A8');
+      track = onLight ? 'rgba(12,42,25,.16)' : 'rgba(255,255,255,.20)';
+    }
+    scRingCharts.push(ringChart(c.ringId, c.pct, color, track));
   });
 
   // Premium vs Goal by producer bar chart — always reflects the CURRENT folio regardless of period filter, since goals are folio-scoped
