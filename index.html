@@ -160,9 +160,9 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   .sc-card.sc-metal-8{background:linear-gradient(135deg,#C6BEE3 0%,#D8D2EF 42%,#E1DCF5 58%,#CDC6E8 100%);}
 
   /* Row 3 — metallic burnt orange */
-  .sc-card.sc-metal-9{background:linear-gradient(135deg,#B95B08 0%,#CF6B15 42%,#DC7822 58%,#C36211 100%);}
-  .sc-card.sc-metal-10{background:linear-gradient(135deg,#DA7F2E 0%,#E99A55 42%,#EFA968 58%,#E08A3E 100%);}
-  .sc-card.sc-metal-11{background:linear-gradient(135deg,#F0BB8B 0%,#F8D5B4 42%,#FBE1C6 58%,#F4C79E 100%);}
+  .sc-card.sc-metal-9{background:linear-gradient(135deg,#CE752A 0%,#E08A3D 42%,#EA974B 58%,#D67F33 100%);}
+  .sc-card.sc-metal-10{background:linear-gradient(135deg,#E9A469 0%,#F2B884 42%,#F6C395 58%,#EDAE76 100%);}
+  .sc-card.sc-metal-11{background:linear-gradient(135deg,#F6D3B2 0%,#FBE4CD 42%,#FDECDB 58%,#F8DBBF 100%);}
 
   /* lighter tiles in each row carry dark type for contrast */
   .sc-card.sc-metal-2,
@@ -175,6 +175,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   .sc-card.sc-metal-8{--tile-ink:#241C3A;--tile-ink-soft:rgba(36,28,58,.80);--tile-ink-mute:rgba(36,28,58,.68);
     --tile-good:#1F4E36;--tile-bad:#8A2B24;
     --tile-chip:rgba(36,28,58,.16);--tile-chip-bd:rgba(36,28,58,.24);--tile-val-shadow:none;}
+  .sc-card.sc-metal-9,
   .sc-card.sc-metal-10,
   .sc-card.sc-metal-11{--tile-ink:#3B1A02;--tile-ink-soft:rgba(59,26,2,.80);--tile-ink-mute:rgba(59,26,2,.68);
     --tile-good:#12513A;--tile-bad:#8A2B24;
@@ -3294,7 +3295,7 @@ function renderScorecard(){
     if(c.metal){
       // rings sit on the metallic tiles — light ink on the darkest tile of each row, deep ink on the lighter ones
       const row = c.metal >= 9 ? 'ember' : (c.metal >= 5 ? 'plum' : 'green');
-      const onLight = c.metal !== 1 && c.metal !== 5 && c.metal !== 9;  // leftmost tile of each row stays dark
+      const onLight = c.metal !== 1 && c.metal !== 5;  // leftmost tile of rows 1-2 stays dark
       if(onLight){
         color = c.deltaGood ? (row==='ember' ? '#5C2A05' : row==='plum' ? '#3B2F63' : '#134F2D') : '#8A2B24';
         track = row==='ember' ? 'rgba(59,26,2,.16)' : row==='plum' ? 'rgba(36,28,58,.16)' : 'rgba(12,42,25,.16)';
