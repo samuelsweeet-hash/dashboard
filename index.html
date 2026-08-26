@@ -3182,8 +3182,30 @@ function computeScorecardMetrics(periodType, customFrom, customTo, producerFilte
   const proratedGoal = range.isFolio ? goalSum : Math.round(dailyGoalRate * periodDays);
   const premiumVsGoal = proratedGoal ? (cur.writtenPremium/proratedGoal*100) : 0;
 
+  // Broker fees carry their own soldDate, so unlike commission they can be summed for any period.
+  // Folio periods use folio assignment (matching how sales are attributed); every other period
+  // filters fee items by soldDate. The $4,000 target is prorated the same way the premium goal is.
+  const BROKER_FEE_GOAL_FOLIO = 4000;
+  let brokerFees = 0;
+  if(range.isFolio){
+    const feeFolio = SALES.folio[range.folioKey];
+    brokerFees = (((feeFolio||{}).brokerFees||{}).items||[])
+      .filter(f=> !producerFilter || producerFilter==='all' || f.producer===producerFilter)
+      .reduce((a,f)=> a + (f.amount||0), 0);
+  } else {
+    Object.values(SALES.folio).forEach(f=>{
+      (((f||{}).brokerFees||{}).items||[]).forEach(it=>{
+        if(producerFilter && producerFilter!=='all' && it.producer!==producerFilter) return;
+        if(!it.soldDate || it.soldDate < range.start || it.soldDate > range.end) return;
+        brokerFees += (it.amount||0);
+      });
+    });
+  }
+  const brokerFeeGoal = range.isFolio ? BROKER_FEE_GOAL_FOLIO
+                                      : Math.round((folioDays ? BROKER_FEE_GOAL_FOLIO/folioDays : 0) * periodDays);
+
   // Folio-only metrics: Commission and Quotes are only well-defined at the folio level
-  let commission = null, quotes = null, quoteToSale = null, brokerFees = null;
+  let commission = null, quotes = null, quoteToSale = null;
   if(range.isFolio){
     const commByFolio = DATA.commissionsByFolio[range.folioKey] || {};
     commission = 0;
@@ -3198,11 +3220,6 @@ function computeScorecardMetrics(periodType, customFrom, customTo, producerFilte
     });
     quotes = cur.policiesSold + openWithPremium;
     quoteToSale = quotes ? (cur.policiesSold/quotes*100) : 0;
-    // Broker fees are logged per folio, separate from premium — sum the fee items for this folio
-    const feeFolio = SALES.folio[range.folioKey];
-    brokerFees = (((feeFolio||{}).brokerFees||{}).items||[])
-      .filter(f=> !producerFilter || producerFilter==='all' || f.producer===producerFilter)
-      .reduce((a,f)=> a + (f.amount||0), 0);
   }
 
   const priorMetrics = prior ? {
@@ -3212,7 +3229,7 @@ function computeScorecardMetrics(periodType, customFrom, customTo, producerFilte
 
   return {
     range, writtenPremium: cur.writtenPremium, policiesSold: cur.policiesSold, customers: cur.customers,
-    commission, brokerFees, quotes, quoteToSale, policiesPerCustomer, goalSum: proratedGoal, premiumVsGoal, prior: priorMetrics,
+    commission, brokerFees, brokerFeeGoal, quotes, quoteToSale, policiesPerCustomer, goalSum: proratedGoal, premiumVsGoal, prior: priorMetrics,
   };
 }
 
@@ -3276,8 +3293,7 @@ function renderScorecard(){
 
   const folioOnlyNote = !m.range.isFolio ? 'Folio-only metric' : null;
 
-  const BROKER_FEE_GOAL = 4000;
-  const brokerFeePct = m.brokerFees===null ? null : (m.brokerFees/BROKER_FEE_GOAL*100);
+  const brokerFeePct = m.brokerFeeGoal ? (m.brokerFees/m.brokerFeeGoal*100) : null;
 
   // Anticipated commissions = 7% of written premium, measured against 7% of the premium goal
   const antCommission = m.writtenPremium * 0.07;
@@ -3286,8 +3302,8 @@ function renderScorecard(){
 
   const cards = [
     { metal:1, icon:'$', iconBg:'#1B2C42', label:'Written Premium', value: fmtMoney(m.writtenPremium), goalText: m.goalSum ? `Goal: ${fmtMoney(m.goalSum)}` : 'No goal set', pct: m.premiumVsGoal, deltaGood: m.premiumVsGoal>=80, ringId:'scRing0', change: m.prior ? chg(m.writtenPremium, m.prior.writtenPremium) : null },
-    { metal:2, icon:'💰', iconBg:'#B08D57', label:'Broker Fees', value: folioOnlyNote || fmtMoney(m.brokerFees), goalText: folioOnlyNote ? 'switch to Folio period' : `Goal: ${fmtMoney(BROKER_FEE_GOAL)}`, pct: folioOnlyNote ? null : brokerFeePct, deltaGood: (brokerFeePct||0)>=80, ringId: folioOnlyNote ? null : 'scRing1', unavailable: !!folioOnlyNote, change: null },
-    { metal:3, icon:'%', iconBg:'#1B2C42', label:'Anticipated Commissions', value: fmtMoney(antCommission), goalText: antCommissionGoal ? `Goal: ${fmtMoney(antCommissionGoal)}` : 'No goal set', pct: antCommissionPct, deltaGood: (antCommissionPct||0)>=80, ringId: antCommissionPct===null ? null : 'scRing7', change: m.prior ? chg(m.writtenPremium*0.07, m.prior.writtenPremium*0.07) : null },
+    { metal:2, icon:'%', iconBg:'#1B2C42', label:'Anticipated Commissions', value: fmtMoney(antCommission), goalText: antCommissionGoal ? `Goal: ${fmtMoney(antCommissionGoal)}` : 'No goal set', pct: antCommissionPct, deltaGood: (antCommissionPct||0)>=80, ringId: antCommissionPct===null ? null : 'scRing7', change: m.prior ? chg(m.writtenPremium*0.07, m.prior.writtenPremium*0.07) : null },
+    { metal:3, icon:'💰', iconBg:'#B08D57', label:'Broker Fees', value: fmtMoney(m.brokerFees), goalText: m.brokerFeeGoal ? `Goal: ${fmtMoney(m.brokerFeeGoal)}` : 'No goal set', pct: brokerFeePct, deltaGood: (brokerFeePct||0)>=80, ringId: brokerFeePct===null ? null : 'scRing1', change: null },
     { metal:4, icon:'👥', iconBg:'#4E7FB0', label:'New Customers', value: fmt(m.customers), goalText:'this period', pct: Math.min(100, m.customers*5), deltaGood:true, ringId:'scRing3', change: m.prior ? chg(m.customers, m.prior.customers) : null },
     { metal:5, icon:'🎯', iconBg:'#B08D57', label:'Quotes', value: folioOnlyNote || fmt(m.quotes), goalText: folioOnlyNote ? 'switch to Folio period' : 'sold + open w/ premium', pct: null, deltaGood:true, ringId: null, unavailable: !!folioOnlyNote, change: null },
     { metal:6, icon:'📈', iconBg:'#1B2C42', label:'Quote → Sale %', value: folioOnlyNote || (m.quoteToSale!==null ? m.quoteToSale.toFixed(1)+'%' : '—'), goalText: folioOnlyNote ? 'switch to Folio period' : 'directional — see note', pct: folioOnlyNote ? null : m.quoteToSale, deltaGood: (m.quoteToSale||0)>=25, ringId: folioOnlyNote ? null : 'scRing5', unavailable: !!folioOnlyNote, change: null },
