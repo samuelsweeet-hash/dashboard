@@ -161,8 +161,9 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
 
   /* Row 3 — metallic sky */
   .sc-card.sc-metal-9{background:linear-gradient(135deg,#6FBFE2 0%,#87CEEB 42%,#95D6F0 58%,#7BC7E7 100%);}
-  .sc-card.sc-metal-10{background:linear-gradient(135deg,#99D8F0 0%,#ACE2F6 42%,#B7E8F9 58%,#A2DCF3 100%);}
-  .sc-card.sc-metal-11{background:linear-gradient(135deg,#BFE9F8 0%,#D2F1FC 42%,#DBF5FD 58%,#C7ECFA 100%);}
+  .sc-card.sc-metal-10{background:linear-gradient(135deg,#92D4EE 0%,#A6DEF3 42%,#B1E4F6 58%,#9BD9F1 100%);}
+  .sc-card.sc-metal-11{background:linear-gradient(135deg,#B0E1F5 0%,#C4EBFA 42%,#CEF0FC 58%,#B9E6F7 100%);}
+  .sc-card.sc-metal-12{background:linear-gradient(135deg,#CCEDFA 0%,#DEF4FD 42%,#E6F8FE 58%,#D4F0FC 100%);}
 
   /* lighter tiles in each row carry dark type for contrast */
   .sc-card.sc-metal-2,
@@ -177,7 +178,8 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
     --tile-chip:rgba(36,28,58,.16);--tile-chip-bd:rgba(36,28,58,.24);--tile-val-shadow:none;}
   .sc-card.sc-metal-9,
   .sc-card.sc-metal-10,
-  .sc-card.sc-metal-11{--tile-ink:#0E3244;--tile-ink-soft:rgba(14,50,68,.80);--tile-ink-mute:rgba(14,50,68,.68);
+  .sc-card.sc-metal-11,
+  .sc-card.sc-metal-12{--tile-ink:#0E3244;--tile-ink-soft:rgba(14,50,68,.80);--tile-ink-mute:rgba(14,50,68,.68);
     --tile-good:#12513A;--tile-bad:#8A2B24;
     --tile-chip:rgba(14,50,68,.16);--tile-chip-bd:rgba(14,50,68,.24);--tile-val-shadow:none;}
 
@@ -3269,10 +3271,15 @@ function renderScorecard(){
 
   const folioOnlyNote = !m.range.isFolio ? 'Folio-only metric' : null;
 
+  // Anticipated commissions = 7% of written premium, measured against 7% of the premium goal
+  const antCommission = m.writtenPremium * 0.07;
+  const antCommissionGoal = m.goalSum ? m.goalSum * 0.07 : 0;
+  const antCommissionPct = antCommissionGoal ? (antCommission / antCommissionGoal * 100) : null;
+
   const cards = [
     { metal:1, icon:'$', iconBg:'#1B2C42', label:'Written Premium', value: fmtMoney(m.writtenPremium), goalText: m.goalSum ? `Goal: ${fmtMoney(m.goalSum)}` : 'No goal set', pct: m.premiumVsGoal, deltaGood: m.premiumVsGoal>=80, ringId:'scRing0', change: m.prior ? chg(m.writtenPremium, m.prior.writtenPremium) : null },
     { metal:2, icon:'💰', iconBg:'#B08D57', label:'Revenue / Commission', value: folioOnlyNote || fmtMoney(m.commission), goalText: folioOnlyNote ? 'switch to Folio period' : 'this period', pct: folioOnlyNote ? null : 50, deltaGood:true, ringId: folioOnlyNote ? null : 'scRing1', unavailable: !!folioOnlyNote, change: null },
-    { metal:3, icon:'📄', iconBg:'#1B2C42', label:'Policies Sold', value: fmt(m.policiesSold), goalText:'this period', pct: Math.min(100, m.policiesSold*5), deltaGood:true, ringId:'scRing2', change: m.prior ? chg(m.policiesSold, m.prior.policiesSold) : null },
+    { metal:3, icon:'%', iconBg:'#1B2C42', label:'Anticipated Commissions', value: fmtMoney(antCommission), goalText: antCommissionGoal ? `Goal: ${fmtMoney(antCommissionGoal)}` : 'No goal set', pct: antCommissionPct, deltaGood: (antCommissionPct||0)>=80, ringId: antCommissionPct===null ? null : 'scRing7', change: m.prior ? chg(m.writtenPremium*0.07, m.prior.writtenPremium*0.07) : null },
     { metal:4, icon:'👥', iconBg:'#4E7FB0', label:'New Customers', value: fmt(m.customers), goalText:'this period', pct: Math.min(100, m.customers*5), deltaGood:true, ringId:'scRing3', change: m.prior ? chg(m.customers, m.prior.customers) : null },
     { metal:5, icon:'🎯', iconBg:'#B08D57', label:'Quotes', value: folioOnlyNote || fmt(m.quotes), goalText: folioOnlyNote ? 'switch to Folio period' : 'sold + open w/ premium', pct: folioOnlyNote ? null : 50, deltaGood:true, ringId: folioOnlyNote ? null : 'scRing4', unavailable: !!folioOnlyNote, change: null },
     { metal:6, icon:'📈', iconBg:'#1B2C42', label:'Quote → Sale %', value: folioOnlyNote || (m.quoteToSale!==null ? m.quoteToSale.toFixed(1)+'%' : '—'), goalText: folioOnlyNote ? 'switch to Folio period' : 'directional — see note', pct: folioOnlyNote ? null : m.quoteToSale, deltaGood: (m.quoteToSale||0)>=25, ringId: folioOnlyNote ? null : 'scRing5', unavailable: !!folioOnlyNote, change: null },
@@ -3281,6 +3288,7 @@ function renderScorecard(){
     { metal:9, icon:'📅', iconBg:'#98A2AE', label:'Appointments Set', unavailable:true },
     { metal:10, icon:'✅', iconBg:'#98A2AE', label:'Appointments Held', unavailable:true },
     { metal:11, icon:'👤', iconBg:'#98A2AE', label:'Show Rate %', unavailable:true },
+    { metal:12, icon:'📄', iconBg:'#1B2C42', label:'Policies Sold', value: fmt(m.policiesSold), goalText:'this period', pct: Math.min(100, m.policiesSold*5), deltaGood:true, ringId:'scRing2', change: m.prior ? chg(m.policiesSold, m.prior.policiesSold) : null },
   ];
 
   document.getElementById('scKpiGrid').innerHTML = cards.map(scCardHTML).join('');
