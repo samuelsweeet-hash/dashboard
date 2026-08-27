@@ -73,7 +73,9 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   }
   .toggle button.active{background:var(--gold);color:#0C141C;}
   .toggle button:not(:last-child){border-right:1px solid var(--gold);}
-  header .toggle button{background:rgba(255,255,255,.07);color:#E4EBE5;}
+  /* Slightly tighter than the in-page toggles: seven tab labels have to fit on one row
+     beside the banner, or the whole strip wraps and the header grows. */
+  header .toggle button{background:rgba(255,255,255,.07);color:#E4EBE5;padding:7px 8px;}
   header .toggle button.active{background:var(--gold);color:#0C141C;}
   select#periodSelect{
     font-size:12.5px;color:var(--ink);
@@ -308,7 +310,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
     <div class="view-control">
       <div class="toggle">
         <button id="btnScorecard" class="sans active">Scorecard</button>
-        <button id="btnDaily" class="sans">Daily</button>
+        <button id="btnDaily" class="sans">Spotlight</button>
         <button id="btnFolio" class="sans">Folio</button>
         <button id="btnProducer" class="sans">Producer</button>
         <button id="btnCommissions" class="sans">Commissions</button>
@@ -1127,7 +1129,7 @@ function render(){
     return;
   }
 
-  document.getElementById('pageTitle').textContent = mode==='folio' ? 'Premium Sold — Folio View' : 'Premium Sold — Daily View';
+  document.getElementById('pageTitle').textContent = mode==='folio' ? 'Premium Sold — Folio View' : 'Premium Sold — Spotlight View';
   populatePeriodSelect();
   renderPeriod();
 }
