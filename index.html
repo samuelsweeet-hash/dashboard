@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ironwood Insurance — Agency Dashboard</title>
 <script>
 /**
  * Skipped minification because the original files appears to be already minified.
@@ -53,12 +52,16 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
     --steel:#4E7FB0;
   }
   *{box-sizing:border-box;}
-  body{margin:0;background:var(--paper);font-family:Arial,Helvetica,sans-serif;color:var(--ink);}
-  .wrap{max-width:1180px;margin:0 auto;padding:0 28px 80px;}
+  html{height:100%;}
+  body{margin:0;background:var(--paper);font-family:Arial,Helvetica,sans-serif;color:var(--ink);height:100%;overflow:hidden;}
+  /* Fixed-height app shell: header stays pinned, content scrolls inside .dash-scroll,
+     so the page is exactly one viewport tall no matter which tab is selected. */
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;}
+  .dash-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:auto;padding-bottom:80px;scrollbar-gutter:stable;overscroll-behavior:contain;}
   .sans{font-family:Arial,Helvetica,sans-serif;}
 
-  header{background:linear-gradient(135deg,#1E2E3E 0%,#0C141C 100%);margin:0 -28px 8px;padding:18px 28px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;box-shadow:inset 0 -1px 0 rgba(201,150,44,.30);}
-  .brand-eyebrow{letter-spacing:.07em;text-transform:uppercase;font-size:22px;color:#CFAE78;font-weight:700;margin:0 0 4px;font-family:'Georgia',serif;line-height:1.1;
+  header{flex:0 0 auto;background:linear-gradient(135deg,#1E2E3E 0%,#0C141C 100%);margin:0 -28px 8px;padding:18px 28px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;box-shadow:inset 0 -1px 0 rgba(201,150,44,.30);}
+  .brand-eyebrow{letter-spacing:.07em;text-transform:uppercase;font-size:19px;color:#CFAE78;font-weight:700;margin:0 0 4px;font-family:'Georgia',serif;line-height:1.1;
     background:linear-gradient(176deg,#F0DCAE 0%,#CFAE78 38%,#A8834A 70%,#E2CB9B 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
   h1{font-size:14px;margin:0;font-weight:600;letter-spacing:.11em;color:#A6B6C6;text-transform:uppercase;}
 
@@ -298,7 +301,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
 
   <header>
     <div>
-      <p class="brand-eyebrow">Ironwood Insurance Agency</p>
+      <p class="brand-eyebrow">Ironwood Insurance Agency Dashboard</p>
       <h1 id="pageTitle">Premium Sold — Folio View</h1>
       <p style="font-size:10.5px;color:#7C8B9B;margin:5px 0 0;letter-spacing:.03em;">Last updated: August 18, 2026</p>
     </div>
@@ -317,6 +320,8 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
       <button id="analyticsToggle" class="analytics-btn sans" style="display:none;">Data Analytics <span class="chev">▼</span></button>
     </div>
   </header>
+
+  <div class="dash-scroll" id="dashScroll">
 
   <div class="coverage-note" id="coverageNote">
     Folio totals (Premium, Policies, Items, Sales) are your office's official production numbers. Ximena Cruz's, Deija Olson's, and Samuel Sweet's Farmers-carrier premium, and Brandon Smith's Farmers-, Foremost-, and Brokered-carrier premium, for the current folio (Jul 18 – Aug 19) are confirmed line-by-line from AgencyZoom's Written Business report — those rows are marked "confirmed." Everything else (other carriers, older folios) is still reconstructed from the 29 sold records visible to this AgencyZoom sub-user login, so treat unmarked rows as partial until confirmed the same way. New sales are added to daily #s and the office total when confirmed via AgencyZoom lookup — ask to "log this sale" and it happens in the same reply.
@@ -714,15 +719,12 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
 
     <div class="sc-bottom-row">
       <div class="card sc-bottom-card">
-        <div class="sc-bottom-title">📊 Retention Rate</div>
-        <div class="sc-nodata">
-          <div class="sc-nodata-icon">—</div>
-          <div class="sc-nodata-text">No data source available.<br>AgencyZoom's API doesn't expose renewal or retention tracking — this would need to come from a different system or manual tracking to populate honestly.</div>
-        </div>
+        <div class="sc-bottom-title">🚩 Written Premium by Producer <span id="scPremiumChartHint" style="font-weight:400;color:var(--gray);font-size:11px;"></span></div>
+        <div class="chart-box" style="height:290px;"><canvas id="scPremiumGoalChart"></canvas></div>
       </div>
       <div class="card sc-bottom-card">
-        <div class="sc-bottom-title">🚩 Premium vs Goal, by Producer</div>
-        <div class="chart-box" style="height:220px;"><canvas id="scPremiumGoalChart"></canvas></div>
+        <div class="sc-bottom-title">📈 Quotes &amp; Pipeline by Producer <span id="scQuotePipelineHint" style="font-weight:400;color:var(--gray);font-size:11px;"></span></div>
+        <div class="chart-box" style="height:290px;"><canvas id="scQuotePipelineChart"></canvas></div>
       </div>
     </div>
 
@@ -956,6 +958,8 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
     Source: AgencyZoom lead &amp; policy records via WhereToBegin.ai integration. Generated Aug 16, 2026.<br>
     Built by WhereToBegin.ai
   </footer>
+
+  </div><!-- /.dash-scroll -->
 
 </div>
 
@@ -1419,6 +1423,13 @@ document.getElementById('btnProducer').addEventListener('click', ()=>{ mode='pro
 document.getElementById('btnCommissions').addEventListener('click', ()=>{ mode='commissions'; render(); });
 document.getElementById('btnSdrTransfers').addEventListener('click', ()=>{ mode='sdr'; render(); });
 document.getElementById('btnToDoList').addEventListener('click', ()=>{ mode='todo'; render(); });
+// Fixed-height shell: start each tab at the top of the scroll area.
+document.querySelector('header .toggle').addEventListener('click', (e)=>{
+  if(e.target.closest('button')){
+    const sc = document.getElementById('dashScroll');
+    if(sc) sc.scrollTop = 0;
+  }
+});
 document.getElementById('periodSelect').addEventListener('change', renderPeriod);
 document.getElementById('producerModeSelect').addEventListener('change', (e)=> renderProducerMode(e.target.value));
 
@@ -2950,13 +2961,33 @@ function pieChart(canvasId, labels, data, opts){
   });
 }
 
+// Fences off a summary row (a TEAM total) at the end of a horizontal bar chart.
+// A function declaration so it hoists — render() runs earlier in this file.
+function barRowDivider(rowIndex){ return {
+  id:'barRowDivider',
+  afterDatasetsDraw(chart){
+    const ax = chart.scales.y;
+    if(!ax || rowIndex == null || rowIndex < 1) return;
+    const y = Math.round((ax.getPixelForValue(rowIndex) + ax.getPixelForValue(rowIndex-1)) / 2) + 0.5;
+    const ctx = chart.ctx;
+    ctx.save();
+    ctx.strokeStyle = '#C3CDD8';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(ax.left, y);
+    ctx.lineTo(chart.chartArea.right, y);
+    ctx.stroke();
+    ctx.restore();
+  }
+}; }
+
 function barChart(canvasId, labels, data, opts){
   opts = opts || {};
   return new Chart(document.getElementById(canvasId), {
     type:'bar',
     data:{
       labels: labels,
-      datasets:[{ data: data, backgroundColor: opts.colors || '#25507F' }]
+      datasets:[{ data: data, backgroundColor: opts.colors || '#25507F', maxBarThickness: opts.maxBarThickness }]
     },
     options:{
       indexAxis: opts.horizontal ? 'y' : 'x',
@@ -2982,9 +3013,124 @@ function barChart(canvasId, labels, data, opts){
         if(opts.horizontal && opts.money) xTicks.callback = v=>'$'+v.toLocaleString();
         const yTicks={font:{family:'Arial',size:10}};
         if(!opts.horizontal && opts.money) yTicks.callback = v=>'$'+v.toLocaleString();
-        return { x:{grid:{color:'#E6EBF1'}, ticks:xTicks}, y:{grid:{color:'#E6EBF1'}, ticks:yTicks} };
+        const scales = { x:{grid:{color:'#E6EBF1'}, ticks:xTicks}, y:{grid:{color:'#E6EBF1'}, ticks:yTicks} };
+        // opts.bare: drop the grid lines and the numeric value axis entirely — for charts
+        // where every bar already carries its own value label.
+        if(opts.bare){
+          const valueAxis = opts.horizontal ? 'x' : 'y';
+          const categoryAxis = opts.horizontal ? 'y' : 'x';
+          scales.x.grid = {display:false};
+          scales.y.grid = {display:false};
+          scales[valueAxis].ticks = {display:false};
+          scales[valueAxis].display = false;
+          scales[valueAxis].border = {display:false};
+          // Keep the category axis line so the names sit visibly apart from the bars.
+          scales[categoryAxis].border = {display:true, color:'#C3CDD8', width:1};
+          scales[categoryAxis].ticks = Object.assign({}, scales[categoryAxis].ticks, {padding:8});
+          if(opts.dividerBefore != null){
+            scales[categoryAxis].ticks.color = (c)=> c.index >= opts.dividerBefore ? '#131A21' : '#3A4550';
+          }
+        }
+        return scales;
       })()
+    },
+    plugins: opts.dividerBefore != null ? [barRowDivider(opts.dividerBefore)] : []
+  });
+}
+
+// Compact money for in-chart labels, where "$31,533" is too wide to sit beside a bar.
+// A function declaration, not a const — render() runs earlier in this file, so this
+// has to be hoisted.
+function fmtMoneyShort(n){
+  const v = Number(n) || 0;
+  if(Math.abs(v) >= 1000) return '$' + (Math.round(v/100)/10).toFixed(1).replace(/\.0$/,'') + 'k';
+  return '$' + Math.round(v);
+}
+
+// Grouped horizontal bars: one row per category, one bar per series, values labelled at
+// the bar ends. Declared as a function so it hoists — render() runs earlier in this file.
+//
+// series: [{label, data, color, format}]. When the series carry DIFFERENT units (a count
+// beside a dollar figure), pass opts.perSeriesScale — each series is then drawn against
+// its own maximum, so bar lengths are comparable WITHIN a series but not across the two.
+// Every bar is labelled with its real value and unit so the chart can't be misread.
+// opts.dividerBefore: index of a row to fence off above (used for the TEAM total row).
+function groupedBarChart(canvasId, labels, series, opts){
+  opts = opts || {};
+  const el = document.getElementById(canvasId);
+  if(!el) return null;
+  const scaled = series.map(s=>{
+    if(!opts.perSeriesScale) return s.data.slice();
+    const max = Math.max(...s.data.map(v=>Math.abs(Number(v)||0)), 0) || 1;
+    return s.data.map(v=>(Number(v)||0)/max);
+  });
+  const endLabels = {
+    id:'groupedEndLabels',
+    afterDatasetsDraw(chart){
+      const ctx = chart.ctx;
+      ctx.save();
+      ctx.font = 'bold 9px Arial';
+      ctx.fillStyle = '#3A4550';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      chart.data.datasets.forEach((ds, di)=>{
+        const meta = chart.getDatasetMeta(di);
+        if(meta.hidden) return;
+        meta.data.forEach((bar, i)=>{
+          const v = ds._raw[i];
+          if(!v) return;
+          ctx.fillText(ds._format(v), bar.x + 5, bar.y);
+        });
+      });
+      ctx.restore();
     }
+  };
+  const divider = {
+    id:'groupedDivider',
+    afterDatasetsDraw(chart){
+      if(opts.dividerBefore == null) return;
+      const ax = chart.scales.y;
+      const here = ax.getPixelForValue(opts.dividerBefore);
+      const prev = ax.getPixelForValue(opts.dividerBefore - 1);
+      const y = Math.round((here + prev) / 2) + 0.5;
+      const ctx = chart.ctx;
+      ctx.save();
+      ctx.strokeStyle = '#C3CDD8';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(chart.scales.y.left, y);
+      ctx.lineTo(chart.chartArea.right, y);
+      ctx.stroke();
+      ctx.restore();
+    }
+  };
+  return new Chart(el, {
+    type:'bar',
+    data:{ labels: labels, datasets: series.map((s,i)=>({
+      label: s.label, data: scaled[i], backgroundColor: s.color,
+      _raw: s.data, _format: s.format || fmtMoneyShort,
+      borderRadius:3, borderSkipped:'start', maxBarThickness:14
+    })) },
+    options:{
+      indexAxis:'y',
+      responsive:true, maintainAspectRatio:false,
+      ironwoodLabels:false,
+      layout:{padding:{right:42}},
+      plugins:{
+        legend:{display:true, position:'top', align:'end',
+          labels:{usePointStyle:true, pointStyle:'circle', boxWidth:7, boxHeight:7, padding:12,
+                  font:{family:'Arial',size:10}, color:'#3A4550'}},
+        tooltip:{callbacks:{label: c => `${c.dataset.label}: ${c.dataset._format(c.dataset._raw[c.dataIndex])}`}}
+      },
+      scales:{
+        x:{display:false, grid:{display:false}, border:{display:false}, beginAtZero:true,
+           max: opts.perSeriesScale ? 1 : undefined},
+        y:{grid:{display:false}, border:{display:true, color:'#C3CDD8', width:1},
+           ticks:{font:{family:'Arial',size:10}, padding:8,
+                  color: (c)=> (opts.dividerBefore != null && c.index >= opts.dividerBefore) ? '#131A21' : '#3A4550'}}
+      }
+    },
+    plugins:[endLabels, divider]
   });
 }
 
@@ -3339,16 +3485,72 @@ function renderScorecard(){
     scRingCharts.push(ringChart(c.ringId, c.pct, color, track));
   });
 
-  // Premium vs Goal by producer bar chart — always reflects the CURRENT folio regardless of period filter, since goals are folio-scoped
+  // Written premium by producer — horizontal bars, names down the left, largest at the top.
+  // Follows the scorecard's FOLIO picker; falls back to the current folio when the period
+  // filter is set to something other than Folio (the picker is hidden in that case).
   const goalEntries = Object.entries(DATA.producerFolioGoals||{});
-  const curFolioKeyForChart = getActiveFolioKeys().current;
+  const curFolioKeyForChart = (periodType==='folio' && folioSel.value && SALES.folio[folioSel.value])
+    ? folioSel.value : getActiveFolioKeys().current;
   const folioForChart = SALES.folio[curFolioKeyForChart];
-  const premByProducer = goalEntries.map(([p,g])=>{
-    const actual = (folioForChart.byProducer[p]||0);
-    return [p, g.goal ? (actual/g.goal*100) : 0];
-  });
+  const folioLabelForChart = periodLabel(curFolioKeyForChart, 'folio');
+  const rosterForChart = new Set([...goalEntries.map(([p])=>p), ...Object.keys(folioForChart.byProducer||{})]);
+  const premByProducer = [...rosterForChart]
+    .map(p => [p, folioForChart.byProducer[p] || 0])
+    .sort((a,b) => b[1] - a[1]);   // largest premium first → top bar
+  const premTeamTotal = premByProducer.reduce((a,x)=>a+x[1], 0);
+  const premRows = [...premByProducer, ['TEAM', premTeamTotal]];
   if(window._scPremGoalChart) window._scPremGoalChart.destroy();
-  window._scPremGoalChart = barChart('scPremiumGoalChart', premByProducer.map(x=>x[0]), premByProducer.map(x=>Math.round(x[1]*10)/10), {colors:'#25507F', percent:true, horizontal:true});
+  window._scPremGoalChart = barChart('scPremiumGoalChart',
+    premRows.map(x=>x[0].replace(/\s+/g,' ').trim()),
+    premRows.map(x=>Math.round(x[1])),
+    {colors:'#25507F', money:true, horizontal:true, bare:true, maxBarThickness:26,
+     dividerBefore: premRows.length - 1});
+  const premHint = document.getElementById('scPremiumChartHint');
+  if(premHint){
+    // Folios before Jun 2026 have office totals but no per-producer breakdown in this export.
+    premHint.textContent = premTeamTotal
+      ? folioLabelForChart
+      : `${folioLabelForChart} · no producer-level breakdown recorded for this folio`;
+  }
+
+  // Quotes and pipeline, BOTH live from the same AgencyZoom pull — deliberately not
+  // folio-scoped, so this chart does not move with the FOLIO picker beside it.
+  //   Quotes   = open pipeline leads carrying a logged quote premium (a count)
+  //   Pipeline = the premium quoted on exactly those leads (dollars)
+  // Two units, so each series is scaled to its own maximum and every bar is labelled with
+  // its real value — see groupedBarChart's perSeriesScale note.
+  const liveQuoted = DATA.producerQuotedPremium || {};
+  const liveRefreshed = (((DATA.producerOpenPipelineMeta||{}).note||'')
+    .match(/\d{4}-\d{2}-\d{2}/) || [])[0] || null;
+  // Include the goal roster too, so a producer with nothing quoted shows as an empty row
+  // rather than vanishing from the chart.
+  const qpRoster = new Set([...Object.keys(liveQuoted), ...Object.keys(DATA.producerFolioGoals||{})]);
+  const qpRows = [...qpRoster]
+    .map(p => ({
+      name: p.replace(/\s+/g,' ').trim(),
+      quotes: Math.round((liveQuoted[p] && liveQuoted[p].count) || 0),
+      pipeline: Math.round((liveQuoted[p] && liveQuoted[p].totalQuoted) || 0)
+    }))
+    // keep zero rows — the roster above is the point
+    .sort((a,b) => (b.quotes - a.quotes) || (b.pipeline - a.pipeline));
+  const qpTeam = {
+    name:'TEAM',
+    quotes: qpRows.reduce((a,r)=>a+r.quotes,0),
+    pipeline: qpRows.reduce((a,r)=>a+r.pipeline,0)
+  };
+  const qpAll = [...qpRows, qpTeam];
+  if(window._scQuotePipelineChart) window._scQuotePipelineChart.destroy();
+  window._scQuotePipelineChart = groupedBarChart('scQuotePipelineChart',
+    qpAll.map(r=>r.name),
+    [
+      {label:'Quotes (count, live)', data: qpAll.map(r=>r.quotes),   color:'#25507F', format: v=>fmt(v)},
+      {label:'Pipeline ($, live)',   data: qpAll.map(r=>r.pipeline), color:'#B08D57', format: fmtMoneyShort}
+    ],
+    {perSeriesScale:true, dividerBefore: qpAll.length - 1});
+  const qpHint = document.getElementById('scQuotePipelineHint');
+  if(qpHint){
+    qpHint.textContent = `live from AgencyZoom${liveRefreshed ? ' · ' + liveRefreshed : ''} · not folio-scoped · separate scales`;
+  }
 }
 
 function lineChart(canvasId, labels, datasets, opts){
