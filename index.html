@@ -175,7 +175,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   .sc-card.sc-metal .sc-card-value{color:var(--tile-ink);text-shadow:var(--tile-val-shadow);}
   .sc-card.sc-metal .sc-card-goal,
   .sc-card.sc-metal .sc-delta-label{color:var(--tile-ink-mute);}
-  .sc-card.sc-metal .sc-ring-pct{color:var(--tile-ink);}
+  .sc-card.sc-metal .sc-ring-pct{color:#1B2C42;}   /* matches RING_COLOR in renderScorecard */
   .sc-card.sc-metal .sc-delta.good{color:var(--tile-good);}
   .sc-card.sc-metal .sc-delta.bad{color:var(--tile-bad);}
   .sc-card.sc-metal .sc-unavail-badge{background:var(--tile-chip);border-color:var(--tile-chip-bd);color:var(--tile-ink-soft);}
@@ -218,7 +218,14 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
 
   .sc-bottom-row{display:grid;grid-template-columns:1fr;gap:16px;}
   .sc-bottom-card{margin-top:0;}
-  .sc-bottom-title{font-weight:700;font-size:15px;color:var(--ink);margin-bottom:16px;}
+  .sc-bottom-title{font-weight:700;font-size:15px;color:var(--ink);margin-bottom:16px;
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  /* Per-card filter: reads as a chart control, not a page-level one. */
+  .sc-card-filter{display:flex;align-items:center;gap:6px;font-size:9px;font-weight:700;
+    letter-spacing:.08em;color:var(--gray);white-space:nowrap;}
+  .sc-card-filter select{font-family:Arial,Helvetica,sans-serif;font-size:11.5px;font-weight:400;
+    letter-spacing:0;color:var(--ink);background:#fff;border:1px solid var(--line);
+    border-radius:4px;padding:4px 6px;max-width:190px;}
   .sc-nodata{display:flex;align-items:center;gap:16px;padding:20px 4px;}
   .sc-nodata-icon{font-size:32px;color:var(--line);font-weight:300;flex-shrink:0;}
   .sc-nodata-text{font-size:11.5px;color:var(--gray);line-height:1.6;}
@@ -767,7 +774,13 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
 
     <div class="sc-bottom-row">
       <div class="card sc-bottom-card">
-        <div class="sc-bottom-title">🚩 Written Premium by Producer <span id="scPremiumChartHint" style="font-weight:400;color:var(--gray);font-size:11px;"></span></div>
+        <div class="sc-bottom-title">
+          <span>🚩 Written Premium by Producer <span id="scPremiumChartHint" style="font-weight:400;color:var(--gray);font-size:11px;"></span></span>
+          <!-- This chart owns its own folio. It seeds from the header's folio on first
+               load, then stays put so the chart can be compared against the tiles above
+               it rather than always mirroring them. -->
+          <label class="sc-card-filter">FOLIO <select id="scPremiumFolioSelect"></select></label>
+        </div>
         <div class="chart-box" style="height:440px;"><canvas id="scPremiumGoalChart"></canvas></div>
       </div>
       <div class="card sc-bottom-card">
@@ -780,7 +793,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
       <strong>Methodology notes:</strong> "Quotes" = policies sold + currently-open pipeline leads with a logged premium.
       This likely undercounts true quoting activity, since AgencyZoom removes a lead from its pipeline stage the moment it's marked Dead —
       quotes that didn't convert and aren't in our separately-verified SDR transfer log aren't reflected here, so Quote→Sale % should be read as directional, not precise.
-      <strong>Appointments Set/Held, Show Rate, Close Rate, and Retention</strong> have no available data source in AgencyZoom via this account's API access — shown as unavailable rather than estimated.
+      <strong>Appointments Set/Held, Show Rate, and Retention</strong> have no available data source in AgencyZoom via this account's API access — shown as unavailable rather than estimated. <strong>Average Deal Size</strong> = written premium ÷ policies sold for the selected period, measured against a $1,500 per-policy goal. Unlike the written-premium goal, it is not prorated by period length — it is a per-policy rate, so the target holds no matter how short the period.
     </p>
   </section>
 
@@ -1459,7 +1472,7 @@ function renderTrend(){
 }
 
 document.getElementById('btnScorecard').addEventListener('click', ()=>{ mode='scorecard'; render(); });
-['scFolioFilter','scProducerFilter','scProductFilter','scPeriodFilter','scCustomFrom','scCustomTo'].forEach(id=>{
+['scFolioFilter','scProducerFilter','scProductFilter','scPeriodFilter','scCustomFrom','scCustomTo','scPremiumFolioSelect'].forEach(id=>{
   document.getElementById(id).addEventListener('change', renderScorecard);
 });
 document.getElementById('btnDaily').addEventListener('click', ()=>{ mode='daily'; render(); });
@@ -3494,6 +3507,14 @@ function renderScorecard(){
   const antCommissionGoal = m.goalSum ? m.goalSum * 0.07 : 0;
   const antCommissionPct = antCommissionGoal ? (antCommission / antCommissionGoal * 100) : null;
 
+  // Average deal size = written premium per policy sold, against a flat $1,500 target.
+  // It is a rate, not a volume, so the goal is NOT prorated by period length the way the
+  // written-premium goal is — a short period should not lower the bar per policy.
+  const AVG_DEAL_GOAL = 1500;
+  const avgDealSize = m.policiesSold ? (m.writtenPremium / m.policiesSold) : null;
+  const priorAvgDeal = (m.prior && m.prior.policiesSold) ? (m.prior.writtenPremium / m.prior.policiesSold) : null;
+  const avgDealPct = avgDealSize === null ? null : (avgDealSize / AVG_DEAL_GOAL * 100);
+
   const cards = [
     { metal:1, icon:'$', iconBg:'#1B2C42', label:'Written Premium', value: fmtMoney(m.writtenPremium), goalText: m.goalSum ? `Goal: ${fmtMoney(m.goalSum)}` : 'No goal set', pct: m.premiumVsGoal, deltaGood: m.premiumVsGoal>=80, ringId:'scRing0', change: m.prior ? chg(m.writtenPremium, m.prior.writtenPremium) : null },
     { metal:2, icon:'%', iconBg:'#1B2C42', label:'Anticipated Commissions', value: fmtMoney(antCommission), goalText: antCommissionGoal ? `Goal: ${fmtMoney(antCommissionGoal)}` : 'No goal set', pct: antCommissionPct, deltaGood: (antCommissionPct||0)>=80, ringId: antCommissionPct===null ? null : 'scRing7', change: m.prior ? chg(m.writtenPremium*0.07, m.prior.writtenPremium*0.07) : null },
@@ -3501,8 +3522,8 @@ function renderScorecard(){
     { metal:4, icon:'👥', iconBg:'#4E7FB0', label:'New Customers', value: fmt(m.customers), goalText:'this period', pct: Math.min(100, m.customers*5), deltaGood:true, ringId:'scRing3', change: m.prior ? chg(m.customers, m.prior.customers) : null },
     { metal:5, icon:'🎯', iconBg:'#B08D57', label:'Quotes', value: folioOnlyNote || fmt(m.quotes), goalText: folioOnlyNote ? 'switch to Folio period' : 'sold + open w/ premium', pct: null, deltaGood:true, ringId: null, unavailable: !!folioOnlyNote, change: null },
     { metal:6, icon:'📈', iconBg:'#1B2C42', label:'Quote → Sale %', value: folioOnlyNote || (m.quoteToSale!==null ? m.quoteToSale.toFixed(1)+'%' : '—'), goalText: folioOnlyNote ? 'switch to Folio period' : 'directional — see note', pct: folioOnlyNote ? null : m.quoteToSale, deltaGood: (m.quoteToSale||0)>=25, ringId: folioOnlyNote ? null : 'scRing5', unavailable: !!folioOnlyNote, change: null },
-    { metal:7, icon:'🎯', iconBg:'#98A2AE', label:'Close Rate %', unavailable:true },
-    { metal:8, icon:'📦', iconBg:'#4E7FB0', label:'Policies per Customer', value: m.policiesPerCustomer.toFixed(2), goalText:'cross-sell effectiveness', pct: Math.min(100, m.policiesPerCustomer*50), deltaGood: m.policiesPerCustomer>=1.3, ringId:'scRing6', change: m.prior ? chg(m.policiesPerCustomer, m.prior.policiesPerCustomer) : null },
+    { metal:7, icon:'📦', iconBg:'#4E7FB0', label:'Policies per Customer', value: m.policiesPerCustomer.toFixed(2), goalText:'cross-sell effectiveness', pct: Math.min(100, m.policiesPerCustomer*50), deltaGood: m.policiesPerCustomer>=1.3, ringId:'scRing6', change: m.prior ? chg(m.policiesPerCustomer, m.prior.policiesPerCustomer) : null },
+    { metal:8, icon:'💵', iconBg:'#1B2C42', label:'Average Deal Size', value: avgDealSize===null ? '—' : fmtMoney(avgDealSize), goalText: `Goal: ${fmtMoney(AVG_DEAL_GOAL)}`, pct: avgDealPct===null ? null : Math.min(100, avgDealPct), deltaGood: (avgDealPct||0)>=80, ringId: avgDealPct===null ? null : 'scRing4', change: (avgDealSize!==null && priorAvgDeal) ? chg(avgDealSize, priorAvgDeal) : null },
     { metal:9, icon:'📅', iconBg:'#98A2AE', label:'Appointments Set', unavailable:true },
     { metal:10, icon:'✅', iconBg:'#98A2AE', label:'Appointments Held', unavailable:true },
     { metal:11, icon:'👤', iconBg:'#98A2AE', label:'Show Rate %', unavailable:true },
@@ -3516,19 +3537,18 @@ function renderScorecard(){
   scRingCharts = [];
   cards.forEach(c=>{
     if(c.unavailable || !c.ringId || c.pct===null) return;
-    let color = c.deltaGood ? '#25507F' : '#C0413C';
+    // One ring color across every tile — slate navy, the same brand navy used for the
+    // icon chips, so chip + arc + % read as a single object. It clears graphic contrast
+    // on all twelve tile backgrounds; brass and white each fail at one end of the range.
+    const RING_COLOR = '#1B2C42';
+    let color = RING_COLOR;
     let track;
     if(c.metal){
-      // rings sit on the metallic tiles — light ink on the darkest tile of each row, deep ink on the lighter ones
       const row = c.metal >= 9 ? 'sky' : (c.metal >= 5 ? 'plum' : 'green');
-      const onLight = c.metal !== 1 && c.metal !== 5;  // leftmost tile of rows 1-2 stays dark
-      if(onLight){
-        color = c.deltaGood ? (row==='sky' ? '#0E3244' : row==='plum' ? '#3B2F63' : '#134F2D') : '#8A2B24';
-        track = row==='sky' ? 'rgba(14,50,68,.16)' : row==='plum' ? 'rgba(36,28,58,.16)' : 'rgba(12,42,25,.16)';
-      } else {
-        color = c.deltaGood ? (row==='plum' ? '#EFEBFA' : '#DFF3E6') : '#FFB0A8';
-        track = 'rgba(255,255,255,.20)';
-      }
+      // The track is background, not accent: it follows the tile so the unfilled arc
+      // stays a faint shadow rather than competing with the navy.
+      track = row==='sky' ? 'rgba(14,50,68,.18)' : row==='plum' ? 'rgba(36,28,58,.18)' : 'rgba(12,42,25,.18)';
+      if(c.metal===1 || c.metal===5) track = 'rgba(255,255,255,.22)';  // darkest tile of rows 1-2
     }
     scRingCharts.push(ringChart(c.ringId, c.pct, color, track));
   });
@@ -3537,8 +3557,21 @@ function renderScorecard(){
   // Follows the scorecard's FOLIO picker; falls back to the current folio when the period
   // filter is set to something other than Folio (the picker is hidden in that case).
   const goalEntries = Object.entries(DATA.producerFolioGoals||{});
-  const curFolioKeyForChart = (periodType==='folio' && folioSel.value && SALES.folio[folioSel.value])
-    ? folioSel.value : getActiveFolioKeys().current;
+  // The chart's own folio picker, populated once and seeded from whatever folio the
+  // header is on at first render. After that it is independent: changing the header's
+  // PERIOD or FOLIO leaves this chart where the user parked it.
+  const premFolioSel = document.getElementById('scPremiumFolioSelect');
+  if(premFolioSel && premFolioSel.options.length===0){
+    Object.keys(SALES.folio).sort().reverse().forEach(k=>{
+      const opt = document.createElement('option');
+      opt.value = k; opt.textContent = FOLIO_LABELS[k] || k;
+      premFolioSel.appendChild(opt);
+    });
+    premFolioSel.value = (periodType==='folio' && folioSel.value && SALES.folio[folioSel.value])
+      ? folioSel.value : getActiveFolioKeys().current;
+  }
+  const curFolioKeyForChart = (premFolioSel && SALES.folio[premFolioSel.value])
+    ? premFolioSel.value : getActiveFolioKeys().current;
   const folioForChart = SALES.folio[curFolioKeyForChart];
   const folioLabelForChart = periodLabel(curFolioKeyForChart, 'folio');
   const rosterForChart = new Set([...goalEntries.map(([p])=>p), ...Object.keys(folioForChart.byProducer||{})]);
@@ -3557,9 +3590,11 @@ function renderScorecard(){
   const premHint = document.getElementById('scPremiumChartHint');
   if(premHint){
     // Folios before Jun 2026 have office totals but no per-producer breakdown in this export.
+    // The folio itself is named by the picker beside the title, so the hint only has to
+    // carry the caveat when a folio has office totals but no per-producer rows.
     premHint.textContent = premTeamTotal
-      ? folioLabelForChart
-      : `${folioLabelForChart} · no producer-level breakdown recorded for this folio`;
+      ? ''
+      : '· no producer-level breakdown recorded for this folio';
   }
 
   // Quotes and pipeline, BOTH live from the same AgencyZoom pull — deliberately not
