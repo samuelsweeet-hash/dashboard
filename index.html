@@ -71,8 +71,8 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   /* nowrap keeps the filters locked to the right of the tab strip; when the two together
      outgrow the header the whole strip drops to its own right-justified line instead of
      the filters detaching onto a row of their own. */
-  .view-control{display:flex;flex-direction:row;align-items:center;justify-content:flex-end;flex-wrap:nowrap;gap:12px;
-    flex:0 0 100%;}   /* tabs + filters take their own full-width row and right-justify on it */
+  .view-control{display:flex;flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:12px;
+    flex:0 0 100%;}   /* own full-width row: tab strip pinned left, filters pinned right */
   .view-control > .toggle{flex:0 0 auto;}   /* the tab strip never shrinks or clips */
   .header-filters{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:9px;min-width:0;flex:0 1 auto;}
   .hdr-filter-group{display:flex;align-items:center;flex-wrap:wrap;gap:9px;min-width:0;}
