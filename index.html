@@ -65,7 +65,32 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
     background:linear-gradient(176deg,#F0DCAE 0%,#CFAE78 38%,#A8834A 70%,#E2CB9B 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
   h1{font-size:14px;margin:0;font-weight:600;letter-spacing:.11em;color:#A6B6C6;text-transform:uppercase;}
 
-  .view-control{display:flex;flex-direction:column;align-items:flex-end;gap:7px;}
+  /* Tabs and the active tab's filter controls share one right-justified row, so each
+     view's controls sit immediately to the right of the tab strip instead of in a
+     separate banner below it. */
+  /* nowrap keeps the filters locked to the right of the tab strip; when the two together
+     outgrow the header the whole strip drops to its own right-justified line instead of
+     the filters detaching onto a row of their own. */
+  .view-control{display:flex;flex-direction:row;align-items:center;justify-content:flex-end;flex-wrap:nowrap;gap:12px;
+    flex:0 0 100%;}   /* tabs + filters take their own full-width row and right-justify on it */
+  .view-control > .toggle{flex:0 0 auto;}   /* the tab strip never shrinks or clips */
+  .header-filters{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:9px;min-width:0;flex:0 1 auto;}
+  .hdr-filter-group{display:flex;align-items:center;flex-wrap:wrap;gap:9px;min-width:0;}
+  @media (max-width:1100px){ .view-control,.header-filters,.hdr-filter-group{flex-wrap:wrap;} }
+  /* In-header selects follow the dark header's palette, not the white in-page one. */
+  .header-filters select{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);color:#fff;
+    font-size:11.5px;padding:4px 6px;border-radius:4px;min-width:78px;max-width:124px;font-family:Arial,Helvetica,sans-serif;}
+  .header-filters select option{color:#111;}
+  .header-filters input[type=date]{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);
+    color:#fff;font-size:11.5px;padding:4px 6px;border-radius:4px;}
+  .header-filters .sc-filter{gap:2px;}
+  .header-filters .sc-filter label{white-space:nowrap;}
+  .header-filters .toggle{border-color:var(--gold);}
+  .header-filters .toggle button{background:rgba(255,255,255,.07);color:#E4EBE5;font-size:11px;padding:7px 11px;
+    border-right:1px solid var(--gold);}
+  .header-filters .toggle button:last-child{border-right:none;}
+  .header-filters .toggle button.active{background:var(--gold);color:#0C141C;}
+  .header-filters .toggle button:hover:not(.active){background:rgba(255,255,255,.16);}
   .toggle{display:flex;border:1px solid var(--gold);border-radius:3px;overflow:hidden;}
   .toggle button{
     font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
@@ -75,12 +100,11 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   .toggle button:not(:last-child){border-right:1px solid var(--gold);}
   /* Slightly tighter than the in-page toggles: seven tab labels have to fit on one row
      beside the banner, or the whole strip wraps and the header grows. */
-  header .toggle button{background:rgba(255,255,255,.07);color:#E4EBE5;padding:7px 8px;}
+  header .toggle button{background:rgba(255,255,255,.07);color:#E4EBE5;padding:7px 7px;white-space:nowrap;}
   header .toggle button.active{background:var(--gold);color:#0C141C;}
-  select#periodSelect{
-    font-size:12.5px;color:var(--ink);
-    padding:6px 10px;border:1px solid var(--line);background:#fff;min-width:200px;border-radius:3px;
-  }
+  select#periodSelect{ min-width:190px; max-width:230px; }
+  select#producerModeSelect, select#sdrScopeSelect{ min-width:170px; max-width:220px; }
+  .header-filters .toggle button{max-width:none;}
 
   .analytics-btn{
     font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
@@ -108,6 +132,10 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
   .sc-filter select{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:12px;padding:5px 8px;border-radius:4px;min-width:100px;}
   .sc-filter select option{color:#111;}
   .sc-header-right{color:#AEBECE;font-size:10.5px;text-align:right;white-space:nowrap;}
+  /* Replaces the old scorecard banner: one caption line above the tiles. */
+  .sc-meta{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-size:11.5px;color:var(--gray);border-bottom:1px solid var(--line);padding:14px 2px 10px;margin:0 0 20px;}
+  .sc-meta #scPeriodSub{font-weight:700;color:var(--ink);letter-spacing:.02em;}
 
   .sc-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:18px;margin-bottom:22px;}
   @media (max-width:1250px){ .sc-grid{grid-template-columns:repeat(3,1fr);} }
@@ -190,7 +218,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
 
   .sc-bottom-row{display:grid;grid-template-columns:1fr;gap:16px;}
   .sc-bottom-card{margin-top:0;}
-  .sc-bottom-title{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:14px;}
+  .sc-bottom-title{font-weight:700;font-size:15px;color:var(--ink);margin-bottom:16px;}
   .sc-nodata{display:flex;align-items:center;gap:16px;padding:20px 4px;}
   .sc-nodata-icon{font-size:32px;color:var(--line);font-weight:300;flex-shrink:0;}
   .sc-nodata-text{font-size:11.5px;color:var(--gray);line-height:1.6;}
@@ -293,7 +321,8 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
     .kpi-row{grid-template-columns:repeat(2,1fr);}
     .two-col, .three-col{grid-template-columns:1fr;}
     header{flex-direction:column;}
-    .view-control{align-items:flex-start;}
+    .view-control{justify-content:flex-start;}
+    .header-filters{justify-content:flex-start;}
   }
 </style>
 </head>
@@ -316,9 +345,48 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
         <button id="btnSdrTransfers" class="sans">SDR Transfers</button>
         <button id="btnToDoList" class="sans">To Do List</button>
       </div>
-      <select id="periodSelect" class="sans"></select>
-      <select id="producerModeSelect" class="sans" style="display:none;font-size:12.5px;color:var(--ink);padding:7px 10px;border:1px solid var(--line);background:#fff;min-width:200px;border-radius:3px;"></select>
-      <button id="analyticsToggle" class="analytics-btn sans" style="display:none;">Data Analytics <span class="chev">▼</span></button>
+      <!-- Every view's filter controls live here, right of the tab strip. Only the active
+           view's group is shown; render() does the switching. -->
+      <div class="header-filters" id="headerFilters">
+        <select id="periodSelect" class="sans"></select>
+        <select id="producerModeSelect" class="sans" style="display:none;"></select>
+
+        <div class="hdr-filter-group" id="scHeaderFilters" style="display:none;">
+          <div class="sc-filter"><label>PERIOD</label><select id="scPeriodFilter">
+            <option value="today">Today</option>
+            <option value="yesterday">Yesterday</option>
+            <option value="folio" selected>Folio</option>
+            <option value="wtd">WTD</option>
+            <option value="mtd">MTD</option>
+            <option value="qtd">QTD</option>
+            <option value="ytd">YTD</option>
+            <option value="custom">Custom</option>
+          </select></div>
+          <div class="sc-filter" id="scFolioFilterWrap"><label>FOLIO</label><select id="scFolioFilter"></select></div>
+          <div class="sc-filter" id="scCustomFromWrap" style="display:none;"><label>FROM</label><input type="date" id="scCustomFrom"></div>
+          <div class="sc-filter" id="scCustomToWrap" style="display:none;"><label>TO</label><input type="date" id="scCustomTo"></div>
+          <div class="sc-filter"><label>PRODUCER</label><select id="scProducerFilter"><option value="all">All</option></select></div>
+          <div class="sc-filter"><label>PRODUCT</label><select id="scProductFilter"><option value="all">All</option></select></div>
+        </div>
+
+        <div class="hdr-filter-group" id="commHeaderFilters" style="display:none;">
+          <div class="toggle">
+            <button id="btnCommCurrentFolio" class="sans commission-folio-btn active" data-folio="2026-07-18">Current Folio (Jul 18 – Aug 19)</button>
+            <button id="btnCommLastFolio" class="sans commission-folio-btn" data-folio="2026-06-19">Last Folio (Jun 19 – Jul 17)</button>
+          </div>
+        </div>
+
+        <div class="hdr-filter-group" id="sdrHeaderFilters" style="display:none;">
+          <div class="toggle">
+            <button id="sdrScopeAll" class="sans sdr-scope-btn active" data-scope="all">All</button>
+            <button id="sdrScopeDaily" class="sans sdr-scope-btn" data-scope="daily">Daily</button>
+            <button id="sdrScopeFolio" class="sans sdr-scope-btn" data-scope="folio">Folio</button>
+          </div>
+          <select id="sdrScopeSelect" class="sans" style="display:none;"></select>
+        </div>
+
+        <button id="analyticsToggle" class="analytics-btn sans" style="display:none;">Data Analytics <span class="chev">▼</span></button>
+      </div>
     </div>
   </header>
 
@@ -688,32 +756,11 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
 
   <!-- COMMISSIONS MODE -->
   <section id="scorecardModeSection" style="display:none;">
-    <div class="sc-header">
-      <div class="sc-header-left">
-        <div class="sc-header-icon">◆</div>
-        <div>
-          <div class="sc-header-title">EXECUTIVE SCORECARD</div>
-          <div class="sc-header-sub" id="scPeriodSub">MTD (Aug 1 – Aug 19, 2026)</div>
-        </div>
-      </div>
-      <div class="sc-header-filters">
-        <div class="sc-filter"><label>PERIOD</label><select id="scPeriodFilter">
-          <option value="today">Today</option>
-          <option value="yesterday">Yesterday</option>
-          <option value="folio" selected>Folio</option>
-          <option value="wtd">WTD</option>
-          <option value="mtd">MTD</option>
-          <option value="qtd">QTD</option>
-          <option value="ytd">YTD</option>
-          <option value="custom">Custom</option>
-        </select></div>
-        <div class="sc-filter" id="scFolioFilterWrap"><label>FOLIO</label><select id="scFolioFilter"></select></div>
-        <div class="sc-filter" id="scCustomFromWrap" style="display:none;"><label>FROM</label><input type="date" id="scCustomFrom" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:12px;padding:5px 8px;border-radius:4px;"></div>
-        <div class="sc-filter" id="scCustomToWrap" style="display:none;"><label>TO</label><input type="date" id="scCustomTo" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:12px;padding:5px 8px;border-radius:4px;"></div>
-        <div class="sc-filter"><label>PRODUCER</label><select id="scProducerFilter"><option value="all">All</option></select></div>
-        <div class="sc-filter"><label>PRODUCT</label><select id="scProductFilter"><option value="all">All</option></select></div>
-      </div>
-      <div class="sc-header-right" id="scUpdatedStamp">Updated Aug 19, 2026</div>
+    <!-- The scorecard's filters now live in the page header, beside the tabs. Only the
+         period/updated caption stays with the section. -->
+    <div class="sc-meta">
+      <span id="scPeriodSub">MTD (Aug 1 – Aug 19, 2026)</span>
+      <span id="scUpdatedStamp">Updated Aug 19, 2026</span>
     </div>
 
     <div class="sc-grid" id="scKpiGrid"></div>
@@ -721,11 +768,11 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
     <div class="sc-bottom-row">
       <div class="card sc-bottom-card">
         <div class="sc-bottom-title">🚩 Written Premium by Producer <span id="scPremiumChartHint" style="font-weight:400;color:var(--gray);font-size:11px;"></span></div>
-        <div class="chart-box" style="height:290px;"><canvas id="scPremiumGoalChart"></canvas></div>
+        <div class="chart-box" style="height:440px;"><canvas id="scPremiumGoalChart"></canvas></div>
       </div>
       <div class="card sc-bottom-card">
         <div class="sc-bottom-title">📈 Quotes &amp; Pipeline by Producer <span id="scQuotePipelineHint" style="font-weight:400;color:var(--gray);font-size:11px;"></span></div>
-        <div class="chart-box" style="height:290px;"><canvas id="scQuotePipelineChart"></canvas></div>
+        <div class="chart-box" style="height:470px;"><canvas id="scQuotePipelineChart"></canvas></div>
       </div>
     </div>
 
@@ -742,11 +789,8 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
       <p style="font-size:11.5px;color:#3A4550;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0 0 16px;line-height:1.55;">
         Computed per the <strong>Ironwood Insurance 2026 California Producer Compensation Plan</strong> (effective Jan 1, 2026), applied to real confirmed sales for the selected folio. Qualify with $20,000+ premium AND 2+ Life term policies (or 1 IUL policy), OR $50,000+ total premium (any mix). Tier is set by total premium per the plan's table: 6% at $20K, 7% at $40K, 8% at $60K, 9% at $80K, 10% at $100K+. Full tier rate applies to Farmers/Foremost premium, half tier rate to Brokered premium, flat 50% to Broker Fee premium (all gated on qualifying), plus a +2% accelerator once total premium exceeds $120K. Only carrier-confirmed premium counts toward qualification — unconfirmed premium is excluded until confirmed. No IUL sales are on record, so that qualification path isn't currently in play.
       </p>
+      <!-- Folio picker moved to the page header, beside the tabs. -->
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-        <div class="toggle" style="border-color:var(--dark-green);width:fit-content;">
-          <button id="btnCommCurrentFolio" class="sans commission-folio-btn active" data-folio="2026-07-18">Current Folio (Jul 18 – Aug 19)</button>
-          <button id="btnCommLastFolio" class="sans commission-folio-btn" data-folio="2026-06-19">Last Folio (Jun 19 – Jul 17)</button>
-        </div>
         <button id="btnDownloadCommXlsx" class="sans" style="padding:9px 16px;background:var(--gold);color:var(--dark-green);border:none;font-weight:700;font-size:12px;cursor:pointer;border-radius:3px;">⬇ Download Commission Workbook (.xlsx)</button>
       </div>
     </div>
@@ -787,14 +831,7 @@ var XLSX={};function make_xlsx_lib(a){a.version="0.18.5",a.style_version="1.2.0"
       <p style="font-size:11.5px;color:#3A4550;background:var(--cream);border-left:3px solid var(--gold);padding:9px 14px;margin:0 0 16px;line-height:1.55;">
         From the <strong>Daily Report for Huddle</strong> tracker's SDR Transfers log. 2 placeholder/test rows were removed from the source; everything below is real transfer activity.
       </p>
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-        <div class="toggle" style="border-color:var(--dark-green);width:fit-content;">
-          <button id="sdrScopeAll" class="sans sdr-scope-btn active" data-scope="all">All</button>
-          <button id="sdrScopeDaily" class="sans sdr-scope-btn" data-scope="daily">Daily</button>
-          <button id="sdrScopeFolio" class="sans sdr-scope-btn" data-scope="folio">Folio</button>
-        </div>
-        <select id="sdrScopeSelect" class="sans" style="display:none;font-size:12.5px;color:var(--ink);padding:7px 10px;border:1px solid var(--line);background:#fff;min-width:200px;border-radius:3px;"></select>
-      </div>
+      <!-- Scope picker moved to the page header, beside the tabs. -->
     </div>
     <div class="card">
       <div class="kpi-row" id="sdrKpiRow" style="margin-bottom:0;"></div>
@@ -1002,7 +1039,10 @@ const ironwoodDataLabels = {
         }
         if(label==='$0' || label==='0') return;
         const pos = element.tooltipPosition ? element.tooltipPosition() : {x:element.x, y:element.y};
-        ctx.font = 'bold 10px Arial';
+        // ironwoodLabelSize lets an individual chart print bigger value labels
+        // (the scorecard's full-width charts) without changing every other chart.
+        const labelSize = (chart.options && chart.options.ironwoodLabelSize) || 10;
+        ctx.font = 'bold ' + labelSize + 'px Arial';
         if(type==='bar'){
           ctx.fillStyle = '#1A1A1A';
           if(chart.options.indexAxis==='y'){
@@ -1072,8 +1112,12 @@ function render(){
   const isIsolatedMode = isCommissionsMode || isSdrMode || isTodoMode || isScorecardMode; // tabs that show ONLY their own content
 
   document.getElementById('scorecardModeSection').style.display = isScorecardMode ? '' : 'none';
+  // Header filter groups — exactly one view's controls shows beside the tabs.
   document.getElementById('periodSelect').style.display = isDailyFolio ? '' : 'none';
   document.getElementById('producerModeSelect').style.display = isProducerMode ? '' : 'none';
+  document.getElementById('scHeaderFilters').style.display = isScorecardMode ? '' : 'none';
+  document.getElementById('commHeaderFilters').style.display = isCommissionsMode ? '' : 'none';
+  document.getElementById('sdrHeaderFilters').style.display = isSdrMode ? '' : 'none';
   // Old detailed KPI row, producer/trend charts, and raw sales table are retired —
   // replaced by the scoped Snapshot section below.
   document.getElementById('kpiRow').style.display = 'none';
@@ -2994,9 +3038,10 @@ function barChart(canvasId, labels, data, opts){
       indexAxis: opts.horizontal ? 'y' : 'x',
       responsive:true, maintainAspectRatio:false,
       // horizontal bars draw their value label outside the bar end - reserve room or it clips
-      layout:{padding:{right: opts.horizontal ? 46 : 0, top: opts.horizontal ? 0 : 14}},
+      layout:{padding:{right: opts.horizontal ? (opts.padRight || 46) : 0, top: opts.horizontal ? 0 : 14}},
       ironwoodLabelMoney: !!opts.money,
       ironwoodLabelPercentValue: !!opts.percent,
+      ironwoodLabelSize: opts.labelSize,
       plugins:{
         legend:{display:false},
         tooltip:{callbacks:{label: c=>{
@@ -3010,9 +3055,11 @@ function barChart(canvasId, labels, data, opts){
         // NOTE: an explicit `callback: undefined` still overrides Chart.js's default tick
         // callback, which made horizontal bars print row indices instead of category names.
         // Only attach a callback when one is actually wanted.
-        const xTicks={font:{family:'Arial',size:10}, maxRotation: opts.horizontal?0:35, minRotation: opts.horizontal?0:35};
+        // opts.tickSize: bump the axis label type on a chart that has room for it.
+        const tickSize = opts.tickSize || 10;
+        const xTicks={font:{family:'Arial',size:tickSize}, maxRotation: opts.horizontal?0:35, minRotation: opts.horizontal?0:35};
         if(opts.horizontal && opts.money) xTicks.callback = v=>'$'+v.toLocaleString();
-        const yTicks={font:{family:'Arial',size:10}};
+        const yTicks={font:{family:'Arial',size:tickSize}};
         if(!opts.horizontal && opts.money) yTicks.callback = v=>'$'+v.toLocaleString();
         const scales = { x:{grid:{color:'#E6EBF1'}, ticks:xTicks}, y:{grid:{color:'#E6EBF1'}, ticks:yTicks} };
         // opts.bare: drop the grid lines and the numeric value axis entirely — for charts
@@ -3070,7 +3117,7 @@ function groupedBarChart(canvasId, labels, series, opts){
     afterDatasetsDraw(chart){
       const ctx = chart.ctx;
       ctx.save();
-      ctx.font = 'bold 9px Arial';
+      ctx.font = 'bold ' + (opts.valueLabelSize || 9) + 'px Arial';
       ctx.fillStyle = '#3A4550';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
@@ -3110,24 +3157,24 @@ function groupedBarChart(canvasId, labels, series, opts){
     data:{ labels: labels, datasets: series.map((s,i)=>({
       label: s.label, data: scaled[i], backgroundColor: s.color,
       _raw: s.data, _format: s.format || fmtMoneyShort,
-      borderRadius:3, borderSkipped:'start', maxBarThickness:14
+      borderRadius:3, borderSkipped:'start', maxBarThickness: opts.barThickness || 14
     })) },
     options:{
       indexAxis:'y',
       responsive:true, maintainAspectRatio:false,
       ironwoodLabels:false,
-      layout:{padding:{right:42}},
+      layout:{padding:{right: opts.padRight || 42}},
       plugins:{
         legend:{display:true, position:'top', align:'end',
           labels:{usePointStyle:true, pointStyle:'circle', boxWidth:7, boxHeight:7, padding:12,
-                  font:{family:'Arial',size:10}, color:'#3A4550'}},
+                  font:{family:'Arial',size: opts.legendSize || 10}, color:'#3A4550'}},
         tooltip:{callbacks:{label: c => `${c.dataset.label}: ${c.dataset._format(c.dataset._raw[c.dataIndex])}`}}
       },
       scales:{
         x:{display:false, grid:{display:false}, border:{display:false}, beginAtZero:true,
            max: opts.perSeriesScale ? 1 : undefined},
         y:{grid:{display:false}, border:{display:true, color:'#C3CDD8', width:1},
-           ticks:{font:{family:'Arial',size:10}, padding:8,
+           ticks:{font:{family:'Arial',size: opts.tickSize || 10}, padding:8,
                   color: (c)=> (opts.dividerBefore != null && c.index >= opts.dividerBefore) ? '#131A21' : '#3A4550'}}
       }
     },
@@ -3504,7 +3551,8 @@ function renderScorecard(){
   window._scPremGoalChart = barChart('scPremiumGoalChart',
     premRows.map(x=>x[0].replace(/\s+/g,' ').trim()),
     premRows.map(x=>Math.round(x[1])),
-    {colors:'#25507F', money:true, horizontal:true, bare:true, maxBarThickness:26,
+    {colors:'#25507F', money:true, horizontal:true, bare:true, maxBarThickness:40,
+     labelSize:14, tickSize:13, padRight:80,
      dividerBefore: premRows.length - 1});
   const premHint = document.getElementById('scPremiumChartHint');
   if(premHint){
@@ -3547,7 +3595,8 @@ function renderScorecard(){
       {label:'Quotes (count, live)', data: qpAll.map(r=>r.quotes),   color:'#25507F', format: v=>fmt(v)},
       {label:'Pipeline ($, live)',   data: qpAll.map(r=>r.pipeline), color:'#B08D57', format: fmtMoneyShort}
     ],
-    {perSeriesScale:true, dividerBefore: qpAll.length - 1});
+    {perSeriesScale:true, barThickness:22, tickSize:13, valueLabelSize:12.5,
+     legendSize:12, padRight:70, dividerBefore: qpAll.length - 1});
   const qpHint = document.getElementById('scQuotePipelineHint');
   if(qpHint){
     qpHint.textContent = `live from AgencyZoom${liveRefreshed ? ' · ' + liveRefreshed : ''} · not folio-scoped · separate scales`;
