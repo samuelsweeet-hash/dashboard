@@ -114,21 +114,21 @@ function ensureXlsxLoaded(){
      beside the banner, or the whole strip wraps and the header grows. */
   header .toggle button{background:rgba(255,255,255,.07);color:#E4EBE5;padding:7px 7px;white-space:nowrap;}
   header .toggle button.active{background:var(--gold);color:#0C141C;}
-  /* Platform-level module nav — sits above the agency dashboard's own header, right-justified.
-     This is the top-level switch between modules; the tab strip in the header below it is
-     always scoped to whichever module is currently selected here. */
-  .module-nav{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:6px;margin:0 0 10px;}
+  /* Platform-level module nav — lives inside the agency dashboard's own header, right-justified
+     as a fixed 2-row x 4-column grid beside the brand title. This is the top-level switch between
+     modules; the tab strip below it is always scoped to whichever module is currently selected here. */
+  .module-nav{display:grid;grid-template-columns:repeat(4,auto);grid-auto-flow:row;justify-content:end;align-content:center;gap:6px;}
   .module-nav button{
     font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
-    padding:7px 12px;border:1px solid var(--dark-green);border-radius:3px;
-    background:var(--card);color:var(--dark-green);cursor:pointer;white-space:nowrap;
+    padding:7px 12px;border:1px solid var(--gold);border-radius:3px;
+    background:rgba(255,255,255,.07);color:#E4EBE5;cursor:pointer;white-space:nowrap;
   }
-  .module-nav button.active{background:var(--dark-green);color:#fff;border-color:var(--dark-green);}
-  .module-nav button:hover:not(.active):not(:disabled){background:var(--pale-green);}
+  .module-nav button.active{background:var(--gold);color:#0C141C;border-color:var(--gold);}
+  .module-nav button:hover:not(.active):not(:disabled){background:rgba(255,255,255,.16);}
   .module-nav button:disabled{
-    background:#EEF1F4;color:#AEB7C2;border-color:#D8DEE5;cursor:not-allowed;
+    background:rgba(255,255,255,.03);color:rgba(228,235,229,.35);border-color:rgba(255,255,255,.18);cursor:not-allowed;
   }
-  @media (max-width:900px){ .module-nav{justify-content:flex-start;} }
+  @media (max-width:900px){ .module-nav{grid-template-columns:repeat(2,auto);justify-content:start;} }
   select#periodSelect{ min-width:190px; max-width:230px; }
   select#producerModeSelect, select#sdrScopeSelect{ min-width:170px; max-width:220px; }
   .header-filters .toggle button{max-width:none;}
@@ -363,22 +363,21 @@ function ensureXlsxLoaded(){
 <body>
 <div class="wrap">
 
-  <div class="module-nav" id="moduleNav">
-    <button class="sans module-btn active" data-module="executive">Executive Command Center</button>
-    <button class="sans module-btn" data-module="sales">Sales Operations</button>
-    <button class="sans module-btn" data-module="staff">Staff Performance</button>
-    <button class="sans module-btn" data-module="commercial" disabled title="Coming soon">Commercial Book</button>
-    <button class="sans module-btn" data-module="retail" disabled title="Coming soon">Retail Book</button>
-    <button class="sans module-btn" data-module="service" disabled title="Coming soon">Service Operations</button>
-    <button class="sans module-btn" data-module="training" disabled title="Coming soon">Continuous Training</button>
-    <button class="sans module-btn" data-module="benchmarking" disabled title="Coming soon">Benchmarking</button>
-  </div>
-
   <header>
     <div>
-      <p class="brand-eyebrow">Ironwood Insurance Agency Dashboard</p>
+      <p class="brand-eyebrow">Agency Platform</p>
       <h1 id="pageTitle">Premium Sold — Folio View</h1>
       <p id="dataFreshnessLabel" style="font-size:10.5px;color:#7C8B9B;margin:5px 0 0;letter-spacing:.03em;">Last updated: —</p>
+    </div>
+    <div class="module-nav" id="moduleNav">
+      <button class="sans module-btn active" data-module="executive">Executive Dashboard</button>
+      <button class="sans module-btn" data-module="sales">Sales Operations</button>
+      <button class="sans module-btn" data-module="staff">Staff Performance</button>
+      <button class="sans module-btn" data-module="commercial" disabled title="Coming soon">Commercial Book</button>
+      <button class="sans module-btn" data-module="retail" disabled title="Coming soon">Retail Book</button>
+      <button class="sans module-btn" data-module="service" disabled title="Coming soon">Service Operations</button>
+      <button class="sans module-btn" data-module="training" disabled title="Coming soon">Continuous Training</button>
+      <button class="sans module-btn" data-module="benchmarking" disabled title="Coming soon">Benchmarking</button>
     </div>
     <div class="view-control">
       <div class="toggle" id="viewToggle">
