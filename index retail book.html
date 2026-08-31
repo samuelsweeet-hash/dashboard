@@ -107,7 +107,7 @@
     const displayedPolicyCount = selectedBroker ? brokerPolicies.length : totalPolicies;
     const displayedPremium = selectedBroker ? brokerPolicies.reduce((s, p) => s + (p.annualPremium || 0), 0) : totalPremium;
 
-    const rowStyle = { display: "grid", gridTemplateColumns: "1fr 1.1fr 120px 170px 90px 130px", alignItems: "center", padding: "14px 16px", borderBottom: "1px solid #eef0f2", background: "#fff", cursor: "pointer" };
+    const rowStyle = { display: "grid", gridTemplateColumns: "190px 260px 120px 170px 90px 110px 1fr", gap: 16, alignItems: "center", padding: "14px 16px", borderBottom: "1px solid #eef0f2", background: "#fff", cursor: "pointer" };
     const policyColTemplate = "1.2fr 1fr 1.2fr 110px 100px 100px 110px 160px";
     const policyRowStyle = { display: "grid", gridTemplateColumns: policyColTemplate, gap: 8, alignItems: "center", padding: "12px 16px", borderBottom: "1px solid #f1f2f4", background: "#fff", cursor: "pointer" };
 
@@ -284,13 +284,14 @@
                 { style: { border: "1px solid #e6e8ec", borderRadius: 12, overflow: "hidden" } },
                 React.createElement(
                   "div",
-                  { style: { display: "grid", gridTemplateColumns: "1fr 1.1fr 120px 170px 90px 130px", fontSize: 10.5, letterSpacing: "0.05em", color: "#9296a0", textTransform: "uppercase", padding: "10px 16px", background: "#f7f8fa", borderBottom: "1px solid #e6e8ec" } },
+                  { style: { display: "grid", gridTemplateColumns: "190px 260px 120px 170px 90px 110px 1fr", gap: 16, fontSize: 10.5, letterSpacing: "0.05em", color: "#9296a0", textTransform: "uppercase", padding: "10px 16px", background: "#f7f8fa", borderBottom: "1px solid #e6e8ec" } },
                   React.createElement("div", null, "Client"),
                   React.createElement("div", null, "Address"),
                   React.createElement("div", { style: { textAlign: "center" } }, "Phone"),
                   React.createElement("div", { style: { textAlign: "center" } }, "Policy Type"),
                   React.createElement("div", { style: { textAlign: "center" } }, "Policies"),
-                  React.createElement("div", { style: { textAlign: "right" } }, "Premium")
+                  React.createElement("div", { style: { textAlign: "right" } }, "Premium"),
+                  React.createElement("div", null)
                 ),
                 clients.map((c) => {
                   const polCount = c.policies.length;
@@ -309,7 +310,8 @@
                     React.createElement("div", { style: { fontSize: 12.5, color: "#6b6f78", textAlign: "center" } }, c.phone),
                     React.createElement("div", { style: { fontSize: 12.5, color: "#6b6f78", textAlign: "center" } }, policyTypesFor(c)),
                     React.createElement("div", { style: { textAlign: "center", fontSize: 14 } }, polCount),
-                    React.createElement("div", { style: { textAlign: "right", fontSize: 14, fontWeight: 700 } }, money(premium))
+                    React.createElement("div", { style: { textAlign: "right", fontSize: 14, fontWeight: 700 } }, money(premium)),
+                    React.createElement("div", null)
                   );
                 })
               )
