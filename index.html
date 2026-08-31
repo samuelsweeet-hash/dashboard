@@ -401,7 +401,7 @@ function ensureXlsxLoaded(){
       <button class="sans module-btn" data-module="sales">Sales Snapshot</button>
       <button class="sans module-btn" data-module="staff">Staff Performance</button>
       <button class="sans module-btn" data-module="commercial">Commercial Book</button>
-      <button class="sans module-btn" data-module="retail" disabled title="Coming soon">Retail Book</button>
+      <button class="sans module-btn" data-module="retail">Retail Book</button>
       <button class="sans module-btn" data-module="service" disabled title="Coming soon">Service Operations</button>
       <button class="sans module-btn" data-module="training" disabled title="Coming soon">Continuous Training</button>
       <button class="sans module-btn" data-module="benchmarking" disabled title="Coming soon">Benchmarking</button>
@@ -1080,6 +1080,10 @@ function ensureXlsxLoaded(){
     <iframe src="index%20gas%20stations.html" title="Commercial Book - Policy Manager" style="width:100%;height:100%;border:0;display:block;"></iframe>
   </div>
 
+  <div class="commercial-book-frame" id="retailBookFrame" style="display:none;flex:1 1 auto;min-height:0;margin:0 -28px;">
+    <iframe src="index%20retail%20book.html" title="Retail Book" style="width:100%;height:100%;border:0;display:block;"></iframe>
+  </div>
+
 </div>
 
 <script>
@@ -1683,6 +1687,13 @@ function filterViewButtons(moduleKey){
   });
 }
 
+// Modules that are separate self-contained apps, shown via iframe in place of the
+// normal dashboard content rather than through the mode/view render() pipeline.
+const IFRAME_MODULES = {
+  commercial: { frameId: 'commercialBookFrame', title: 'Commercial Book' },
+  retail: { frameId: 'retailBookFrame', title: 'Retail Book' }
+};
+
 function selectModule(moduleKey){
   const views = MODULE_VIEWS[moduleKey];
   if(!views) return;
@@ -1690,14 +1701,15 @@ function selectModule(moduleKey){
   document.querySelectorAll('.module-btn').forEach(b=>b.classList.toggle('active', b.dataset.module===moduleKey));
   filterViewButtons(moduleKey);
 
-  // Commercial Book is a separate self-contained app (Policy Manager), shown in place of
-  // the normal dashboard content rather than through the mode/view render() pipeline.
-  const isCommercialBook = moduleKey === 'commercial';
-  document.getElementById('commercialBookFrame').style.display = isCommercialBook ? '' : 'none';
-  document.getElementById('dashScroll').style.display = isCommercialBook ? 'none' : '';
-  document.querySelector('.view-control').style.display = isCommercialBook ? 'none' : '';
-  if(isCommercialBook){
-    document.getElementById('pageTitle').textContent = 'Commercial Book';
+  const iframeModule = IFRAME_MODULES[moduleKey];
+  Object.values(IFRAME_MODULES).forEach(cfg=>{
+    const el = document.getElementById(cfg.frameId);
+    if(el) el.style.display = (iframeModule && cfg.frameId === iframeModule.frameId) ? '' : 'none';
+  });
+  document.getElementById('dashScroll').style.display = iframeModule ? 'none' : '';
+  document.querySelector('.view-control').style.display = iframeModule ? 'none' : '';
+  if(iframeModule){
+    document.getElementById('pageTitle').textContent = iframeModule.title;
     return;
   }
 
