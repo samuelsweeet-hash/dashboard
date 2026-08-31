@@ -114,12 +114,44 @@
         { style: { background: "#12203a", color: "#fff", padding: "20px 22px" } },
         React.createElement(
           "div",
-          { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 } },
+          { style: { display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 20 } },
           React.createElement(
             "div",
-            null,
-            React.createElement("div", { style: { fontSize: 11, letterSpacing: "0.1em", opacity: 0.6, textTransform: "uppercase" } }, "Retail Book"),
-            React.createElement("div", { style: { fontSize: 20, fontWeight: 800, marginTop: 2 } }, "All Clients")
+            { style: { display: "flex", alignItems: "center", flexWrap: "wrap", gap: 18 } },
+            React.createElement(
+              "div",
+              null,
+              React.createElement("div", { style: { fontSize: 11, letterSpacing: "0.1em", opacity: 0.6, textTransform: "uppercase" } }, "Retail Book"),
+              React.createElement("div", { style: { fontSize: 20, fontWeight: 800, marginTop: 2 } }, "All Clients")
+            ),
+            React.createElement(
+              "div",
+              { style: { display: "flex", alignItems: "center", flexWrap: "wrap", gap: 8, paddingLeft: 18, borderLeft: "1px solid rgba(255,255,255,0.14)" } },
+              BROKERS.map((b) => {
+                const isActive = selectedBroker === b;
+                return React.createElement(
+                  "div",
+                  {
+                    key: b,
+                    onClick: () => setSelectedBroker(isActive ? null : b),
+                    style: {
+                      textAlign: "center",
+                      padding: "5px 12px",
+                      borderRadius: 8,
+                      background: isActive ? "#C9962C" : "rgba(255,255,255,0.08)",
+                      minWidth: 84,
+                      cursor: "pointer",
+                      border: isActive ? "1px solid #C9962C" : "1px solid transparent",
+                      transition: "background 0.12s ease"
+                    },
+                    onMouseEnter: (e) => { if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.16)"; },
+                    onMouseLeave: (e) => { if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }
+                  },
+                  React.createElement("div", { style: { fontSize: 10, opacity: isActive ? 0.9 : 0.7, fontWeight: 600, color: isActive ? "#12203a" : "#fff" } }, b),
+                  React.createElement("div", { style: { fontSize: 13, fontWeight: 800, marginTop: 1, color: isActive ? "#12203a" : "#fff" } }, money(brokerTotals[b]))
+                );
+              })
+            )
           ),
           React.createElement(
             "div",
@@ -143,35 +175,6 @@
               React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, money(displayedPremium))
             )
           )
-        ),
-        React.createElement(
-          "div",
-          { style: { display: "flex", flexWrap: "wrap", gap: 10, marginTop: 16, paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.14)" } },
-          React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase", alignSelf: "center", marginRight: 4 } }, "Broker Totals"),
-          BROKERS.map((b) => {
-            const isActive = selectedBroker === b;
-            return React.createElement(
-              "div",
-              {
-                key: b,
-                onClick: () => setSelectedBroker(isActive ? null : b),
-                style: {
-                  textAlign: "center",
-                  padding: "6px 14px",
-                  borderRadius: 8,
-                  background: isActive ? "#C9962C" : "rgba(255,255,255,0.08)",
-                  minWidth: 96,
-                  cursor: "pointer",
-                  border: isActive ? "1px solid #C9962C" : "1px solid transparent",
-                  transition: "background 0.12s ease"
-                },
-                onMouseEnter: (e) => { if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.16)"; },
-                onMouseLeave: (e) => { if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }
-              },
-              React.createElement("div", { style: { fontSize: 10.5, opacity: isActive ? 0.9 : 0.7, fontWeight: 600, color: isActive ? "#12203a" : "#fff" } }, b),
-              React.createElement("div", { style: { fontSize: 14, fontWeight: 800, marginTop: 2, color: isActive ? "#12203a" : "#fff" } }, money(brokerTotals[b]))
-            );
-          })
         )
       ),
       React.createElement(
