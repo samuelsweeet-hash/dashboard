@@ -73,6 +73,7 @@
 
   function ClientList({ clients, onSelect }) {
     const [search, setSearch] = useState("");
+    const [selectedBroker, setSelectedBroker] = useState(null);
     const searchMatches = search.trim() ? clients.filter((c) => c.name.toLowerCase().includes(search.trim().toLowerCase())) : [];
     const totalClients = clients.length;
     const totalPolicies = clients.reduce((sum, c) => sum + c.policies.length, 0);
@@ -87,7 +88,23 @@
       return buckets;
     }, [clients]);
 
+    const brokerPolicies = useMemo(() => {
+      if (!selectedBroker) return [];
+      const rows = [];
+      clients.forEach((c) => c.policies.forEach((p) => {
+        if (p.carrier === selectedBroker) rows.push({ ...p, clientName: c.name, clientAddress: c.address, clientId: c.id });
+      }));
+      rows.sort((a, b) => a.clientName.localeCompare(b.clientName));
+      return rows;
+    }, [clients, selectedBroker]);
+
+    const displayedClientCount = selectedBroker ? new Set(brokerPolicies.map((p) => p.clientId)).size : totalClients;
+    const displayedPolicyCount = selectedBroker ? brokerPolicies.length : totalPolicies;
+    const displayedPremium = selectedBroker ? brokerPolicies.reduce((s, p) => s + (p.annualPremium || 0), 0) : totalPremium;
+
     const rowStyle = { display: "grid", gridTemplateColumns: "1fr 1.4fr 110px 150px", alignItems: "center", padding: "14px 16px", borderBottom: "1px solid #eef0f2", background: "#fff", cursor: "pointer" };
+    const policyColTemplate = "1.2fr 1fr 1.2fr 110px 100px 100px 110px 160px";
+    const policyRowStyle = { display: "grid", gridTemplateColumns: policyColTemplate, gap: 8, alignItems: "center", padding: "12px 16px", borderBottom: "1px solid #f1f2f4", background: "#fff", cursor: "pointer" };
 
     return React.createElement(
       "div",
@@ -111,102 +128,180 @@
               "div",
               { style: { textAlign: "center" } },
               React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase" } }, "Clients"),
-              React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, totalClients)
+              React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, displayedClientCount)
             ),
             React.createElement(
               "div",
               { style: { textAlign: "center" } },
               React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase" } }, "Policy count"),
-              React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, totalPolicies)
+              React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, displayedPolicyCount)
             ),
             React.createElement(
               "div",
               { style: { textAlign: "right" } },
               React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase" } }, "Book premium"),
-              React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, money(totalPremium))
+              React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, money(displayedPremium))
             )
           )
+        ),
+        React.createElement(
+          "div",
+          { style: { display: "flex", flexWrap: "wrap", gap: 10, marginTop: 16, paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.14)" } },
+          React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase", alignSelf: "center", marginRight: 4 } }, "Broker Totals"),
+          BROKERS.map((b) => {
+            const isActive = selectedBroker === b;
+            return React.createElement(
+              "div",
+              {
+                key: b,
+                onClick: () => setSelectedBroker(isActive ? null : b),
+                style: {
+                  textAlign: "center",
+                  padding: "6px 14px",
+                  borderRadius: 8,
+                  background: isActive ? "#C9962C" : "rgba(255,255,255,0.08)",
+                  minWidth: 96,
+                  cursor: "pointer",
+                  border: isActive ? "1px solid #C9962C" : "1px solid transparent",
+                  transition: "background 0.12s ease"
+                },
+                onMouseEnter: (e) => { if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.16)"; },
+                onMouseLeave: (e) => { if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }
+              },
+              React.createElement("div", { style: { fontSize: 10.5, opacity: isActive ? 0.9 : 0.7, fontWeight: 600, color: isActive ? "#12203a" : "#fff" } }, b),
+              React.createElement("div", { style: { fontSize: 14, fontWeight: 800, marginTop: 2, color: isActive ? "#12203a" : "#fff" } }, money(brokerTotals[b]))
+            );
+          })
         )
       ),
       React.createElement(
         "div",
         { style: { padding: "20px 22px 60px" } },
-        React.createElement(
-          "div",
-          { style: { border: "1px solid #e6e8ec", borderRadius: 12, background: "#fff", padding: "14px 16px", marginBottom: 16 } },
-          React.createElement("div", { style: { fontSize: 12, fontWeight: 800, color: "#12203a", marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.05em" } }, "Broker Totals"),
-          React.createElement(
-            "div",
-            { style: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10 } },
-            BROKERS.map((b) => React.createElement(
-              "div",
-              { key: b, style: { textAlign: "center", padding: "8px 4px", borderRadius: 8, background: "#f7f8fa" } },
-              React.createElement("div", { style: { fontSize: 11, color: "#7d818a", fontWeight: 600 } }, b),
-              React.createElement("div", { style: { fontSize: 15, fontWeight: 800, color: "#12203a", marginTop: 2 } }, money(brokerTotals[b]))
-            ))
-          )
-        ),
-        React.createElement(
-          "div",
-          { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10, flexWrap: "wrap", gap: 10 } },
-          React.createElement("div", { style: { fontSize: 15, fontWeight: 800, color: "#12203a" } }, `Clients (${clients.length})`),
-          React.createElement(
-            "div",
-            { style: { position: "relative" } },
-            React.createElement(Search, { size: 14, color: "#9296a0", style: { position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)" } }),
-            React.createElement("input", {
-              value: search,
-              onChange: (e) => setSearch(e.target.value),
-              placeholder: "Search clients\u2026",
-              style: { padding: "8px 12px 8px 30px", borderRadius: 9, border: "1px solid #d7dae0", fontSize: 12.5, width: 260, fontFamily: "inherit" }
-            }),
-            search.trim() && React.createElement(
-              "div",
-              { style: { position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, background: "#fff", border: "1px solid #e6e8ec", borderRadius: 9, boxShadow: "0 8px 24px rgba(20,24,33,0.12)", zIndex: 20, maxHeight: 280, overflowY: "auto" } },
-              searchMatches.length > 0 ? searchMatches.map((c) => React.createElement(
+        selectedBroker
+          ? React.createElement(
+              React.Fragment,
+              null,
+              React.createElement(
                 "div",
-                {
-                  key: c.id,
-                  onClick: () => { onSelect(c); setSearch(""); },
-                  style: { padding: "9px 12px", fontSize: 13, cursor: "pointer", borderBottom: "1px solid #f1f2f4", background: "#fff" },
-                  onMouseEnter: (e) => { e.currentTarget.style.background = "#f7f9fc"; },
-                  onMouseLeave: (e) => { e.currentTarget.style.background = "#fff"; }
-                },
-                c.name
-              )) : React.createElement("div", { style: { padding: "9px 12px", fontSize: 12.5, color: "#9296a0" } }, "No matching clients")
+                { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10, flexWrap: "wrap", gap: 10 } },
+                React.createElement(
+                  "div",
+                  { style: { fontSize: 15, fontWeight: 800, color: "#12203a" } },
+                  `Policies — ${selectedBroker} (${brokerPolicies.length})`
+                ),
+                React.createElement(
+                  "div",
+                  {
+                    onClick: () => setSelectedBroker(null),
+                    style: { fontSize: 12.5, fontWeight: 700, color: "#12203a", cursor: "pointer", padding: "6px 12px", borderRadius: 8, border: "1px solid #d7dae0", background: "#fff" },
+                    onMouseEnter: (e) => { e.currentTarget.style.background = "#f7f8fa"; },
+                    onMouseLeave: (e) => { e.currentTarget.style.background = "#fff"; }
+                  },
+                  "✕ Clear filter"
+                )
+              ),
+              React.createElement(
+                "div",
+                { style: { border: "1px solid #e6e8ec", borderRadius: 12, overflow: "hidden" } },
+                React.createElement(
+                  "div",
+                  { style: { display: "grid", gridTemplateColumns: policyColTemplate, gap: 8, fontSize: 10.5, letterSpacing: "0.05em", color: "#9296a0", textTransform: "uppercase", padding: "10px 16px", background: "#f7f8fa", borderBottom: "1px solid #e6e8ec" } },
+                  React.createElement("div", null, "Client"),
+                  React.createElement("div", null, "Kind"),
+                  React.createElement("div", null, "Coverage Type"),
+                  React.createElement("div", null, "Policy #"),
+                  React.createElement("div", { style: { textAlign: "center" } }, "Effective"),
+                  React.createElement("div", { style: { textAlign: "center" } }, "Expires"),
+                  React.createElement("div", { style: { textAlign: "right" } }, "Premium"),
+                  React.createElement("div", { style: { textAlign: "right" } }, "Status")
+                ),
+                brokerPolicies.length > 0
+                  ? brokerPolicies.map((p) => React.createElement(
+                      "div",
+                      {
+                        key: p.id,
+                        onClick: () => onSelect({ id: p.clientId, name: p.clientName, address: p.clientAddress, policies: clients.find((c) => c.id === p.clientId).policies }),
+                        style: policyRowStyle,
+                        onMouseEnter: (e) => { e.currentTarget.style.background = "#f7f8fa"; },
+                        onMouseLeave: (e) => { e.currentTarget.style.background = "#fff"; }
+                      },
+                      React.createElement("div", { style: { fontSize: 13.5, fontWeight: 700, color: "#12203a" } }, p.clientName),
+                      React.createElement("div", { style: { fontSize: 12.5, color: "#3a3f47" } }, p.kind),
+                      React.createElement("div", { style: { fontSize: 12.5, color: "#3a3f47" } }, p.coverageType),
+                      React.createElement("div", { style: { fontSize: 11.5, color: "#6b6f78", fontFamily: "monospace" } }, p.policyNumber),
+                      React.createElement("div", { style: { textAlign: "center", fontSize: 12.5, color: "#6b6f78" } }, p.effective),
+                      React.createElement("div", { style: { textAlign: "center", fontSize: 12.5, color: "#6b6f78" } }, p.expiration),
+                      React.createElement("div", { style: { textAlign: "right", fontSize: 13.5, fontWeight: 700, color: "#12203a" } }, money(p.annualPremium)),
+                      React.createElement("div", { style: { textAlign: "right", fontSize: 10.5, fontWeight: 700, color: statusColor(p.paymentStatus) } }, p.paymentStatus)
+                    ))
+                  : React.createElement("div", { style: { padding: "16px", fontSize: 12.5, color: "#9296a0" } }, "No policies found for this broker.")
+              )
             )
-          )
-        ),
-        React.createElement(
-          "div",
-          { style: { border: "1px solid #e6e8ec", borderRadius: 12, overflow: "hidden" } },
-          React.createElement(
-            "div",
-            { style: { display: "grid", gridTemplateColumns: "1fr 1.4fr 110px 150px", fontSize: 10.5, letterSpacing: "0.05em", color: "#9296a0", textTransform: "uppercase", padding: "10px 16px", background: "#f7f8fa", borderBottom: "1px solid #e6e8ec" } },
-            React.createElement("div", null, "Client"),
-            React.createElement("div", null, "Address"),
-            React.createElement("div", { style: { textAlign: "center" } }, "Policies"),
-            React.createElement("div", { style: { textAlign: "right" } }, "Premium")
-          ),
-          clients.map((c) => {
-            const polCount = c.policies.length;
-            const premium = c.policies.reduce((s, p) => s + (p.annualPremium || 0), 0);
-            return React.createElement(
-              "div",
-              {
-                key: c.id,
-                onClick: () => onSelect(c),
-                style: rowStyle,
-                onMouseEnter: (e) => { e.currentTarget.style.background = "#f7f8fa"; },
-                onMouseLeave: (e) => { e.currentTarget.style.background = "#fff"; }
-              },
-              React.createElement("div", { style: { fontSize: 14, fontWeight: 700, color: "#12203a" } }, c.name),
-              React.createElement("div", { style: { fontSize: 12.5, color: "#6b6f78" } }, c.address),
-              React.createElement("div", { style: { textAlign: "center", fontSize: 14 } }, polCount),
-              React.createElement("div", { style: { textAlign: "right", fontSize: 14, fontWeight: 700 } }, money(premium))
-            );
-          })
-        )
+          : React.createElement(
+              React.Fragment,
+              null,
+              React.createElement(
+                "div",
+                { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10, flexWrap: "wrap", gap: 10 } },
+                React.createElement("div", { style: { fontSize: 15, fontWeight: 800, color: "#12203a" } }, `Clients (${clients.length})`),
+                React.createElement(
+                  "div",
+                  { style: { position: "relative" } },
+                  React.createElement(Search, { size: 14, color: "#9296a0", style: { position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)" } }),
+                  React.createElement("input", {
+                    value: search,
+                    onChange: (e) => setSearch(e.target.value),
+                    placeholder: "Search clients…",
+                    style: { padding: "8px 12px 8px 30px", borderRadius: 9, border: "1px solid #d7dae0", fontSize: 12.5, width: 260, fontFamily: "inherit" }
+                  }),
+                  search.trim() && React.createElement(
+                    "div",
+                    { style: { position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, background: "#fff", border: "1px solid #e6e8ec", borderRadius: 9, boxShadow: "0 8px 24px rgba(20,24,33,0.12)", zIndex: 20, maxHeight: 280, overflowY: "auto" } },
+                    searchMatches.length > 0 ? searchMatches.map((c) => React.createElement(
+                      "div",
+                      {
+                        key: c.id,
+                        onClick: () => { onSelect(c); setSearch(""); },
+                        style: { padding: "9px 12px", fontSize: 13, cursor: "pointer", borderBottom: "1px solid #f1f2f4", background: "#fff" },
+                        onMouseEnter: (e) => { e.currentTarget.style.background = "#f7f9fc"; },
+                        onMouseLeave: (e) => { e.currentTarget.style.background = "#fff"; }
+                      },
+                      c.name
+                    )) : React.createElement("div", { style: { padding: "9px 12px", fontSize: 12.5, color: "#9296a0" } }, "No matching clients")
+                  )
+                )
+              ),
+              React.createElement(
+                "div",
+                { style: { border: "1px solid #e6e8ec", borderRadius: 12, overflow: "hidden" } },
+                React.createElement(
+                  "div",
+                  { style: { display: "grid", gridTemplateColumns: "1fr 1.4fr 110px 150px", fontSize: 10.5, letterSpacing: "0.05em", color: "#9296a0", textTransform: "uppercase", padding: "10px 16px", background: "#f7f8fa", borderBottom: "1px solid #e6e8ec" } },
+                  React.createElement("div", null, "Client"),
+                  React.createElement("div", null, "Address"),
+                  React.createElement("div", { style: { textAlign: "center" } }, "Policies"),
+                  React.createElement("div", { style: { textAlign: "right" } }, "Premium")
+                ),
+                clients.map((c) => {
+                  const polCount = c.policies.length;
+                  const premium = c.policies.reduce((s, p) => s + (p.annualPremium || 0), 0);
+                  return React.createElement(
+                    "div",
+                    {
+                      key: c.id,
+                      onClick: () => onSelect(c),
+                      style: rowStyle,
+                      onMouseEnter: (e) => { e.currentTarget.style.background = "#f7f8fa"; },
+                      onMouseLeave: (e) => { e.currentTarget.style.background = "#fff"; }
+                    },
+                    React.createElement("div", { style: { fontSize: 14, fontWeight: 700, color: "#12203a" } }, c.name),
+                    React.createElement("div", { style: { fontSize: 12.5, color: "#6b6f78" } }, c.address),
+                    React.createElement("div", { style: { textAlign: "center", fontSize: 14 } }, polCount),
+                    React.createElement("div", { style: { textAlign: "right", fontSize: 14, fontWeight: 700 } }, money(premium))
+                  );
+                })
+              )
+            )
       )
     );
   }
@@ -268,26 +363,22 @@
               React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, money(totalPremium))
             )
           )
+        ),
+        React.createElement(
+          "div",
+          { style: { display: "flex", flexWrap: "wrap", gap: 10, marginTop: 16, paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.14)" } },
+          React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase", alignSelf: "center", marginRight: 4 } }, "Broker Totals"),
+          Object.keys(brokerTotals).map((b) => React.createElement(
+            "div",
+            { key: b, style: { textAlign: "center", padding: "6px 14px", borderRadius: 8, background: "rgba(255,255,255,0.08)", minWidth: 96 } },
+            React.createElement("div", { style: { fontSize: 10.5, opacity: 0.7, fontWeight: 600 } }, b),
+            React.createElement("div", { style: { fontSize: 14, fontWeight: 800, marginTop: 2 } }, money(brokerTotals[b]))
+          ))
         )
       ),
       React.createElement(
         "div",
         { style: { padding: "20px 22px 60px" } },
-        React.createElement(
-          "div",
-          { style: { border: "1px solid #e6e8ec", borderRadius: 12, background: "#fff", padding: "14px 16px", marginBottom: 16 } },
-          React.createElement("div", { style: { fontSize: 12, fontWeight: 800, color: "#12203a", marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.05em" } }, "Broker Totals"),
-          React.createElement(
-            "div",
-            { style: { display: "flex", flexWrap: "wrap", gap: 10 } },
-            Object.keys(brokerTotals).map((b) => React.createElement(
-              "div",
-              { key: b, style: { textAlign: "center", padding: "8px 14px", borderRadius: 8, background: "#f7f8fa", minWidth: 100 } },
-              React.createElement("div", { style: { fontSize: 11, color: "#7d818a", fontWeight: 600 } }, b),
-              React.createElement("div", { style: { fontSize: 15, fontWeight: 800, color: "#12203a", marginTop: 2 } }, money(brokerTotals[b]))
-            ))
-          )
-        ),
         React.createElement(
           "div",
           { style: { fontSize: 15, fontWeight: 800, color: "#12203a", marginBottom: 10 } },
