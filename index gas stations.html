@@ -4327,8 +4327,84 @@
       )
     );
   }
+  // xlsx-js-style is loaded on demand (from xlsx-js-style.min.js next to this file) only when
+  // the export button is first clicked, so the library's weight never hits normal page loads.
+  let _xlsxLoadPromise = null;
+  function ensureXlsxLoaded() {
+    if (window.XLSX && window.XLSX.writeFile) return Promise.resolve();
+    if (_xlsxLoadPromise) return _xlsxLoadPromise;
+    _xlsxLoadPromise = new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = "xlsx-js-style.min.js";
+      s.onload = () => resolve();
+      s.onerror = () => { _xlsxLoadPromise = null; reject(new Error("Could not load xlsx-js-style.min.js \u2014 make sure it is saved in the same folder as this file.")); };
+      document.head.appendChild(s);
+    });
+    return _xlsxLoadPromise;
+  }
+
+  function buildCommercialBookSheet(clients) {
+    const DARK_NAVY = "12203A", HEADER_ROW = "D9E2EC", ALT_ROW = "F5F7FA", WHITE = "FFFFFF";
+    const HEADERS = ["Client", "Contact", "Phone", "Location", "Address", "Kind", "Policy #", "Carrier", "Coverage Type", "Effective", "Expires", "Premium", "Status"];
+    const cells = {};
+    function setCell(row, col, value, style, numFmt) {
+      const addr = XLSX.utils.encode_cell({ r: row, c: col });
+      const cell = typeof value === "number" ? { t: "n", v: value } : { t: "s", v: value == null ? "" : String(value) };
+      if (style) cell.s = style;
+      if (numFmt) cell.z = numFmt;
+      cells[addr] = cell;
+    }
+    HEADERS.forEach((h, c) => setCell(0, c, h, {
+      font: { bold: true, color: { rgb: WHITE } },
+      fill: { fgColor: { rgb: DARK_NAVY } },
+      alignment: { horizontal: c >= 9 && c <= 11 ? "center" : "left" }
+    }));
+    let r = 1;
+    clients.forEach((client) => {
+      client.locations.forEach((loc) => {
+        loc.policies.forEach((p) => {
+          const bg = r % 2 === 0 ? ALT_ROW : WHITE;
+          const base = { fill: { fgColor: { rgb: bg } } };
+          setCell(r, 0, client.name, base);
+          setCell(r, 1, client.contact, base);
+          setCell(r, 2, client.phone, { ...base, alignment: { horizontal: "center" } });
+          setCell(r, 3, loc.name, base);
+          setCell(r, 4, loc.address, base);
+          setCell(r, 5, p.kind, base);
+          setCell(r, 6, p.policyNumber, base);
+          setCell(r, 7, p.carrier, base);
+          setCell(r, 8, p.coverageType, base);
+          setCell(r, 9, p.effective, { ...base, alignment: { horizontal: "center" } });
+          setCell(r, 10, p.expiration, { ...base, alignment: { horizontal: "center" } });
+          setCell(r, 11, p.annualPremium || 0, { ...base, alignment: { horizontal: "right" } }, '"$"#,##0.00');
+          setCell(r, 12, p.paymentStatus, { ...base, alignment: { horizontal: "center" } });
+          r++;
+        });
+      });
+    });
+    const ref = XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: r - 1, c: HEADERS.length - 1 } });
+    const ws = { ...cells, "!ref": ref };
+    ws["!cols"] = [{ wch: 22 }, { wch: 18 }, { wch: 16 }, { wch: 22 }, { wch: 32 }, { wch: 16 }, { wch: 13 }, { wch: 22 }, { wch: 26 }, { wch: 12 }, { wch: 12 }, { wch: 13 }, { wch: 24 }];
+    return ws;
+  }
+
+  function downloadCommercialBookWorkbook(clients) {
+    const wb = XLSX.utils.book_new();
+    const ws = buildCommercialBookSheet(clients);
+    XLSX.utils.book_append_sheet(wb, ws, "Commercial Book");
+    XLSX.writeFile(wb, "Ironwood_Commercial_Book.xlsx");
+  }
+
   function ClientList({ clients, onSelect }) {
     const [search, setSearch] = useState("");
+    const [isExporting, setIsExporting] = useState(false);
+    const handleExport = () => {
+      setIsExporting(true);
+      ensureXlsxLoaded()
+        .then(() => downloadCommercialBookWorkbook(clients))
+        .catch((err) => { console.error(err); alert(err.message); })
+        .finally(() => setIsExporting(false));
+    };
     const searchMatches = search.trim() ? clients.filter((c) => c.name.toLowerCase().includes(search.trim().toLowerCase())) : [];
     const totalLocations = clients.reduce((sum, c) => sum + c.locations.length, 0);
     const totalPolicies = clients.reduce((sum, c) => sum + c.locations.reduce((s, l) => s + l.policies.length, 0), 0);
@@ -4379,7 +4455,23 @@
         React.createElement(
           "div",
           { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10, flexWrap: "wrap", gap: 10 } },
-          React.createElement("div", { style: { fontSize: 15, fontWeight: 800, color: "#12203a" } }, `Clients (${clients.length})`),
+          React.createElement(
+            "div",
+            { style: { display: "flex", alignItems: "center", gap: 12 } },
+            React.createElement(
+              "button",
+              {
+                onClick: handleExport,
+                disabled: isExporting,
+                style: { display: "flex", alignItems: "center", gap: 6, fontSize: 12.5, fontWeight: 700, color: "#12203a", cursor: isExporting ? "default" : "pointer", padding: "7px 14px", borderRadius: 8, border: "1px solid #d7dae0", background: "#fff", opacity: isExporting ? 0.6 : 1 },
+                onMouseEnter: (e) => { if (!isExporting) e.currentTarget.style.background = "#f7f8fa"; },
+                onMouseLeave: (e) => { e.currentTarget.style.background = "#fff"; }
+              },
+              React.createElement(Download, { size: 14 }),
+              isExporting ? "Preparing\u2026" : "Export to Excel"
+            ),
+            React.createElement("div", { style: { fontSize: 15, fontWeight: 800, color: "#12203a" } }, `Clients (${clients.length})`)
+          ),
           React.createElement(
             "div",
             { style: { position: "relative" } },
