@@ -78,8 +78,7 @@
   const RotateCcw = makeIcon(/* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("polyline", { points: "1 4 1 10 7 10" }), /* @__PURE__ */ React.createElement("path", { d: "M3.5 15a9 9 0 1 0 2.1-9.4L1 10" })));
   const Info = makeIcon(/* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("circle", { cx: "12", cy: "12", r: "10" }), /* @__PURE__ */ React.createElement("line", { x1: "12", y1: "16", x2: "12", y2: "12" }), /* @__PURE__ */ React.createElement("line", { x1: "12", y1: "8", x2: "12.01", y2: "8" })));
   const Download = makeIcon(/* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" }), /* @__PURE__ */ React.createElement("polyline", { points: "7 10 12 15 17 10" }), /* @__PURE__ */ React.createElement("line", { x1: "12", y1: "15", x2: "12", y2: "3" })));
-  const AGENCY = {
-    name: "Owner - Gas Stations",
+  const AGENCY_BASE = {
     agentId: "CA1792",
     producers: ["Joe Lopez (USG)", "Ximena Cruz (Farmers)"],
     reportDate: "08/28/2026"
@@ -119,7 +118,7 @@
     }
     return 0;
   }
-  const LOCATIONS = [
+  const OWNER_GAS_STATIONS_LOCATIONS = [
     {
       id: "star9",
       name: "Star Gas & Mart #9",
@@ -467,6 +466,2480 @@
         }
       ]
     }
+  ];
+
+  const FAKE_CLIENTS = [
+  {
+    "id": "fake-client-23",
+    "name": "Bayview Medical Partners",
+    "locations": [
+      {
+        "id": "fake23-loc1",
+        "name": "Bayview Medical Partners",
+        "address": "2229 Mission Blvd, Fairfield, CA 91430",
+        "policies": [
+          {
+            "id": "fake23-loc1-pr",
+            "kind": "Property",
+            "policyNumber": "CCP4475523",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "10/07/2026",
+            "expiration": "10/07/2027",
+            "annualPremium": 3769.29,
+            "invoiceNumber": "4623062",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake23-loc1-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A01047572",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "06/25/2026",
+            "expiration": "06/25/2027",
+            "annualPremium": 6196.87,
+            "invoiceNumber": "5651899",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-2",
+    "name": "Brightwater Builders",
+    "locations": [
+      {
+        "id": "fake2-loc1",
+        "name": "Brightwater Builders #1",
+        "address": "3852 Main St, Merced, CA 93287",
+        "policies": [
+          {
+            "id": "fake2-loc1-pr",
+            "kind": "Property",
+            "policyNumber": "CCP3871230",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "12/22/2026",
+            "expiration": "12/22/2027",
+            "annualPremium": 14488.65,
+            "invoiceNumber": "9961380",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake2-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV4684531",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "03/15/2026",
+            "expiration": "03/15/2027",
+            "annualPremium": 6794.55,
+            "invoiceNumber": "6440561",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake2-loc2",
+        "name": "Brightwater Builders #2",
+        "address": "6030 Commerce Dr, Stockton, CA 94175",
+        "policies": [
+          {
+            "id": "fake2-loc2-pr",
+            "kind": "Property",
+            "policyNumber": "CCP9375710",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "10/23/2026",
+            "expiration": "10/23/2027",
+            "annualPremium": 8321.54,
+            "invoiceNumber": "7637601",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake2-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A05408072",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "03/09/2026",
+            "expiration": "03/09/2027",
+            "annualPremium": 6105.75,
+            "invoiceNumber": "8187926",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake2-loc3",
+        "name": "Brightwater Builders #3",
+        "address": "1976 Mission Blvd, Fairfield, CA 95251",
+        "policies": [
+          {
+            "id": "fake2-loc3-pr",
+            "kind": "Property",
+            "policyNumber": "CCP8082668",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "02/05/2026",
+            "expiration": "02/05/2027",
+            "annualPremium": 14107.75,
+            "invoiceNumber": "2065818",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake2-loc3-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A09877065",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "07/20/2026",
+            "expiration": "07/20/2027",
+            "annualPremium": 15955.4,
+            "invoiceNumber": "5218028",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-1",
+    "name": "Brightwater Grill",
+    "locations": [
+      {
+        "id": "fake1-loc1",
+        "name": "Brightwater Grill #1",
+        "address": "588 Industrial Pkwy, Oakland, CA 91906",
+        "policies": [
+          {
+            "id": "fake1-loc1-pr",
+            "kind": "Property",
+            "policyNumber": "CCP2458591",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "03/24/2026",
+            "expiration": "03/24/2027",
+            "annualPremium": 4396.16,
+            "invoiceNumber": "8078673",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake1-loc2",
+        "name": "Brightwater Grill #2",
+        "address": "6324 Industrial Pkwy, Turlock, CA 92818",
+        "policies": [
+          {
+            "id": "fake1-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A08038374",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "12/21/2026",
+            "expiration": "12/21/2027",
+            "annualPremium": 12565.24,
+            "invoiceNumber": "4698379",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake1-loc2-pr",
+            "kind": "Property",
+            "policyNumber": "CCP1109031",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "10/09/2026",
+            "expiration": "10/09/2027",
+            "annualPremium": 17474.46,
+            "invoiceNumber": "3678638",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake1-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV6647119",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "06/09/2026",
+            "expiration": "06/09/2027",
+            "annualPremium": 4554.79,
+            "invoiceNumber": "2714803",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake1-loc3",
+        "name": "Brightwater Grill #3",
+        "address": "1754 Center St, Fairfield, CA 93715",
+        "policies": [
+          {
+            "id": "fake1-loc3-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV7350753",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "09/04/2026",
+            "expiration": "09/04/2027",
+            "annualPremium": 12731.16,
+            "invoiceNumber": "2322047",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake1-loc3-pr",
+            "kind": "Property",
+            "policyNumber": "CCP7067228",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "11/20/2026",
+            "expiration": "11/20/2027",
+            "annualPremium": 18880.86,
+            "invoiceNumber": "4226067",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake1-loc3-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A05855124",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "01/22/2026",
+            "expiration": "01/22/2027",
+            "annualPremium": 7120.83,
+            "invoiceNumber": "2338687",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-3",
+    "name": "Cedar Diner",
+    "locations": [
+      {
+        "id": "fake3-loc1",
+        "name": "Cedar Diner #1",
+        "address": "8417 Industrial Pkwy, Antioch, CA 92445",
+        "policies": [
+          {
+            "id": "fake3-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV5418934",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "01/24/2026",
+            "expiration": "01/24/2027",
+            "annualPremium": 11758.53,
+            "invoiceNumber": "9398441",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake3-loc2",
+        "name": "Cedar Diner #2",
+        "address": "1233 Mission Blvd, Stockton, CA 91052",
+        "policies": [
+          {
+            "id": "fake3-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A09897858",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "06/25/2026",
+            "expiration": "06/25/2027",
+            "annualPremium": 6357.81,
+            "invoiceNumber": "1009594",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake3-loc2-pr",
+            "kind": "Property",
+            "policyNumber": "CCP7089806",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "08/01/2026",
+            "expiration": "08/01/2027",
+            "annualPremium": 4569.55,
+            "invoiceNumber": "6159230",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake3-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV2321324",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "01/08/2026",
+            "expiration": "01/08/2027",
+            "annualPremium": 11780.1,
+            "invoiceNumber": "2437026",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake3-loc3",
+        "name": "Cedar Diner #3",
+        "address": "9741 Commerce Dr, Fresno, CA 90582",
+        "policies": [
+          {
+            "id": "fake3-loc3-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV4553384",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "09/28/2026",
+            "expiration": "09/28/2027",
+            "annualPremium": 9065.94,
+            "invoiceNumber": "4374754",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake3-loc3-pr",
+            "kind": "Property",
+            "policyNumber": "CCP8350099",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "07/22/2026",
+            "expiration": "07/22/2027",
+            "annualPremium": 14522.74,
+            "invoiceNumber": "9683481",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake3-loc3-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A06672134",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "02/08/2026",
+            "expiration": "02/08/2027",
+            "annualPremium": 7084.02,
+            "invoiceNumber": "1352896",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake3-loc4",
+        "name": "Cedar Diner #4",
+        "address": "5904 Center St, Tracy, CA 93826",
+        "policies": [
+          {
+            "id": "fake3-loc4-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A02188789",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "02/02/2026",
+            "expiration": "02/02/2027",
+            "annualPremium": 14385.81,
+            "invoiceNumber": "9626108",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake3-loc4-pr",
+            "kind": "Property",
+            "policyNumber": "CCP3219824",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "05/22/2026",
+            "expiration": "05/22/2027",
+            "annualPremium": 11480.17,
+            "invoiceNumber": "8930103",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake3-loc4-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV2582524",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "08/26/2026",
+            "expiration": "08/26/2027",
+            "annualPremium": 7070.6,
+            "invoiceNumber": "2626229",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-14",
+    "name": "Cedar Motors",
+    "locations": [
+      {
+        "id": "fake14-loc1",
+        "name": "Cedar Motors #1",
+        "address": "2985 Mission Blvd, Antioch, CA 92213",
+        "policies": [
+          {
+            "id": "fake14-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV8713146",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "06/21/2026",
+            "expiration": "06/21/2027",
+            "annualPremium": 11915.75,
+            "invoiceNumber": "3566765",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake14-loc2",
+        "name": "Cedar Motors #2",
+        "address": "3575 Broadway, Fairfield, CA 92789",
+        "policies": [
+          {
+            "id": "fake14-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A05502929",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "07/27/2026",
+            "expiration": "07/27/2027",
+            "annualPremium": 12906.8,
+            "invoiceNumber": "6407373",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake14-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV5091349",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "02/09/2026",
+            "expiration": "02/09/2027",
+            "annualPremium": 11816.31,
+            "invoiceNumber": "8796514",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake14-loc2-pr",
+            "kind": "Property",
+            "policyNumber": "CCP6452832",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "06/01/2026",
+            "expiration": "06/01/2027",
+            "annualPremium": 11644.67,
+            "invoiceNumber": "4050766",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake14-loc3",
+        "name": "Cedar Motors #3",
+        "address": "7442 Main St, Bakersfield, CA 92411",
+        "policies": [
+          {
+            "id": "fake14-loc3-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A04205394",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "09/01/2026",
+            "expiration": "09/01/2027",
+            "annualPremium": 10441.21,
+            "invoiceNumber": "2436347",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake14-loc3-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV5031966",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "12/14/2026",
+            "expiration": "12/14/2027",
+            "annualPremium": 7885.78,
+            "invoiceNumber": "8987516",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake14-loc4",
+        "name": "Cedar Motors #4",
+        "address": "7071 Mission Blvd, Merced, CA 92883",
+        "policies": [
+          {
+            "id": "fake14-loc4-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV7191135",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "12/08/2026",
+            "expiration": "12/08/2027",
+            "annualPremium": 6062.06,
+            "invoiceNumber": "8939993",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-19",
+    "name": "Coastal Lawn & Garden",
+    "locations": [
+      {
+        "id": "fake19-loc1",
+        "name": "Coastal Lawn & Garden #1",
+        "address": "4734 Airport Rd, Napa, CA 94751",
+        "policies": [
+          {
+            "id": "fake19-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV9518424",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "07/11/2026",
+            "expiration": "07/11/2027",
+            "annualPremium": 12342.48,
+            "invoiceNumber": "5482413",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake19-loc2",
+        "name": "Coastal Lawn & Garden #2",
+        "address": "8215 Main St, Stockton, CA 94115",
+        "policies": [
+          {
+            "id": "fake19-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV7328534",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "09/16/2026",
+            "expiration": "09/16/2027",
+            "annualPremium": 6451.24,
+            "invoiceNumber": "8639414",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake19-loc2-pr",
+            "kind": "Property",
+            "policyNumber": "CCP7425184",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "04/23/2026",
+            "expiration": "04/23/2027",
+            "annualPremium": 6917.9,
+            "invoiceNumber": "4918527",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake19-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A07395997",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "01/11/2026",
+            "expiration": "01/11/2027",
+            "annualPremium": 13064.11,
+            "invoiceNumber": "7477326",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-15",
+    "name": "Copperfield Suites",
+    "locations": [
+      {
+        "id": "fake15-loc1",
+        "name": "Copperfield Suites #1",
+        "address": "3280 Airport Rd, Vallejo, CA 92957",
+        "policies": [
+          {
+            "id": "fake15-loc1-pr",
+            "kind": "Property",
+            "policyNumber": "CCP9990305",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "12/07/2026",
+            "expiration": "12/07/2027",
+            "annualPremium": 8337.64,
+            "invoiceNumber": "4106298",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake15-loc1-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A09801946",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "04/24/2026",
+            "expiration": "04/24/2027",
+            "annualPremium": 10068.28,
+            "invoiceNumber": "5747930",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake15-loc2",
+        "name": "Copperfield Suites #2",
+        "address": "9166 Airport Rd, Livermore, CA 91035",
+        "policies": [
+          {
+            "id": "fake15-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV5602180",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "01/23/2026",
+            "expiration": "01/23/2027",
+            "annualPremium": 8341.35,
+            "invoiceNumber": "1763626",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake15-loc3",
+        "name": "Copperfield Suites #3",
+        "address": "9321 Airport Rd, Bakersfield, CA 92034",
+        "policies": [
+          {
+            "id": "fake15-loc3-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV8389840",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "10/10/2026",
+            "expiration": "10/10/2027",
+            "annualPremium": 7693.97,
+            "invoiceNumber": "6716097",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake15-loc3-pr",
+            "kind": "Property",
+            "policyNumber": "CCP9014965",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "01/09/2026",
+            "expiration": "01/09/2027",
+            "annualPremium": 19909.68,
+            "invoiceNumber": "2914064",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake15-loc3-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A01899411",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "07/16/2026",
+            "expiration": "07/16/2027",
+            "annualPremium": 5351.94,
+            "invoiceNumber": "3545556",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-10",
+    "name": "Foothill Suites",
+    "locations": [
+      {
+        "id": "fake10-loc1",
+        "name": "Foothill Suites #1",
+        "address": "2981 Mission Blvd, Elk Grove, CA 90412",
+        "policies": [
+          {
+            "id": "fake10-loc1-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A02788238",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "12/01/2026",
+            "expiration": "12/01/2027",
+            "annualPremium": 14765.59,
+            "invoiceNumber": "8132769",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake10-loc2",
+        "name": "Foothill Suites #2",
+        "address": "4643 Mission Blvd, Roseville, CA 95135",
+        "policies": [
+          {
+            "id": "fake10-loc2-pr",
+            "kind": "Property",
+            "policyNumber": "CCP9910914",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "03/26/2026",
+            "expiration": "03/26/2027",
+            "annualPremium": 11095.9,
+            "invoiceNumber": "6323376",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake10-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A09468772",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "10/27/2026",
+            "expiration": "10/27/2027",
+            "annualPremium": 12771.65,
+            "invoiceNumber": "8159521",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake10-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV8550917",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "03/24/2026",
+            "expiration": "03/24/2027",
+            "annualPremium": 11614.95,
+            "invoiceNumber": "5348512",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-12",
+    "name": "Golden State Grounds Care",
+    "locations": [
+      {
+        "id": "fake12-loc1",
+        "name": "Golden State Grounds Care #1",
+        "address": "3695 Airport Rd, Tracy, CA 93979",
+        "policies": [
+          {
+            "id": "fake12-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV8030010",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "05/25/2026",
+            "expiration": "05/25/2027",
+            "annualPremium": 6899.87,
+            "invoiceNumber": "4700025",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake12-loc2",
+        "name": "Golden State Grounds Care #2",
+        "address": "2191 Park Ave, Redding, CA 90221",
+        "policies": [
+          {
+            "id": "fake12-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV7783308",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "06/22/2026",
+            "expiration": "06/22/2027",
+            "annualPremium": 9791.42,
+            "invoiceNumber": "3768991",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake12-loc3",
+        "name": "Golden State Grounds Care #3",
+        "address": "6311 Airport Rd, Tracy, CA 92067",
+        "policies": [
+          {
+            "id": "fake12-loc3-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A08746014",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "02/21/2026",
+            "expiration": "02/21/2027",
+            "annualPremium": 9429.05,
+            "invoiceNumber": "4048907",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake12-loc3-pr",
+            "kind": "Property",
+            "policyNumber": "CCP8628588",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "05/13/2026",
+            "expiration": "05/13/2027",
+            "annualPremium": 8556.02,
+            "invoiceNumber": "6483562",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake12-loc4",
+        "name": "Golden State Grounds Care #4",
+        "address": "759 Main St, Vallejo, CA 91634",
+        "policies": [
+          {
+            "id": "fake12-loc4-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV6871360",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "01/24/2026",
+            "expiration": "01/24/2027",
+            "annualPremium": 8394.19,
+            "invoiceNumber": "4761823",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-13",
+    "name": "Golden State Landscaping",
+    "locations": [
+      {
+        "id": "fake13-loc1",
+        "name": "Golden State Landscaping #1",
+        "address": "6143 El Camino Real, Petaluma, CA 94975",
+        "policies": [
+          {
+            "id": "fake13-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV4656838",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "11/04/2026",
+            "expiration": "11/04/2027",
+            "annualPremium": 8639.7,
+            "invoiceNumber": "8801975",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake13-loc2",
+        "name": "Golden State Landscaping #2",
+        "address": "6171 Industrial Pkwy, Chico, CA 95305",
+        "policies": [
+          {
+            "id": "fake13-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A06233774",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "05/04/2026",
+            "expiration": "05/04/2027",
+            "annualPremium": 11154.87,
+            "invoiceNumber": "7296605",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake13-loc2-pr",
+            "kind": "Property",
+            "policyNumber": "CCP5074336",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "12/07/2026",
+            "expiration": "12/07/2027",
+            "annualPremium": 3905.93,
+            "invoiceNumber": "2709620",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake13-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV1689025",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "11/20/2026",
+            "expiration": "11/20/2027",
+            "annualPremium": 11055.28,
+            "invoiceNumber": "6825112",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-5",
+    "name": "Harbor AutoCare",
+    "locations": [
+      {
+        "id": "fake5-loc1",
+        "name": "Harbor AutoCare #1",
+        "address": "6309 Main St, Manteca, CA 92173",
+        "policies": [
+          {
+            "id": "fake5-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV7728339",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "08/16/2026",
+            "expiration": "08/16/2027",
+            "annualPremium": 5137.47,
+            "invoiceNumber": "1983738",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake5-loc2",
+        "name": "Harbor AutoCare #2",
+        "address": "921 Park Ave, Roseville, CA 94120",
+        "policies": [
+          {
+            "id": "fake5-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV9164991",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "12/24/2026",
+            "expiration": "12/24/2027",
+            "annualPremium": 12954.23,
+            "invoiceNumber": "3597059",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake5-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A02022698",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "05/07/2026",
+            "expiration": "05/07/2027",
+            "annualPremium": 15640.16,
+            "invoiceNumber": "6261415",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-21",
+    "name": "Ironbridge Motors",
+    "locations": [
+      {
+        "id": "fake21-loc1",
+        "name": "Ironbridge Motors #1",
+        "address": "6584 Airport Rd, Fresno, CA 94637",
+        "policies": [
+          {
+            "id": "fake21-loc1-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A06018975",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "08/12/2026",
+            "expiration": "08/12/2027",
+            "annualPremium": 15857.99,
+            "invoiceNumber": "8118722",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake21-loc1-pr",
+            "kind": "Property",
+            "policyNumber": "CCP7454081",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "08/28/2026",
+            "expiration": "08/28/2027",
+            "annualPremium": 8089.25,
+            "invoiceNumber": "9106886",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake21-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV5963914",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "04/13/2026",
+            "expiration": "04/13/2027",
+            "annualPremium": 8719.23,
+            "invoiceNumber": "5953150",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake21-loc2",
+        "name": "Ironbridge Motors #2",
+        "address": "4935 Broadway, Visalia, CA 93404",
+        "policies": [
+          {
+            "id": "fake21-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A06910964",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "05/25/2026",
+            "expiration": "05/25/2027",
+            "annualPremium": 13686.89,
+            "invoiceNumber": "4674286",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake21-loc2-pr",
+            "kind": "Property",
+            "policyNumber": "CCP3294774",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "10/09/2026",
+            "expiration": "10/09/2027",
+            "annualPremium": 15038.64,
+            "invoiceNumber": "2630140",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake21-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV7121355",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "05/26/2026",
+            "expiration": "05/26/2027",
+            "annualPremium": 7408.23,
+            "invoiceNumber": "3204724",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake21-loc3",
+        "name": "Ironbridge Motors #3",
+        "address": "2795 Airport Rd, Roseville, CA 92418",
+        "policies": [
+          {
+            "id": "fake21-loc3-pr",
+            "kind": "Property",
+            "policyNumber": "CCP7138070",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "03/26/2026",
+            "expiration": "03/26/2027",
+            "annualPremium": 12479.04,
+            "invoiceNumber": "9906224",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-18",
+    "name": "Lakeside Inn",
+    "locations": [
+      {
+        "id": "fake18-loc1",
+        "name": "Lakeside Inn",
+        "address": "7583 Mission Blvd, Stockton, CA 93143",
+        "policies": [
+          {
+            "id": "fake18-loc1-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A07844947",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "05/18/2026",
+            "expiration": "05/18/2027",
+            "annualPremium": 4657.26,
+            "invoiceNumber": "2563790",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake18-loc1-pr",
+            "kind": "Property",
+            "policyNumber": "CCP3583206",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "02/15/2026",
+            "expiration": "02/15/2027",
+            "annualPremium": 20020.62,
+            "invoiceNumber": "9361353",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake18-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV9094999",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "09/23/2026",
+            "expiration": "09/23/2027",
+            "annualPremium": 5734.25,
+            "invoiceNumber": "8922533",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-20",
+    "name": "Oakmont Builders",
+    "locations": [
+      {
+        "id": "fake20-loc1",
+        "name": "Oakmont Builders #1",
+        "address": "7792 Airport Rd, Merced, CA 95106",
+        "policies": [
+          {
+            "id": "fake20-loc1-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A07878299",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "08/01/2026",
+            "expiration": "08/01/2027",
+            "annualPremium": 12808.1,
+            "invoiceNumber": "3589751",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake20-loc2",
+        "name": "Oakmont Builders #2",
+        "address": "5006 Main St, Modesto, CA 92658",
+        "policies": [
+          {
+            "id": "fake20-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV6312692",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "11/28/2026",
+            "expiration": "11/28/2027",
+            "annualPremium": 8336.22,
+            "invoiceNumber": "9186400",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake20-loc2-pr",
+            "kind": "Property",
+            "policyNumber": "CCP5821419",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "10/03/2026",
+            "expiration": "10/03/2027",
+            "annualPremium": 6843.25,
+            "invoiceNumber": "4816586",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake20-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A02686231",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "07/04/2026",
+            "expiration": "07/04/2027",
+            "annualPremium": 13244.25,
+            "invoiceNumber": "8443690",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake20-loc3",
+        "name": "Oakmont Builders #3",
+        "address": "9372 El Camino Real, San Jose, CA 91435",
+        "policies": [
+          {
+            "id": "fake20-loc3-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV5096953",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "06/12/2026",
+            "expiration": "06/12/2027",
+            "annualPremium": 7306.87,
+            "invoiceNumber": "9911492",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake20-loc4",
+        "name": "Oakmont Builders #4",
+        "address": "7655 Airport Rd, Elk Grove, CA 92092",
+        "policies": [
+          {
+            "id": "fake20-loc4-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A09349470",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "07/20/2026",
+            "expiration": "07/20/2027",
+            "annualPremium": 12356.05,
+            "invoiceNumber": "3401116",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-8",
+    "name": "Oakmont Fabrication",
+    "locations": [
+      {
+        "id": "fake8-loc1",
+        "name": "Oakmont Fabrication #1",
+        "address": "4188 Industrial Pkwy, Turlock, CA 94587",
+        "policies": [
+          {
+            "id": "fake8-loc1-pr",
+            "kind": "Property",
+            "policyNumber": "CCP1669324",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "05/12/2026",
+            "expiration": "05/12/2027",
+            "annualPremium": 19131.16,
+            "invoiceNumber": "7003042",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake8-loc2",
+        "name": "Oakmont Fabrication #2",
+        "address": "2708 Industrial Pkwy, Manteca, CA 90318",
+        "policies": [
+          {
+            "id": "fake8-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A03970445",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "04/28/2026",
+            "expiration": "04/28/2027",
+            "annualPremium": 6368.77,
+            "invoiceNumber": "7917152",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake8-loc2-pr",
+            "kind": "Property",
+            "policyNumber": "CCP7907400",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "03/24/2026",
+            "expiration": "03/24/2027",
+            "annualPremium": 19603.01,
+            "invoiceNumber": "5163555",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake8-loc3",
+        "name": "Oakmont Fabrication #3",
+        "address": "5853 Mission Blvd, Manteca, CA 95567",
+        "policies": [
+          {
+            "id": "fake8-loc3-pr",
+            "kind": "Property",
+            "policyNumber": "CCP4818418",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "08/12/2026",
+            "expiration": "08/12/2027",
+            "annualPremium": 8146.03,
+            "invoiceNumber": "4740036",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake8-loc3-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A05674183",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "11/07/2026",
+            "expiration": "11/07/2027",
+            "annualPremium": 9082.36,
+            "invoiceNumber": "2164686",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake8-loc4",
+        "name": "Oakmont Fabrication #4",
+        "address": "8618 Mission Blvd, Concord, CA 95894",
+        "policies": [
+          {
+            "id": "fake8-loc4-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV5453786",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "05/06/2026",
+            "expiration": "05/06/2027",
+            "annualPremium": 8805.9,
+            "invoiceNumber": "1641849",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake8-loc4-pr",
+            "kind": "Property",
+            "policyNumber": "CCP6262632",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "10/14/2026",
+            "expiration": "10/14/2027",
+            "annualPremium": 8895.21,
+            "invoiceNumber": "8321474",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake8-loc4-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A01744682",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "07/19/2026",
+            "expiration": "07/19/2027",
+            "annualPremium": 6685.91,
+            "invoiceNumber": "8315831",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-7",
+    "name": "Pacific Landscaping",
+    "locations": [
+      {
+        "id": "fake7-loc1",
+        "name": "Pacific Landscaping #1",
+        "address": "8388 Airport Rd, Stockton, CA 92860",
+        "policies": [
+          {
+            "id": "fake7-loc1-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A05004485",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "04/22/2026",
+            "expiration": "04/22/2027",
+            "annualPremium": 12736.21,
+            "invoiceNumber": "5456272",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake7-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV8670955",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "03/22/2026",
+            "expiration": "03/22/2027",
+            "annualPremium": 9455.01,
+            "invoiceNumber": "6304573",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake7-loc1-pr",
+            "kind": "Property",
+            "policyNumber": "CCP2677407",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "01/15/2026",
+            "expiration": "01/15/2027",
+            "annualPremium": 13991.45,
+            "invoiceNumber": "2229110",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake7-loc2",
+        "name": "Pacific Landscaping #2",
+        "address": "9186 Airport Rd, Concord, CA 90849",
+        "policies": [
+          {
+            "id": "fake7-loc2-pr",
+            "kind": "Property",
+            "policyNumber": "CCP6075395",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "06/10/2026",
+            "expiration": "06/10/2027",
+            "annualPremium": 5418.32,
+            "invoiceNumber": "9874152",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake7-loc3",
+        "name": "Pacific Landscaping #3",
+        "address": "3550 Broadway, Oakland, CA 95632",
+        "policies": [
+          {
+            "id": "fake7-loc3-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV3607983",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "02/04/2026",
+            "expiration": "02/04/2027",
+            "annualPremium": 10424.17,
+            "invoiceNumber": "5569244",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake7-loc4",
+        "name": "Pacific Landscaping #4",
+        "address": "2542 Mission Blvd, Modesto, CA 93025",
+        "policies": [
+          {
+            "id": "fake7-loc4-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV5641923",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "01/03/2026",
+            "expiration": "01/03/2027",
+            "annualPremium": 9342.84,
+            "invoiceNumber": "1739653",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake7-loc4-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A05394880",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "06/25/2026",
+            "expiration": "06/25/2027",
+            "annualPremium": 6004.43,
+            "invoiceNumber": "3710895",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake7-loc4-pr",
+            "kind": "Property",
+            "policyNumber": "CCP1162230",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "09/23/2026",
+            "expiration": "09/23/2027",
+            "annualPremium": 10412.21,
+            "invoiceNumber": "2876932",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-24",
+    "name": "Redwood Auto Body",
+    "locations": [
+      {
+        "id": "fake24-loc1",
+        "name": "Redwood Auto Body",
+        "address": "7505 Mission Blvd, Vallejo, CA 95039",
+        "policies": [
+          {
+            "id": "fake24-loc1-pr",
+            "kind": "Property",
+            "policyNumber": "CCP3126655",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "01/06/2026",
+            "expiration": "01/06/2027",
+            "annualPremium": 7409.3,
+            "invoiceNumber": "8062546",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake24-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV7074006",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "12/03/2026",
+            "expiration": "12/03/2027",
+            "annualPremium": 7762.46,
+            "invoiceNumber": "9610704",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-16",
+    "name": "Redwood Manufacturing Co.",
+    "locations": [
+      {
+        "id": "fake16-loc1",
+        "name": "Redwood Manufacturing Co. #1",
+        "address": "143 Center St, Elk Grove, CA 95648",
+        "policies": [
+          {
+            "id": "fake16-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV8194570",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "05/28/2026",
+            "expiration": "05/28/2027",
+            "annualPremium": 8885.25,
+            "invoiceNumber": "6123430",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake16-loc1-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A04486102",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "10/24/2026",
+            "expiration": "10/24/2027",
+            "annualPremium": 5641.19,
+            "invoiceNumber": "4540415",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake16-loc1-pr",
+            "kind": "Property",
+            "policyNumber": "CCP3916107",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "11/03/2026",
+            "expiration": "11/03/2027",
+            "annualPremium": 5405.56,
+            "invoiceNumber": "2259379",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake16-loc2",
+        "name": "Redwood Manufacturing Co. #2",
+        "address": "1077 El Camino Real, Salinas, CA 94875",
+        "policies": [
+          {
+            "id": "fake16-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV8617381",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "04/10/2026",
+            "expiration": "04/10/2027",
+            "annualPremium": 10069.56,
+            "invoiceNumber": "2194198",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake16-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A04318855",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "05/26/2026",
+            "expiration": "05/26/2027",
+            "annualPremium": 13599.35,
+            "invoiceNumber": "8132648",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake16-loc2-pr",
+            "kind": "Property",
+            "policyNumber": "CCP5456573",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "09/08/2026",
+            "expiration": "09/08/2027",
+            "annualPremium": 14481.24,
+            "invoiceNumber": "3386328",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-11",
+    "name": "Summit Supply Co.",
+    "locations": [
+      {
+        "id": "fake11-loc1",
+        "name": "Summit Supply Co.",
+        "address": "6983 Center St, Napa, CA 95698",
+        "policies": [
+          {
+            "id": "fake11-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV2351868",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "06/11/2026",
+            "expiration": "06/11/2027",
+            "annualPremium": 11930.27,
+            "invoiceNumber": "3321531",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake11-loc1-pr",
+            "kind": "Property",
+            "policyNumber": "CCP4589533",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "04/13/2026",
+            "expiration": "04/13/2027",
+            "annualPremium": 15338.07,
+            "invoiceNumber": "2077581",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake11-loc1-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A07975534",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "07/11/2026",
+            "expiration": "07/11/2027",
+            "annualPremium": 10740.03,
+            "invoiceNumber": "2044645",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-6",
+    "name": "Vista Properties",
+    "locations": [
+      {
+        "id": "fake6-loc1",
+        "name": "Vista Properties",
+        "address": "9433 Commerce Dr, Napa, CA 94871",
+        "policies": [
+          {
+            "id": "fake6-loc1-pr",
+            "kind": "Property",
+            "policyNumber": "CCP4946066",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "10/03/2026",
+            "expiration": "10/03/2027",
+            "annualPremium": 14991.43,
+            "invoiceNumber": "7774229",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-4",
+    "name": "Westgate AutoCare",
+    "locations": [
+      {
+        "id": "fake4-loc1",
+        "name": "Westgate AutoCare",
+        "address": "9116 Industrial Pkwy, Modesto, CA 95343",
+        "policies": [
+          {
+            "id": "fake4-loc1-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A09997381",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "02/08/2026",
+            "expiration": "02/08/2027",
+            "annualPremium": 6703.29,
+            "invoiceNumber": "8526486",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake4-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV5191056",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "07/06/2026",
+            "expiration": "07/06/2027",
+            "annualPremium": 5785.45,
+            "invoiceNumber": "2264748",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-22",
+    "name": "Westgate Builders",
+    "locations": [
+      {
+        "id": "fake22-loc1",
+        "name": "Westgate Builders #1",
+        "address": "6564 Main St, Fairfield, CA 94396",
+        "policies": [
+          {
+            "id": "fake22-loc1-pr",
+            "kind": "Property",
+            "policyNumber": "CCP7667458",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "04/28/2026",
+            "expiration": "04/28/2027",
+            "annualPremium": 15011.99,
+            "invoiceNumber": "7136687",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake22-loc2",
+        "name": "Westgate Builders #2",
+        "address": "1875 Commerce Dr, Roseville, CA 90206",
+        "policies": [
+          {
+            "id": "fake22-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV5398338",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "06/22/2026",
+            "expiration": "06/22/2027",
+            "annualPremium": 10490.12,
+            "invoiceNumber": "7392547",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake22-loc3",
+        "name": "Westgate Builders #3",
+        "address": "6178 Mission Blvd, Tracy, CA 94812",
+        "policies": [
+          {
+            "id": "fake22-loc3-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A08789116",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "11/03/2026",
+            "expiration": "11/03/2027",
+            "annualPremium": 11807.15,
+            "invoiceNumber": "6069909",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake22-loc3-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV1624315",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "02/05/2026",
+            "expiration": "02/05/2027",
+            "annualPremium": 3453.47,
+            "invoiceNumber": "6106390",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake22-loc3-pr",
+            "kind": "Property",
+            "policyNumber": "CCP3276065",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "02/04/2026",
+            "expiration": "02/04/2027",
+            "annualPremium": 6843.8,
+            "invoiceNumber": "7520395",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake22-loc4",
+        "name": "Westgate Builders #4",
+        "address": "4620 Commerce Dr, Sacramento, CA 93726",
+        "policies": [
+          {
+            "id": "fake22-loc4-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A07847048",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "11/04/2026",
+            "expiration": "11/04/2027",
+            "annualPremium": 14087.47,
+            "invoiceNumber": "5693260",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake22-loc4-pr",
+            "kind": "Property",
+            "policyNumber": "CCP8460758",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "12/12/2026",
+            "expiration": "12/12/2027",
+            "annualPremium": 6519.49,
+            "invoiceNumber": "4961312",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake22-loc4-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV7017548",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "02/22/2026",
+            "expiration": "02/22/2027",
+            "annualPremium": 6673.35,
+            "invoiceNumber": "2015861",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-17",
+    "name": "Westgate Grounds Care",
+    "locations": [
+      {
+        "id": "fake17-loc1",
+        "name": "Westgate Grounds Care #1",
+        "address": "7272 Industrial Pkwy, Petaluma, CA 90327",
+        "policies": [
+          {
+            "id": "fake17-loc1-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV5567533",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "12/10/2026",
+            "expiration": "12/10/2027",
+            "annualPremium": 9997.34,
+            "invoiceNumber": "9396529",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake17-loc2",
+        "name": "Westgate Grounds Care #2",
+        "address": "4657 El Camino Real, Napa, CA 93571",
+        "policies": [
+          {
+            "id": "fake17-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A04840714",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "10/09/2026",
+            "expiration": "10/09/2027",
+            "annualPremium": 4797.45,
+            "invoiceNumber": "1348050",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake17-loc2-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV3939212",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "10/02/2026",
+            "expiration": "10/02/2027",
+            "annualPremium": 10631.09,
+            "invoiceNumber": "8893693",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake17-loc3",
+        "name": "Westgate Grounds Care #3",
+        "address": "8989 Highway 99, Tracy, CA 90445",
+        "policies": [
+          {
+            "id": "fake17-loc3-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV2754894",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "06/14/2026",
+            "expiration": "06/14/2027",
+            "annualPremium": 6333.08,
+            "invoiceNumber": "3698193",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake17-loc3-pr",
+            "kind": "Property",
+            "policyNumber": "CCP7718473",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "07/23/2026",
+            "expiration": "07/23/2027",
+            "annualPremium": 11666.18,
+            "invoiceNumber": "1615675",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake17-loc3-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A02944841",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "02/11/2026",
+            "expiration": "02/11/2027",
+            "annualPremium": 7402.59,
+            "invoiceNumber": "7780932",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake17-loc4",
+        "name": "Westgate Grounds Care #4",
+        "address": "4475 Mission Blvd, Stockton, CA 92360",
+        "policies": [
+          {
+            "id": "fake17-loc4-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A08416216",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "06/20/2026",
+            "expiration": "06/20/2027",
+            "annualPremium": 13199.1,
+            "invoiceNumber": "1865901",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fake-client-9",
+    "name": "Westgate Urgent Care",
+    "locations": [
+      {
+        "id": "fake9-loc1",
+        "name": "Westgate Urgent Care #1",
+        "address": "6791 Broadway, Manteca, CA 95712",
+        "policies": [
+          {
+            "id": "fake9-loc1-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A03090865",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "06/20/2026",
+            "expiration": "06/20/2027",
+            "annualPremium": 8110.03,
+            "invoiceNumber": "6038571",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake9-loc2",
+        "name": "Westgate Urgent Care #2",
+        "address": "7143 Park Ave, Petaluma, CA 95364",
+        "policies": [
+          {
+            "id": "fake9-loc2-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A07361002",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "04/14/2026",
+            "expiration": "04/14/2027",
+            "annualPremium": 12146.69,
+            "invoiceNumber": "3919694",
+            "amountDueNow": 0,
+            "paymentStatus": "BOUND (AWAITING DEC SHEET)",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake9-loc2-pr",
+            "kind": "Property",
+            "policyNumber": "CCP6098175",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "07/18/2026",
+            "expiration": "07/18/2027",
+            "annualPremium": 17923.92,
+            "invoiceNumber": "5813613",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake9-loc3",
+        "name": "Westgate Urgent Care #3",
+        "address": "5185 Commerce Dr, Oakland, CA 91208",
+        "policies": [
+          {
+            "id": "fake9-loc3-ge",
+            "kind": "General Liability",
+            "policyNumber": "CPV8938746",
+            "carrier": "Penn-Star Insurance Company",
+            "coverageType": "General Liability - New Business",
+            "effective": "08/22/2026",
+            "expiration": "08/22/2027",
+            "annualPremium": 5137.01,
+            "invoiceNumber": "3846949",
+            "amountDueNow": 0,
+            "paymentStatus": "PAID IN FULL",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          },
+          {
+            "id": "fake9-loc3-wo",
+            "kind": "Workers Compensation",
+            "policyNumber": "A06623525",
+            "carrier": "Farmers Insurance",
+            "coverageType": "Workers Compensation",
+            "effective": "05/17/2026",
+            "expiration": "05/17/2027",
+            "annualPremium": 12134.32,
+            "invoiceNumber": "2566777",
+            "amountDueNow": 0,
+            "paymentStatus": "CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      },
+      {
+        "id": "fake9-loc4",
+        "name": "Westgate Urgent Care #4",
+        "address": "9531 Commerce Dr, Livermore, CA 95705",
+        "policies": [
+          {
+            "id": "fake9-loc4-pr",
+            "kind": "Property",
+            "policyNumber": "CCP2221854",
+            "carrier": "Century Surety Company",
+            "coverageType": "Property - New Business",
+            "effective": "04/16/2026",
+            "expiration": "04/16/2027",
+            "annualPremium": 13808.57,
+            "invoiceNumber": "8640615",
+            "amountDueNow": 0,
+            "paymentStatus": "FINANCED - CURRENT",
+            "notes": "Placeholder record generated for demo purposes.",
+            "finance": null
+          }
+        ]
+      }
+    ]
+  }
+];
+  const CLIENTS = [
+    { id: "owner-gas-stations", name: "Owner - Gas Stations", locations: OWNER_GAS_STATIONS_LOCATIONS },
+    ...FAKE_CLIENTS
   ];
   const DEC_SHEETS = {
     "star10-bop": {
@@ -1221,20 +3694,6 @@
       )
     )))))));
   }
-  const CARRIER_TOTALS = (() => {
-    const buckets = {
-      usg: { carrier: "USG (Penn-Star / Century Surety)", producer: "Joe Lopez", total: 0 },
-      farmers: { carrier: "Farmers Insurance", producer: "Ximena Cruz", total: 0 }
-    };
-    LOCATIONS.forEach((loc) => {
-      loc.policies.forEach((p) => {
-        const amt = p.annualPremium || 0;
-        if (/penn-star|century surety/i.test(p.carrier)) buckets.usg.total += amt;
-        else if (/farmers/i.test(p.carrier)) buckets.farmers.total += amt;
-      });
-    });
-    return [buckets.usg, buckets.farmers];
-  })();
   const OVERRIDES_KEY = "policy_overrides_v1";
   const DISMISSED_KEY = "dismissed_alerts_v1";
   function useOverrides() {
@@ -1818,7 +4277,105 @@
       )
     );
   }
-  function PolicyManager() {
+  function ClientList({ clients, onSelect }) {
+    const totalLocations = clients.reduce((sum, c) => sum + c.locations.length, 0);
+    const totalPolicies = clients.reduce((sum, c) => sum + c.locations.reduce((s, l) => s + l.policies.length, 0), 0);
+    const totalPremium = clients.reduce((sum, c) => sum + c.locations.reduce((s, l) => s + l.policies.reduce((ss, p) => ss + (p.annualPremium || 0), 0), 0), 0);
+    const rowStyle = { display: "grid", gridTemplateColumns: "1fr 120px 120px 150px", alignItems: "center", padding: "14px 16px", borderBottom: "1px solid #eef0f2", background: "#fff", cursor: "pointer" };
+    return React.createElement(
+      "div",
+      { style: { fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", background: "#f4f5f7", minHeight: "100%", color: "#1c2027" } },
+      React.createElement(
+        "div",
+        { style: { background: "#12203a", color: "#fff", padding: "20px 22px" } },
+        React.createElement(
+          "div",
+          { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 } },
+          React.createElement(
+            "div",
+            null,
+            React.createElement("div", { style: { fontSize: 11, letterSpacing: "0.1em", opacity: 0.6, textTransform: "uppercase" } }, "Portfolio Management"),
+            React.createElement("div", { style: { fontSize: 20, fontWeight: 800, marginTop: 2 } }, "All Clients")
+          ),
+          React.createElement(
+            "div",
+            { style: { display: "flex", gap: 20 } },
+            React.createElement(
+              "div",
+              { style: { textAlign: "center" } },
+              React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase" } }, "Locations"),
+              React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, totalLocations)
+            ),
+            React.createElement(
+              "div",
+              { style: { textAlign: "center" } },
+              React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase" } }, "Policy count"),
+              React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, totalPolicies)
+            ),
+            React.createElement(
+              "div",
+              { style: { textAlign: "right" } },
+              React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase" } }, "Portfolio premium"),
+              React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, money(totalPremium))
+            )
+          )
+        )
+      ),
+      React.createElement(
+        "div",
+        { style: { padding: "20px 22px 60px" } },
+        React.createElement("div", { style: { fontSize: 15, fontWeight: 800, color: "#12203a", marginBottom: 10 } }, `Clients (${clients.length})`),
+        React.createElement(
+          "div",
+          { style: { border: "1px solid #e6e8ec", borderRadius: 12, overflow: "hidden" } },
+          React.createElement(
+            "div",
+            { style: { display: "grid", gridTemplateColumns: "1fr 120px 120px 150px", fontSize: 10.5, letterSpacing: "0.05em", color: "#9296a0", textTransform: "uppercase", padding: "10px 16px", background: "#f7f8fa", borderBottom: "1px solid #e6e8ec" } },
+            React.createElement("div", null, "Client"),
+            React.createElement("div", { style: { textAlign: "center" } }, "Locations"),
+            React.createElement("div", { style: { textAlign: "center" } }, "Policy count"),
+            React.createElement("div", { style: { textAlign: "right" } }, "Portfolio premium")
+          ),
+          clients.map((c) => {
+            const locCount = c.locations.length;
+            const polCount = c.locations.reduce((s, l) => s + l.policies.length, 0);
+            const premium = c.locations.reduce((s, l) => s + l.policies.reduce((ss, p) => ss + (p.annualPremium || 0), 0), 0);
+            return React.createElement(
+              "div",
+              {
+                key: c.id,
+                onClick: () => onSelect(c),
+                style: rowStyle,
+                onMouseEnter: (e) => { e.currentTarget.style.background = "#f7f8fa"; },
+                onMouseLeave: (e) => { e.currentTarget.style.background = "#fff"; }
+              },
+              React.createElement("div", { style: { fontSize: 14, fontWeight: 700, color: "#12203a" } }, c.name),
+              React.createElement("div", { style: { textAlign: "center", fontSize: 14 } }, locCount),
+              React.createElement("div", { style: { textAlign: "center", fontSize: 14 } }, polCount),
+              React.createElement("div", { style: { textAlign: "right", fontSize: 14, fontWeight: 700 } }, money(premium))
+            );
+          })
+        )
+      )
+    );
+  }
+  function PolicyManager({ client, onBack }) {
+    const LOCATIONS = client.locations;
+    const AGENCY = { ...AGENCY_BASE, name: client.name };
+    const CARRIER_TOTALS = (() => {
+      const buckets = {
+        usg: { carrier: "USG (Penn-Star / Century Surety)", producer: "Joe Lopez", total: 0 },
+        farmers: { carrier: "Farmers Insurance", producer: "Ximena Cruz", total: 0 }
+      };
+      LOCATIONS.forEach((loc) => {
+        loc.policies.forEach((p) => {
+          const amt = p.annualPremium || 0;
+          if (/penn-star|century surety/i.test(p.carrier)) buckets.usg.total += amt;
+          else if (/farmers/i.test(p.carrier)) buckets.farmers.total += amt;
+        });
+      });
+      return [buckets.usg, buckets.farmers];
+    })();
     const [view, setView] = useState("dashboard");
     const [activeLocationId, setActiveLocationId] = useState(null);
     const [query, setQuery] = useState("");
@@ -1850,7 +4407,7 @@
     const policyCount = LOCATIONS.reduce((sum, loc) => sum + loc.policies.length, 0);
     const upcomingRenewals = LOCATIONS.flatMap((loc) => loc.policies.map((p) => ({ ...p, locationName: loc.name, days: daysUntil(p.expiration) }))).filter((p) => p.days !== null && p.days >= 0).sort((a, b) => a.days - b.days).slice(0, 5);
     const activeLocation = LOCATIONS.find((l) => l.id === activeLocationId);
-    return /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", background: "#f4f5f7", minHeight: "100%", color: "#1c2027" } }, /* @__PURE__ */ React.createElement("div", { style: { background: "#12203a", color: "#fff", padding: "20px 22px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, letterSpacing: "0.1em", opacity: 0.6, textTransform: "uppercase" } }, "Portfolio Management"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 20, fontWeight: 800, marginTop: 2 } }, AGENCY.name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, opacity: 0.65, marginTop: 3 } }, "Agent ", AGENCY.agentId, " \xB7 ", AGENCY.producers.join(" \xB7 "), " \xB7 Report date ", AGENCY.reportDate)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase" } }, "Locations"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, LOCATIONS.length)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "right" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase" } }, "Policy count"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, policyCount)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "right" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase" } }, "Portfolio premium"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, money(portfolioTotal)))))), /* @__PURE__ */ React.createElement("div", { style: { padding: "20px 22px 60px" } }, view === "dashboard" && /* @__PURE__ */ React.createElement(React.Fragment, null, alerts.length > 0 && /* @__PURE__ */ React.createElement("div", { style: { marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, fontWeight: 700, color: "#a3271b", letterSpacing: "0.04em", textTransform: "uppercase", marginBottom: 8, display: "flex", alignItems: "center", gap: 6 } }, /* @__PURE__ */ React.createElement(AlertTriangle, { size: 14 }), " Critical actions required"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gap: 8 } }, alerts.map((a) => /* @__PURE__ */ React.createElement("div", { key: a.id, style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, background: "#fdeceb", border: "1px solid #f6c9c5", borderRadius: 10, padding: "10px 13px" } }, /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", background: "#f4f5f7", minHeight: "100%", color: "#1c2027" } }, /* @__PURE__ */ React.createElement("div", { style: { background: "#12203a", color: "#fff", padding: "20px 22px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { onClick: onBack, style: { fontSize: 11, opacity: 0.7, cursor: "pointer", marginBottom: 6 } }, "← All Clients"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, letterSpacing: "0.1em", opacity: 0.6, textTransform: "uppercase" } }, "Portfolio Management"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 20, fontWeight: 800, marginTop: 2 } }, AGENCY.name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, opacity: 0.65, marginTop: 3 } }, "Agent ", AGENCY.agentId, " \xB7 ", AGENCY.producers.join(" \xB7 "), " \xB7 Report date ", AGENCY.reportDate)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase" } }, "Locations"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, LOCATIONS.length)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase" } }, "Policy count"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, policyCount)), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "right" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 10, letterSpacing: "0.06em", opacity: 0.55, textTransform: "uppercase" } }, "Portfolio premium"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 20, fontWeight: 800 } }, money(portfolioTotal)))))), /* @__PURE__ */ React.createElement("div", { style: { padding: "20px 22px 60px" } }, view === "dashboard" && /* @__PURE__ */ React.createElement(React.Fragment, null, alerts.length > 0 && /* @__PURE__ */ React.createElement("div", { style: { marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, fontWeight: 700, color: "#a3271b", letterSpacing: "0.04em", textTransform: "uppercase", marginBottom: 8, display: "flex", alignItems: "center", gap: 6 } }, /* @__PURE__ */ React.createElement(AlertTriangle, { size: 14 }), " Critical actions required"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gap: 8 } }, alerts.map((a) => /* @__PURE__ */ React.createElement("div", { key: a.id, style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, background: "#fdeceb", border: "1px solid #f6c9c5", borderRadius: 10, padding: "10px 13px" } }, /* @__PURE__ */ React.createElement(
       "button",
       {
         onClick: () => {
@@ -1897,8 +4454,16 @@
       }
     )));
   }
+  function App() {
+    const [selectedClientId, setSelectedClientId] = useState(null);
+    const selectedClient = CLIENTS.find((c) => c.id === selectedClientId) || null;
+    if (!selectedClient) {
+      return React.createElement(ClientList, { clients: CLIENTS, onSelect: (c) => setSelectedClientId(c.id) });
+    }
+    return React.createElement(PolicyManager, { key: selectedClient.id, client: selectedClient, onBack: () => setSelectedClientId(null) });
+  }
   const root = ReactDOM.createRoot(document.getElementById("root"));
-  root.render(React.createElement(PolicyManager));
+  root.render(React.createElement(App));
 })();
 
 </script>
