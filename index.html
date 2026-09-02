@@ -1188,8 +1188,8 @@ function renderDataFreshness(){
   const daysStale = Math.round((new Date(localToday()+'T00:00:00Z') - new Date(latest+'T00:00:00Z')) / 86400000);
   const label = new Date(latest+'T00:00:00Z').toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric', timeZone:'UTC'});
   el.innerHTML = daysStale > 3
-    ? `Last updated: ${label} <strong style="color:var(--red);">(${daysStale} days old — check the sync)</strong>`
-    : `Last updated: ${label}`;
+    ? `Last updated: <strong>${label}</strong> <strong style="color:var(--red);">(${daysStale} days old — check the sync)</strong>`
+    : `Last updated: <strong>${label}</strong>`;
 }
 renderDataFreshness();
 
